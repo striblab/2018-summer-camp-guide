@@ -1,0 +1,14 @@
+/**
+ * Project specific styling.
+ */
+
+& {
+  padding-top: 3em;
+  margin-bottom: 3em;
+  min-height: 15em;
+}
+
+// Mobile page container doesn't account for fixed header
+.page-mobile & {
+  padding-top: 5em;
+}
