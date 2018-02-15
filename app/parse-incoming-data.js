@@ -41,6 +41,15 @@ module.exports = camps => {
       parsed.phone = c.info_phone_nbr;
       parsed.phoneTollFree = c.info_toll_free_phone_nbr;
 
+      // lat long
+      let locationMatch = c.latLng.match(/([0-9.-]+),\s*([0-9.-]+)/i);
+      if (locationMatch) {
+        parsed.location = {
+          lat: parseFloat(locationMatch[1]),
+          lng: parseFloat(locationMatch[2])
+        };
+      }
+
       // Star and end dates
       parsed.start = DateTime.fromISO(c.start_date);
       parsed.end = DateTime.fromISO(c.end_date);
