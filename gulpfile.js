@@ -34,8 +34,11 @@ const del = require('del');
 const gulpContent = require('./lib/gulp-content.js');
 const gulpPublish = require('./lib/gulp-publish.js');
 const _ = require('lodash');
+const r = require('request');
+const request = require('cached-request')(r);
 const jest = require('./lib/gulp-jest.js');
 const pkg = require('./package.json');
+const parseData = require('./app/parse-incoming-data.js');
 const config = exists('config.custom.json')
   ? require('./config.custom.json')
   : require('./config.json');
@@ -93,9 +96,7 @@ gulp.task('html:lint:details', ['html'], () => {
 });
 
 // Server-side rendering of
-gulp.task('components', () => {
-  // Get data
-  // TODO
+gulp.task('components', done => {
   let data = {};
 
   // Render
@@ -105,16 +106,33 @@ gulp.task('components', () => {
     return `<style type="text/css">${css.code}</style>\n\n${html}`;
   }
 
-  // Do each file
-  return gulp
-    .src('components/**/*.html')
-    .pipe(transform('utf-8', render))
-    .pipe(
-      rename({
-        prefix: 'component-'
-      })
-    )
-    .pipe(gulp.dest('build/'));
+  // Get data
+  request.setCacheDirectory(path.join(__dirname, '.cache-component-data'));
+  request(
+    {
+      url: config.data.camps,
+      ttl: 60 * 10
+    },
+    (error, response, body) => {
+      if (error) {
+        return new gutil.PluginError('components', { message: error });
+      }
+      let parsed = JSON.parse(body);
+      data.camps = parseData(parsed.items);
+
+      // Do each file
+      return gulp
+        .src('components/**/*.html')
+        .pipe(transform('utf-8', render))
+        .pipe(
+          rename({
+            prefix: 'component-'
+          })
+        )
+        .pipe(gulp.dest('build/'))
+        .on('end', done);
+    }
+  );
 });
 
 // Content tasks

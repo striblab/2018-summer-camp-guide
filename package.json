@@ -19,6 +19,7 @@
     "node": ">=6.9"
   },
   "dependencies": {
+    "luxon": "^0.4.0",
     "query-string": "^4.3.2"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-3": "^6.17.0",
     "browser-sync": "^2.18.12",
+    "cached-request": "^1.1.2",
     "chrome-remote-interface": "^0.23.2",
     "del": "^2.2.2",
     "dotenv": "^4.0.0",
@@ -55,10 +57,12 @@
     "lodash": "^4.17.4",
     "moment": "^2.19.1",
     "openurl": "^1.1.1",
+    "request": "^2.83.0",
     "run-sequence": "^1.2.2",
     "strib-styles": "^0.0.2",
     "stylelint-config-standard": "^17.0.0",
     "svelte": "^1.55.0",
+    "svelte-extras": "^1.6.0",
     "svelte-loader": "^2.3.3",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "underscore": "^1.8.3",

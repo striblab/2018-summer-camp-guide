@@ -1,0 +1,24 @@
+<div class="camp" data-camp-id="{{ camp ? camp.id : '' }}">
+  {{#if camp}}
+    <h2>{{ camp.title }}</h2>
+    <p>{{ camp.description }}</p>
+
+    <ul>
+      <li>
+        Price:
+        ${{ camp.minPrice }}
+        {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice : '' }}
+      </li>
+      <li>Start: {{ camp.start.toFormat('MMM dd') }}</li>
+      <li>End: {{ camp.end.toFormat('MMM dd') }}</li>
+      <li>Phone: {{ camp.phone }}</li>
+      <li>Types: {{ camp.types.map(t => t.type).join(', ') }}</li>
+      <li>
+        For:
+        {{ camp.who.type }}
+        {{ camp.who.min }}-{{ camp.who.max }}
+        {{ camp.who.entering ? '(Entering)' : ''}}
+      </li>
+    </ul>
+  {{/if}}
+</div>

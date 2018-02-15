@@ -1,5 +1,53 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
-    This is a UPDATE component {{#if test}}TEST{{/if}}
+    {{#if camps}}
+      <div class="filters">
+        <button on:click="setDeep('filters.type', 'half')">Filter half day</button>
+      </div>
+
+      <div class="camps">
+        {{#each filteredCamps as c @id}}
+          <Camp camp="{{ c }}" />
+        {{/each}}
+      </div>
+    {{/if}}
   </div>
 </div>
+
+<script>
+import Camp from './camp.html';
+import { setDeep } from 'svelte-extras';
+
+export default {
+  components: {
+    Camp
+  },
+
+  methods: {
+    setDeep
+  },
+
+  computed: {
+    filteredCamps: (camps, filters) => {
+      let filtered = camps;
+
+      if (camps && camps.length && filters) {
+        // Type
+        if (filters.type) {
+          filtered = filtered.filter(c => {
+            return _.find(c.types, t => t.type === filters.type);
+          });
+        }
+      }
+
+      return filtered;
+    }
+  },
+
+  data: () => {
+    return {
+      filters: {}
+    };
+  }
+};
+</script>

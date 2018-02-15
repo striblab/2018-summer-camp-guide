@@ -9,12 +9,7 @@
 // Dependencies
 import utilsFn from './utils.js';
 import Page from '../components/page.html';
-
-// Import local ES6 modules like this:
-//import utilsFn from './utils.js';
-
-// Or import libraries installed with npm like this:
-// import module from 'module';
+import parser from './parse-incoming-data.js';
 
 // Setup utils function
 utilsFn({});
@@ -22,8 +17,14 @@ utilsFn({});
 // Initialize components
 let mainComponent = new Page({
   target: document.querySelector('.article-lcd-body-content'),
-  hydrate: true,
-  data: {
-    test: true
-  }
+  hydrate: true
 });
+
+// Get data
+window
+  .fetch('http://media2.startribune.com/json_data_store/camp_guide.js')
+  .then(response => response.json())
+  .then(response => {
+    mainComponent.set({ camps: parser(response.items) });
+  })
+  .catch(console.error);

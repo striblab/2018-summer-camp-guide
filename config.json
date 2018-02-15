@@ -2,7 +2,6 @@
   "about this file":
     "This document defines configuration for this project that is not content or copy.",
   "projectIdentifier": "2018-summer-camp-guide",
-
   "cms": {
     "id": "474068733",
     "pages": ["474068733"],
@@ -16,7 +15,9 @@
       "//static.startribune.com/assets/libs/lodash/4.17.4/lodash.min.js"
     ]
   },
-
+  "data": {
+    "camps": "http://media2.startribune.com/json_data_store/camp_guide.js"
+  },
   "content": {},
   "publish": {
     "production": {
