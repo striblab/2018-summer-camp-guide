@@ -1,13 +1,40 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
     {{#if camps}}
-      <div class="filters cf">
+      <div class="filters">
         <h2>Filters</h2>
 
         <div class="filters-column">
-          <InputSlider bind:value="filterPrice"
+          <InputSlider
             min="{{ minPrice }}" max="{{ maxPrice }}"
-            bind:minValue="filterPriceMin" bind:maxValue="filterPriceMax" />
+            bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+        </div>
+
+        <div class="filters-column">
+          <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
+            bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
+        </div>
+
+        <div class="filters-column">
+          <label>Stay types</label>
+
+          <div class="checkbox-set">
+            <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+            <label for="filter-type-full">Full day</label><br>
+
+            <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+            <label for="filter-type-extended">Extended day</label><br>
+
+            <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.half">
+            <label for="filter-type-half">Half day</label><br>
+
+            <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+            <label for="filter-type-overnight">Overnight</label><br>
+          </div>
+        </div>
+
+        <div style="clear:both">
+          Showing {{ filteredCamps.length || 0 }} camps.
         </div>
       </div>
 
@@ -25,39 +52,27 @@
 <script>
 import Camp from './camp.html';
 import InputSlider from './input-slider.html';
-import { setDeep } from 'svelte-extras';
+import InputDateRange from './input-date-range.html';
+import { DateTime } from 'luxon';
+//import { setDeep } from 'svelte-extras';
 
 export default {
   components: {
     Camp,
-    InputSlider
+    InputSlider,
+    InputDateRange
   },
 
-  methods: {
-    setDeep
-  },
+  oncreate: function() {},
+
+  methods: {},
 
   computed: {
-    // Combine filters for convienve
-    filters: (filterPriceMin, filterPriceMax) => {
-      return {
-        minPrice: filterPriceMin || 0,
-        maxPrice: filterPriceMax || 999999
-      };
-    },
-
     // Create filtered and sorted camps
     filteredCamps: (camps, filters) => {
       let filtered = camps;
 
       if (camps && camps.length && filters) {
-        // Type
-        if (filters.type) {
-          filtered = filtered.filter(c => {
-            return _.find(c.types, t => t.type === filters.type);
-          });
-        }
-
         // Price, min or max price within range
         filtered = filtered.filter(c => {
           return (
@@ -66,6 +81,41 @@ export default {
             (c.maxPrice >= filters.minPrice && c.maxPrice <= filters.maxPrice)
           );
         });
+
+        // Date filtering
+        if (filters.minDate) {
+          let m = DateTime.fromISO(filters.minDate);
+          filtered = filtered.filter(c => {
+            return c.start.ts >= m.ts || c.end.ts >= m.ts;
+          });
+        }
+        if (filters.maxDate) {
+          let m = DateTime.fromISO(filters.maxDate);
+          filtered = filtered.filter(c => {
+            return c.start.ts <= m.ts || c.end.ts <= m.ts;
+          });
+        }
+
+        // Types.  Exclude any that are explicitly excluded
+        if (filters.type) {
+          const typeIn = (types, type) => {
+            return !!types.find(t => {
+              return t && t.type === type;
+            });
+          };
+
+          filtered = filtered.filter(c => {
+            let included = false;
+
+            for (const t in filters.type) {
+              included = included
+                ? included
+                : filters.type[t] && typeIn(c.types, t);
+            }
+
+            return included;
+          });
+        }
       }
 
       return filtered;
@@ -87,11 +137,42 @@ export default {
             return Math.max(memo || 0, p);
           })
         : 1000;
+    },
+
+    // Calculate min date of all camps
+    minDate: camps => {
+      return camps
+        ? camps.reduce((memo, p) => {
+            return memo && memo.ts && p.start && memo.ts < p.start.ts
+              ? memo
+              : p.start;
+          })
+        : '1900-01-01';
+    },
+
+    // Calculate max date of all the camps
+    maxDate: camps => {
+      return camps
+        ? camps.reduce((memo, p) => {
+            return memo && memo.ts && memo.ts > p.end.ts ? memo : p.end;
+          })
+        : '3000-01-01';
     }
   },
 
   data: () => {
-    return {};
+    return {
+      filters: {
+        minPrice: 0,
+        maxPrice: 99999,
+        type: {
+          full: true,
+          half: true,
+          extended: true,
+          overnight: true
+        }
+      }
+    };
   }
 };
 </script>

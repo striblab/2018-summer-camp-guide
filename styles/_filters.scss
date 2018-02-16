@@ -3,7 +3,15 @@
   background-color: map-get($grays, 'lightest');
   padding: 1em;
 
+  // Where's the cf
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
   .filters-column {
+    float: left;
     width: 33.33332%;
     padding-right: 0.5em;
   }
