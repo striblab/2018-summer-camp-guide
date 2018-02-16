@@ -38,6 +38,15 @@ export default {
   },
 
   computed: {
+    // Combine filters for convienve
+    filters: (filterPriceMin, filterPriceMax) => {
+      return {
+        minPrice: filterPriceMin || 0,
+        maxPrice: filterPriceMax || 999999
+      };
+    },
+
+    // Create filtered and sorted camps
     filteredCamps: (camps, filters) => {
       let filtered = camps;
 
@@ -48,11 +57,21 @@ export default {
             return _.find(c.types, t => t.type === filters.type);
           });
         }
+
+        // Price, min or max price within range
+        filtered = filtered.filter(c => {
+          return (
+            (c.minPrice >= filters.minPrice &&
+              c.minPrice <= filters.maxPrice) ||
+            (c.maxPrice >= filters.minPrice && c.maxPrice <= filters.maxPrice)
+          );
+        });
       }
 
       return filtered;
     },
 
+    // Calculate min price of all camps
     minPrice: camps => {
       return camps
         ? camps.map(c => c.minPrice).reduce((memo, p) => {
@@ -61,6 +80,7 @@ export default {
         : 0;
     },
 
+    // Calculate max price of all the camps
     maxPrice: camps => {
       return camps
         ? camps.map(c => c.maxPrice).reduce((memo, p) => {
@@ -71,9 +91,7 @@ export default {
   },
 
   data: () => {
-    return {
-      filters: {}
-    };
+    return {};
   }
 };
 </script>
