@@ -1,0 +1,45 @@
+<div class="input-slider {{ range ? 'is-range' : ''}}">
+  {{#if range}}
+    <div class="range-status">
+      {{ formatUnit(minValue) }} - {{ formatUnit(maxValue) }}
+    </div>
+    <div class="range">
+      <label for="min-value" class="sr-only">Minimum {{ label }}</label>
+      <input name="min-value" type="range" class="min-value"
+        min="{{ min }}" max="{{ max }}" step="{{ step }}"
+        bind:value="minValue">
+
+      <label for="max-value" class="sr-only">Maximum {{ label }}</label>
+      <input name="max-value" type="range" class="max-value"
+        min="{{ min }}" max="{{ max }}" step="{{ step }}"
+        bind:value="maxValue">
+    </div>
+  {{else}}
+    <input type="range"
+      min="{{ min }}" max="{{ max }}" step="{{ step }}"
+      bind:value="value">
+  {{/if}}
+</div>
+
+<script>
+export default {
+  oncreate: function() {},
+
+  data: () => {
+    return {
+      range: true,
+      min: 1,
+      max: 10,
+      minValue: 2,
+      maxValue: 10,
+      step: 1,
+      label: 'Price',
+      formatUnit: input => {
+        return input.toLocaleString
+          ? '$' + input.toLocaleString({ style: 'currency', currency: 'USD' })
+          : input;
+      }
+    };
+  }
+};
+</script>

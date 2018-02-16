@@ -3,6 +3,10 @@
     {{#if camps}}
       <div class="filters">
         <button on:click="setDeep('filters.type', 'half')">Filter half day</button>
+
+        <InputSlider bind:value="filterPrice" min="{{ minPrice }}" max="{{ maxPrice }}" />
+
+        {{ minPrice }} {{ maxPrice }}
       </div>
 
       <div class="camps">
@@ -16,11 +20,13 @@
 
 <script>
 import Camp from './camp.html';
+import InputSlider from './input-slider.html';
 import { setDeep } from 'svelte-extras';
 
 export default {
   components: {
-    Camp
+    Camp,
+    InputSlider
   },
 
   methods: {
@@ -41,6 +47,22 @@ export default {
       }
 
       return filtered;
+    },
+
+    minPrice: camps => {
+      return camps
+        ? camps.map(c => c.minPrice).reduce((memo, p) => {
+            return Math.min(memo || 999999, p);
+          })
+        : 0;
+    },
+
+    maxPrice: camps => {
+      return camps
+        ? camps.map(c => c.maxPrice).reduce((memo, p) => {
+            return Math.max(memo || 0, p);
+          })
+        : 1000;
     }
   },
 
