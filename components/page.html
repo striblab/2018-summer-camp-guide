@@ -33,6 +33,20 @@
           </div>
         </div>
 
+        <div class="filters-column">
+          <InputSlider
+            min="{{ minAge }}" max="{{ maxAge }}" step="1"
+            bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
+            label="Age" formatUnit="{{ (i) => i }}"/>
+        </div>
+
+        <div class="filters-column">
+          <InputSlider
+            min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
+            bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
+            label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
+        </div>
+
         <div style="clear:both">
           Showing {{ filteredCamps.length || 0 }} camps.
         </div>
@@ -116,6 +130,42 @@ export default {
             return included;
           });
         }
+
+        // Age.  Only filter ones that are of type age.
+        if (filters.minAge) {
+          filtered = filtered.filter(c => {
+            return c.who && c.who.type === 'age' && c.who.min < filters.minAge
+              ? false
+              : true;
+          });
+        }
+        if (filters.maxAge) {
+          filtered = filtered.filter(c => {
+            return c.who && c.who.type === 'age' && c.who.max > filters.maxAge
+              ? false
+              : true;
+          });
+        }
+
+        // Grade.  Only filter ones that are of type grade.
+        if (filters.minGrade) {
+          filtered = filtered.filter(c => {
+            return c.who &&
+              c.who.type === 'grade' &&
+              c.who.min < filters.minGrade
+              ? false
+              : true;
+          });
+        }
+        if (filters.maxGrade) {
+          filtered = filtered.filter(c => {
+            return c.who &&
+              c.who.type === 'grade' &&
+              c.who.max > filters.maxGrade
+              ? false
+              : true;
+          });
+        }
       }
 
       return filtered;
@@ -136,6 +186,50 @@ export default {
         ? camps.map(c => c.maxPrice).reduce((memo, p) => {
             return Math.max(memo || 0, p);
           })
+        : 1000;
+    },
+
+    // Calculate min age of all camps
+    minAge: camps => {
+      return camps
+        ? camps
+            .map(c => (c.who && c.who.type === 'age' ? c.who.min : 999999))
+            .reduce((memo, p) => {
+              return Math.min(memo || 999999, p);
+            })
+        : 0;
+    },
+
+    // Calculate max age of all the camps
+    maxAge: camps => {
+      return camps
+        ? camps
+            .map(c => (c.who && c.who.type === 'age' ? c.who.max : 0))
+            .reduce((memo, p) => {
+              return Math.max(memo || 0, p);
+            })
+        : 1000;
+    },
+
+    // Calculate min grade of all camps
+    minGrade: camps => {
+      return camps
+        ? camps
+            .map(c => (c.who && c.who.type === 'grade' ? c.who.min : 999999))
+            .reduce((memo, p) => {
+              return Math.min(memo || 999999, p);
+            })
+        : 0;
+    },
+
+    // Calculate max grade of all the camps
+    maxGrade: camps => {
+      return camps
+        ? camps
+            .map(c => (c.who && c.who.type === 'grade' ? c.who.max : 0))
+            .reduce((memo, p) => {
+              return Math.max(memo || 0, p);
+            })
         : 1000;
     },
 
@@ -165,6 +259,10 @@ export default {
       filters: {
         minPrice: 0,
         maxPrice: 99999,
+        minAge: 0,
+        maxAge: 999,
+        minGrade: -10,
+        maxGrade: 999,
         type: {
           full: true,
           half: true,
