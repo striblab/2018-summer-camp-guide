@@ -2,56 +2,11 @@
  * Input range
  */
 
-.input-slider {
-  padding: 0.5em;
-  min-height: 3em;
-  width: 15em;
+.input-slider-wrapper {
+  padding: 2em 1em 0 1em;
+  margin-bottom: 2em;
 
-  .range {
-    position: relative;
-    width: 100%;
-    min-height: 3em;
-    display: inline-block;
-
-    input[type='range'] {
-      width: 100%;
-      min-height: 3em;
-      overflow: hidden;
-      cursor: pointer;
-      outline: none;
-      position: absolute;
-    }
-
-    input[type='range'],
-    input[type='range']::-webkit-slider-runnable-track,
-    input[type='range']::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      background: none;
-    }
-
-    input[type='range']::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 1px;
-      background: #003D7C;
-    }
-
-    input[type='range']:nth-child(2)::-webkit-slider-runnable-track {
-      background: none;
-    }
-
-    input[type='range']::-webkit-slider-thumb {
-      position: relative;
-      height: 15px;
-      width: 15px;
-      margin-top: -7px;
-      background: #FFFFFF;
-      border: 1px solid #003D7C;
-      border-radius: 25px;
-      z-index: 1;
-    }
-
-    input[type='range']:nth-child(1)::-webkit-slider-thumb {
-      z-index: 2;
-    }
+  .input-slider-label {
+    margin-bottom: 0.5em;
   }
 }

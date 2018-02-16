@@ -1,41 +1,59 @@
-<div class="input-slider {{ range ? 'is-range' : ''}}">
-  {{#if range}}
-    <div class="range-status">
-      {{ formatUnit(minValue) }} - {{ formatUnit(maxValue) }}
-    </div>
-    <div class="range">
-      <label for="min-value" class="sr-only">Minimum {{ label }}</label>
-      <input name="min-value" type="range" class="min-value"
-        min="{{ min }}" max="{{ max }}" step="{{ step }}"
-        bind:value="minValue">
+<div class="input-slider-wrapper cf">
+  <div class="input-slider-label">
+    <span class="label">{{ label }}:</span>
+    <span class="value">{{ formatUnit(minValue) }}</span> -
+    <span class="value">{{ formatUnit(maxValue) }}</span>
+  </div>
 
-      <label for="max-value" class="sr-only">Maximum {{ label }}</label>
-      <input name="max-value" type="range" class="max-value"
-        min="{{ min }}" max="{{ max }}" step="{{ step }}"
-        bind:value="maxValue">
-    </div>
-  {{else}}
-    <input type="range"
-      min="{{ min }}" max="{{ max }}" step="{{ step }}"
-      bind:value="value">
-  {{/if}}
+  <div class="input-slider" ref:slider></div>
 </div>
 
 <script>
+import slider from 'nouislider';
+
 export default {
-  oncreate: function() {},
+  oncreate: function() {
+    // Initial slider
+    this.slider = slider.create(this.refs.slider, {
+      start: [
+        this.get('minValue') || this.get('min'),
+        this.get('maxValue') || this.get('max')
+      ],
+      //snap: true,
+      connect: false,
+      step: this.get('step'),
+      behaviour: 'tap-drag',
+      range: {
+        min: this.get('min'),
+        max: this.get('max')
+      },
+      pips: {
+        mode: 'range',
+        density: 4
+      }
+    });
+
+    // React to component changes
+
+    // React to slier changes
+    this.slider.on('update', () => {
+      let v = this.slider.get();
+
+      this.set({
+        minValue: parseInt(v[0], 10),
+        maxValue: parseInt(v[1], 10)
+      });
+    });
+  },
 
   data: () => {
     return {
-      range: true,
-      min: 1,
-      max: 10,
-      minValue: 2,
-      maxValue: 10,
-      step: 1,
+      min: 0,
+      max: 1000,
+      step: 50,
       label: 'Price',
       formatUnit: input => {
-        return input.toLocaleString
+        return input && input.toLocaleString
           ? '$' + input.toLocaleString({ style: 'currency', currency: 'USD' })
           : input;
       }

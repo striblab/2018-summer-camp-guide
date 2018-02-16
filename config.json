@@ -10,6 +10,11 @@
       "article-lcd-body-content": "component-page.html"
     }
   },
+  "styles": {
+    "globals": [
+      "//static.startribune.com/assets/libs/nouislider/11.0.3/nouislider.min.css"
+    ]
+  },
   "js": {
     "globals": [
       "//static.startribune.com/assets/libs/lodash/4.17.4/lodash.min.js"

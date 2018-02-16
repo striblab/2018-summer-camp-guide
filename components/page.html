@@ -1,15 +1,19 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
     {{#if camps}}
-      <div class="filters">
-        <button on:click="setDeep('filters.type', 'half')">Filter half day</button>
+      <div class="filters cf">
+        <h2>Filters</h2>
 
-        <InputSlider bind:value="filterPrice" min="{{ minPrice }}" max="{{ maxPrice }}" />
-
-        {{ minPrice }} {{ maxPrice }}
+        <div class="filters-column">
+          <InputSlider bind:value="filterPrice"
+            min="{{ minPrice }}" max="{{ maxPrice }}"
+            bind:minValue="filterPriceMin" bind:maxValue="filterPriceMax" />
+        </div>
       </div>
 
       <div class="camps">
+        <h2>Camps</h2>
+
         {{#each filteredCamps as c @id}}
           <Camp camp="{{ c }}" />
         {{/each}}
