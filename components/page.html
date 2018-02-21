@@ -1,55 +1,83 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
+    <div class="hero">
+      <div class="container-md">
+        <img src="./assets/images/camp-guide-logo.jpg" alt="Star Tribune summer camp guide logo">
+
+        <h1>2018 Minnesota Summer Camp Guide</h1>
+
+        <p class="lead">Kids can learn how to program robots, play chess,
+          speak Chinese or dance hip-hop style, among other
+          enrichment options.</p>
+      </div>
+    </div>
+
+    <div class="sharing-wrapper">
+      <!-- sharing -->
+    </div>
+
     {{#if camps}}
       <div class="filters">
-        <h2>Filters</h2>
+        <div class="row">
+          <div class="col col-33">
+            <div class="category-filter-wrapper">
+              {{#each categoryList as c, i}}
+                <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
+                <label for="filter-category-{{ i }}">{{ c }}</label><br>
+              {{/each}}
+            </div>
+          </div>
 
-        <div class="filters-column">
-          <InputSlider
-            min="{{ minPrice }}" max="{{ maxPrice }}"
-            bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
-        </div>
+          <div class="col col-33">
+            <InputSlider
+              min="{{ minPrice }}" max="{{ maxPrice }}"
+              bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+          </div>
 
-        <div class="filters-column">
-          <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
-            bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
-        </div>
-
-        <div class="filters-column">
-          <label>Stay types</label>
-
-          <div class="checkbox-set">
-            <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
-            <label for="filter-type-full">Full day</label><br>
-
-            <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
-            <label for="filter-type-extended">Extended day</label><br>
-
-            <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.half">
-            <label for="filter-type-half">Half day</label><br>
-
-            <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
-            <label for="filter-type-overnight">Overnight</label><br>
+          <div class="col col-33">
+            <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
+              bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
           </div>
         </div>
 
-        <div class="filters-column">
-          <InputSlider
-            min="{{ minAge }}" max="{{ maxAge }}" step="1"
-            bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-            label="Age" formatUnit="{{ (i) => i }}"/>
-        </div>
+        <div class="row">
+          <div class="col col-33">
+            <InputSlider
+              min="{{ minAge }}" max="{{ maxAge }}" step="1"
+              bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
+              label="Age" formatUnit="{{ (i) => i }}"/>
+          </div>
 
-        <div class="filters-column">
-          <InputSlider
-            min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
-            bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-            label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
-        </div>
+          <div class="col col-33">
+            <InputSlider
+              min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
+              bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
+              label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
+          </div>
 
-        <div style="clear:both">
-          Showing {{ filteredCamps.length || 0 }} camps.
+          <div class="col col-33">
+            <label>Stay types</label>
+
+            <div class="checkbox-set">
+              <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+              <label for="filter-type-full">Full day</label><br>
+
+              <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+              <label for="filter-type-extended">Extended day</label><br>
+
+              <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.half">
+              <label for="filter-type-half">Half day</label><br>
+
+              <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+              <label for="filter-type-overnight">Overnight</label><br>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="camp-count">
+        Showing {{ filteredCamps.length || 0 }}
+        camp{{ filteredCamps.length === 1 ? '' : 's' }}.
       </div>
 
       <div class="camps">
@@ -68,7 +96,7 @@ import Camp from './camp.html';
 import InputSlider from './input-slider.html';
 import InputDateRange from './input-date-range.html';
 import { DateTime } from 'luxon';
-//import { setDeep } from 'svelte-extras';
+import { setDeep, getDeep } from 'svelte-extras';
 
 export default {
   components: {
@@ -79,7 +107,19 @@ export default {
 
   oncreate: function() {},
 
-  methods: {},
+  methods: {
+    setDeep,
+    getDeep,
+
+    categoryCheck: function(e, category) {
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      let current = this.getDeep(`filters.categories.${category}`);
+      this.setDeep(`filters.categories.${category}`, !current);
+    }
+  },
 
   computed: {
     // Create filtered and sorted camps
@@ -166,9 +206,44 @@ export default {
               : true;
           });
         }
+
+        // Categories
+        if (filters.categories) {
+          let categoryFilters = [];
+          for (const c in filters.categories) {
+            if (filters.categories[c]) {
+              categoryFilters.push(c);
+            }
+          }
+
+          if (categoryFilters.length) {
+            filtered = filtered.filter(c => {
+              return c.categories.find(a => {
+                return ~categoryFilters.indexOf(a);
+              });
+            });
+          }
+        }
       }
 
       return filtered;
+    },
+
+    // Category list
+    categoryList: camps => {
+      let categories = [];
+
+      if (!camps) {
+        return [];
+      }
+
+      camps.forEach(c => {
+        categories = categories.concat(c.categories);
+      });
+
+      return categories.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => {
+        return a - b;
+      });
     },
 
     // Calculate min price of all camps
@@ -268,7 +343,8 @@ export default {
           half: true,
           extended: true,
           overnight: true
-        }
+        },
+        categories: {}
       }
     };
   }

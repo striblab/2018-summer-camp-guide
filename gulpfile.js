@@ -270,6 +270,17 @@ gulp.task('server', ['build'], () => {
     });
   });
 
+  // Without CMS
+  if (argv.cms === false) {
+    return browserSync.init({
+      port: 3000,
+      server: './build/',
+      files: './build/**/*',
+      rewriteRules: rewriteRules
+    });
+  }
+
+  // With CMS
   return browserSync.init({
     port: 3000,
     proxy:

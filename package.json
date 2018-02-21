@@ -60,7 +60,7 @@
     "openurl": "^1.1.1",
     "request": "^2.83.0",
     "run-sequence": "^1.2.2",
-    "strib-styles": "^0.0.2",
+    "strib-styles": "^0.0.7",
     "stylelint-config-standard": "^17.0.0",
     "svelte": "^1.55.0",
     "svelte-extras": "^1.6.0",

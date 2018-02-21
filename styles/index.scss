@@ -9,14 +9,15 @@
 
 // Assumed that this project lives within an exist page, so we add a
 // wrapper that is very specific and wrap our other styles in it.
-$root: false;
 $selector-wrapper: '.strib.strib-styles.strib-styles-specifically';
 
-@import '../node_modules/strib-styles/source/styles/root.scss';
+@import '../node_modules/strib-styles/source/styles/default-wrapper.scss';
 
 // Project specific styles.  Split styles into files per component
 .strib.strib-styles.strib-styles-specifically {
   @import 'project';
+  @import 'grid';
+  @import 'hero';
   @import 'filters';
   @import 'input-slider';
 }
