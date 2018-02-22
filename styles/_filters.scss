@@ -26,4 +26,13 @@
   .col {
     margin-bottom: 1em;
   }
+
+  input[type='text'] {
+    display: block;
+    padding: 0.5em;
+    margin: 0 0 1em;
+    width: 100%;
+    outline: none;
+    border: 1px solid map-get($grays, lighter);
+  }
 }

@@ -17,63 +17,79 @@
     </div>
 
     {{#if camps}}
-      <div class="filters">
-        <div class="row">
-          <div class="col col-33">
-            <div class="category-filter-wrapper">
-              {{#each categoryList as c, i}}
-                <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
-                <label for="filter-category-{{ i }}">{{ c }}</label><br>
-              {{/each}}
+      {{#if isBrowser}}
+        <div class="filters">
+          <div class="row">
+            <div class="col col-33">
+              <div class="category-filter-wrapper">
+                {{#each categoryList as c, i}}
+                  <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
+                  <label for="filter-category-{{ i }}">{{ c }}</label><br>
+                {{/each}}
+              </div>
+            </div>
+
+            <div class="col col-33">
+              <InputSlider
+                min="{{ minPrice }}" max="{{ maxPrice }}"
+                bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+            </div>
+
+            <div class="col col-33">
+              <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
+                bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
             </div>
           </div>
 
-          <div class="col col-33">
-            <InputSlider
-              min="{{ minPrice }}" max="{{ maxPrice }}"
-              bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+          <div class="row">
+            <div class="col col-33">
+              <InputSlider
+                min="{{ minAge }}" max="{{ maxAge }}" step="1"
+                bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
+                label="Age" formatUnit="{{ (i) => i }}"/>
+            </div>
+
+            <div class="col col-33">
+              <InputSlider
+                min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
+                bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
+                label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
+            </div>
+
+            <div class="col col-33">
+              <label>Stay types</label>
+
+              <div class="checkbox-set">
+                <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+                <label for="filter-type-full">Full day</label><br>
+
+                <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+                <label for="filter-type-extended">Extended day</label><br>
+
+                <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                <label for="filter-type-half">Half day</label><br>
+
+                <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+                <label for="filter-type-overnight">Overnight</label><br>
+              </div>
+            </div>
           </div>
 
-          <div class="col col-33">
-            <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
-              bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
-          </div>
-        </div>
+          <div class="row">
+            <div class="col col-100">
+              <div class="address-search">
+                <label for="address-input">We'll use your address, city, or zip to find camps close to you</label>
 
-        <div class="row">
-          <div class="col col-33">
-            <InputSlider
-              min="{{ minAge }}" max="{{ maxAge }}" step="1"
-              bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-              label="Age" formatUnit="{{ (i) => i }}"/>
-          </div>
+                <input id="address-input" type="text"
+                  placeholder="Your address, city, or zip"
+                  bind:value="addressInput">
 
-          <div class="col col-33">
-            <InputSlider
-              min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
-              bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-              label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
-          </div>
-
-          <div class="col col-33">
-            <label>Stay types</label>
-
-            <div class="checkbox-set">
-              <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
-              <label for="filter-type-full">Full day</label><br>
-
-              <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
-              <label for="filter-type-extended">Extended day</label><br>
-
-              <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.half">
-              <label for="filter-type-half">Half day</label><br>
-
-              <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
-              <label for="filter-type-overnight">Overnight</label><br>
+                <div class="found-address">{{ addressFound }}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      {{/if}}
 
       <div class="camp-count">
         Showing {{ filteredCamps.length || 0 }}
@@ -81,10 +97,8 @@
       </div>
 
       <div class="camps">
-        <h2>Camps</h2>
-
         {{#each filteredCamps as c @id}}
-          <Camp camp="{{ c }}" />
+          <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
         {{/each}}
       </div>
     {{/if}}
@@ -97,6 +111,8 @@ import InputSlider from './input-slider.html';
 import InputDateRange from './input-date-range.html';
 import { DateTime } from 'luxon';
 import { setDeep, getDeep } from 'svelte-extras';
+import _ from 'lodash';
+import { distance } from '../app/common.js';
 
 export default {
   components: {
@@ -105,7 +121,24 @@ export default {
     InputDateRange
   },
 
-  oncreate: function() {},
+  oncreate: function() {
+    this.throttledSearchAddress = _.throttle(
+      _.bind(this.searchAddress, this),
+      2000
+    );
+
+    // Observe changes in address search
+    this.observe('addressInput', n => {
+      if (n) {
+        this.throttledSearchAddress(null, n);
+      }
+    });
+
+    // Make geocoder
+    if (this.get('isBrowser') && window.google) {
+      this.geocoder = new window.google.maps.Geocoder();
+    }
+  },
 
   methods: {
     setDeep,
@@ -118,12 +151,33 @@ export default {
 
       let current = this.getDeep(`filters.categories.${category}`);
       this.setDeep(`filters.categories.${category}`, !current);
+    },
+
+    searchAddress: function(e, address) {
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      this.set({ isGeocoding: true });
+      this.geocoder.geocode({ address }, (results, status) => {
+        if (status !== 'OK' || !results || !results.length) {
+          console.error(`Bad response from geocoder: ${status}`);
+          // TODO handle error
+          return;
+        }
+
+        this.set({
+          userLocation: results[0].geometry.location.toJSON(),
+          addressFound: results[0].formatted_address,
+          isGeocoding: false
+        });
+      });
     }
   },
 
   computed: {
     // Create filtered and sorted camps
-    filteredCamps: (camps, filters) => {
+    filteredCamps: (camps, filters, userLocation) => {
       let filtered = camps;
 
       if (camps && camps.length && filters) {
@@ -224,6 +278,30 @@ export default {
             });
           }
         }
+      }
+
+      // Sort by distance
+      if (userLocation && userLocation.lat) {
+        filtered = filtered.sort((a, b) => {
+          if (!a.location || !b.location) {
+            return -9999999;
+          }
+
+          return (
+            distance(
+              a.location.lat,
+              a.location.lng,
+              userLocation.lat,
+              userLocation.lng
+            ) -
+            distance(
+              b.location.lat,
+              b.location.lng,
+              userLocation.lat,
+              userLocation.lng
+            )
+          );
+        });
       }
 
       return filtered;
@@ -331,6 +409,8 @@ export default {
 
   data: () => {
     return {
+      isBrowser: typeof window != 'undefined',
+      addressInput: '',
       filters: {
         minPrice: 0,
         maxPrice: 99999,

@@ -17,7 +17,7 @@
   },
   "js": {
     "globals": [
-      "//static.startribune.com/assets/libs/lodash/4.17.4/lodash.min.js"
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs"
     ]
   },
   "data": {

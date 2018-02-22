@@ -4,6 +4,9 @@
     <p>{{ camp.description }}</p>
 
     <ul>
+      {{#if userLocation && camp.location}}
+        <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
+      {{/if}}
       <li>
         Price:
         ${{ camp.minPrice }}
@@ -22,3 +25,28 @@
     </ul>
   {{/if}}
 </div>
+
+<script>
+import { distance } from '../app/common.js';
+
+export default {
+  helpers: {
+    distance: function(location, userLocation) {
+      if (location && location.lat && userLocation && userLocation.lat) {
+        return distance(
+          location.lat,
+          location.lng,
+          userLocation.lat,
+          userLocation.lng
+        );
+      }
+    },
+
+    round: function(input, decimals = 1) {
+      return (
+        Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
+      );
+    }
+  }
+};
+</script>

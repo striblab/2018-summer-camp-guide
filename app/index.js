@@ -7,12 +7,12 @@
 'use strict';
 
 // Dependencies
-import utilsFn from './utils.js';
+//import utilsFn from './utils.js';
 import Page from '../components/page.html';
 import parser from './parse-incoming-data.js';
 
 // Setup utils function
-utilsFn({});
+//utilsFn({});
 
 // Initialize components
 let mainComponent = new Page({
