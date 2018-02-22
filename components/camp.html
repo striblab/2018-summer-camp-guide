@@ -9,6 +9,7 @@
           {{#if userLocation && camp.location}}
             <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
           {{/if}}
+          <li>Categories: {{ camp.categories.join(', ') }}
           <li>
             Price:
             ${{ camp.minPrice }}
