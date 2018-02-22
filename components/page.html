@@ -97,9 +97,15 @@
       </div>
 
       <div class="camps">
-        {{#each filteredCamps as c @id}}
-          <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
+        {{#each filteredCamps as c, i @id}}
+          {{#if i < 50}}
+            <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
+          {{/if}}
         {{/each}}
+      </div>
+
+      <div class="pages">
+        <em>TODO: pages</em>
       </div>
     {{/if}}
   </div>
@@ -411,6 +417,7 @@ export default {
     return {
       isBrowser: typeof window != 'undefined',
       addressInput: '',
+      addressFound: '',
       filters: {
         minPrice: 0,
         maxPrice: 99999,

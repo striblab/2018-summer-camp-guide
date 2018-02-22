@@ -1,0 +1,80 @@
+<div class="map-container" ref:map></div>
+
+<script>
+import mapStyles from '../app/map-styles.js';
+import _ from 'lodash';
+
+export default {
+  oncreate() {
+    if (this.get('isBrowser') && this.get('location')) {
+      this.drawMap();
+    }
+  },
+
+  ondestroy() {
+    this.undrawMap();
+  },
+
+  methods: {
+    // Draw map
+    drawMap: function() {
+      let map = this.get('map');
+      let location = this.get('location');
+
+      // Only draw map if needed
+      if (!map) {
+        map = new window.google.maps.Map(this.refs.map, {
+          zoom: this.get('zoom'),
+          center: location,
+          minZoom: 9,
+          maxZoom: 17,
+          zoomControl: true,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: false,
+          styles: mapStyles
+        });
+
+        // Add map to component
+        this.set({ map: map });
+      } else {
+        // If the map is already there for some reason, just
+        // trigger a resize
+        window.google.maps.event.trigger(map, 'resize');
+      }
+    },
+
+    // Undraw map
+    undrawMap: function() {
+      let map = this.get('map');
+      let markers = this.get('markers');
+      if (!map) {
+        return;
+      }
+
+      // Remove markers
+      if (markers && _.size(markers)) {
+        _.each(markers, m => {
+          m.setMap(null);
+        });
+      }
+
+      // Remove events from map
+      if (map) {
+        google.maps.event.clearInstanceListeners(map);
+        google.maps.event.clearListeners(map);
+      }
+    }
+  },
+
+  data() {
+    return {
+      isBrowser: typeof window !== undefined,
+      map: undefined,
+      zoom: 15
+    };
+  }
+};
+</script>

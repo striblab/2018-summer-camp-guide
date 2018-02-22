@@ -3,31 +3,42 @@
     <h3>{{ camp.title }}</h3>
     <p>{{ camp.description }}</p>
 
-    <ul>
-      {{#if userLocation && camp.location}}
-        <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
-      {{/if}}
-      <li>
-        Price:
-        ${{ camp.minPrice }}
-        {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice : '' }}
-      </li>
-      <li>Start: {{ camp.start.toFormat('MMM dd') }}</li>
-      <li>End: {{ camp.end.toFormat('MMM dd') }}</li>
-      <li>Phone: {{ camp.phone }}</li>
-      <li>Types: {{ camp.types.map(t => t.type).join(', ') }}</li>
-      <li>
-        For:
-        {{ camp.who.type }}
-        {{ camp.who.min }}-{{ camp.who.max }}
-        {{ camp.who.entering ? '(Entering)' : ''}}
-      </li>
-    </ul>
+    <div class="row">
+      <div class="col col-50">
+        <ul>
+          {{#if userLocation && camp.location}}
+            <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
+          {{/if}}
+          <li>
+            Price:
+            ${{ camp.minPrice }}
+            {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice : '' }}
+          </li>
+          <li>Start: {{ camp.start.toFormat('MMM dd') }}</li>
+          <li>End: {{ camp.end.toFormat('MMM dd') }}</li>
+          <li>Phone: {{ camp.phone }}</li>
+          <li>Types: {{ camp.types.map(t => t.type).join(', ') }}</li>
+          <li>
+            For:
+            {{ camp.who.type }}
+            {{ camp.who.min }}-{{ camp.who.max }}
+            {{ camp.who.entering ? '(Entering)' : ''}}
+          </li>
+        </ul>
+      </div>
+
+      <div class="col col-50">
+        {{#if mapImage }}
+          <img src="{{ mapImage }}" alt="Location map of {{ camp.title }}">
+        {{/if}}
+      </div>
+    </div>
   {{/if}}
 </div>
 
 <script>
 import { distance } from '../app/common.js';
+//import Map from './map.html';
 
 export default {
   helpers: {
@@ -46,6 +57,21 @@ export default {
       return (
         Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
       );
+    }
+  },
+
+  computed: {
+    mapImage: camp => {
+      if (!camp) {
+        return '';
+      }
+
+      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
+      return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
+        camp.location.lat
+      )},${encodeURIComponent(camp.location.lng)}&markers=${encodeURIComponent(
+        ['size:normal', camp.location.lat + ',' + camp.location.lng].join('|')
+      )}&zoom=13&format=png&size=800x450&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs`;
     }
   }
 };
