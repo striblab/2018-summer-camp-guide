@@ -263,9 +263,18 @@ gulp.task('server', ['build'], () => {
           request.originalUrl.indexOf('preview=1&cache=trash') &&
           exists(`build/${component}`)
         ) {
-          const inject = fs.readFileSync(`build/${component}`, 'utf-8');
+          let inject = fs.readFileSync(`build/${component}`, 'utf-8');
+
+          // Handle rewriting any production path urls for build
+          inject = inject.replace(
+            new RegExp(config.publish.production.url, 'ig'),
+            '/'
+          );
+
           return `<div class="${id}">${inject}</div>`;
         }
+
+        return `<div class="${id}">$1</div>`;
       }
     });
   });
@@ -296,7 +305,8 @@ gulp.task('server', ['build'], () => {
       }
     ],
     files: './build/**/*',
-    rewriteRules: rewriteRules
+    rewriteRules: rewriteRules,
+    logLevel: argv.debug ? 'debug' : 'info'
   });
 });
 
