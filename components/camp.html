@@ -1,10 +1,11 @@
 <div class="camp" data-camp-id="{{ camp ? camp.id : '' }}">
   {{#if camp}}
-    <h3>{{ camp.title }}</h3>
-    <p>{{ camp.description }}</p>
 
     <div class="row">
       <div class="col col-50">
+		<h3>{{ camp.title }}</h3>
+		<p>{{ camp.description }}</p>
+		
         <ul>
           {{#if userLocation && camp.location}}
             <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
