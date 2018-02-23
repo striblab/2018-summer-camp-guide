@@ -1,9 +1,10 @@
 .filters {
+  font-size: 15px;
   margin-bottom: 2em;
   background-color: map-get($grays, 'lightest');
   padding: 2em 1em;
 
-  // Where's the cf
+  // Wheres the cf
   &:after {
     content: '';
     display: table;
@@ -35,4 +36,16 @@
     outline: none;
     border: 1px solid map-get($grays, lighter);
   }
+}
+
+.category-filter-wrapper {
+	input {
+	margin: 6px 3px 6px 0;
+	}
+}
+
+.checkbox-set {
+	input {
+	margin: 6px 3px 6px 0;
+	}
 }
