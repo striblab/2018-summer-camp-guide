@@ -25,8 +25,9 @@
     {{#if camps}}
       {{#if isBrowser}}
         <div class="filters">
-            
+
           <div class="row">
+
 
             <div class="col col-100 col-md-33">
                 
@@ -40,6 +41,7 @@
               </div>
             </div>
 
+
             <div class="col col-100 col-md-33">
                 <div> 
                   <InputSlider
@@ -48,19 +50,19 @@
                     label="Age" formatUnit="{{ (i) => i }}"/>
                 </div>
 
-                <div>  
+                <div>
                   <InputSlider
                     min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
                     bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
                     label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
-                    <p class="grade-note">Odd things about this category explained here.</p>  
+                    <p class="grade-note">Odd things about this category explained here.</p>
                 </div>
 
                 <div>
                   <InputSlider
                     min="{{ minPrice }}" max="{{ maxPrice }}"
                     bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
-                </div> 
+                </div>
             </div>
 
             <div class="col col-100 col-md-33">
@@ -68,7 +70,7 @@
                   <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
                     bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
                 </div>
-                
+
                 <div class="stay-type-wrapper">
                 <label>Stay types</label>
 
@@ -85,7 +87,7 @@
                     <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
                     <label for="filter-type-overnight">Overnight</label><br>
                 </div>
-                </div>   
+                </div>
 
                 <div class="address-search">
                     <label for="address-input">Sort by camps closest to you</label>
@@ -97,28 +99,42 @@
                     <div class="found-address">{{ addressFound }}</div>
                 </div>
             </div>
-              
+
           </div>
-            
+
         </div>
       {{/if}}
 
-      <div class="camp-count">
-        Showing {{ filteredCamps.length || 0 }}
-        camp{{ filteredCamps.length === 1 ? '' : 's' }}.
+      <div class="pager">
+        <strong>
+          Found {{ filteredCamps.length || 0 }}
+          camp{{ filteredCamps.length === 1 ? '' : 's' }}.
+        </strong>
+
+        {{#if totalPages > 1}}
+          Pages:
+          {{#each totalPagesArray as p}}
+            <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
+          {{/each}}
+        {{/if}}
       </div>
 
       <div class="camps">
         {{#each filteredCamps as c, i @id}}
-          {{#if i < 50}}
+          {{#if i >= pageStart && i < pageStop}}
             <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
           {{/if}}
         {{/each}}
       </div>
 
-      <div class="pages">
-        <em>TODO: pages</em>
-      </div>
+      {{#if totalPages > 1}}
+        <div class="pager">
+          Pages:
+          {{#each totalPagesArray as p}}
+            <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
+          {{/each}}
+        </div>
+      {{/if}}
     {{/if}}
   </div>
 </div>
@@ -337,9 +353,7 @@ export default {
         categories = categories.concat(c.categories);
       });
 
-      return categories.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => {
-        return a - b;
-      });
+      return _.sortBy(categories.filter((v, i, a) => a.indexOf(v) === i));
     },
 
     // Calculate min price of all camps
@@ -422,12 +436,43 @@ export default {
             return memo && memo.ts && memo.ts > p.end.ts ? memo : p.end;
           })
         : '3000-01-01';
+    },
+
+    // >=
+    pageStart: (page, perPage, filteredCamps) => {
+      let pageStart = (page - 1) * perPage;
+      return filteredCamps && pageStart >= filteredCamps.length ? 0 : pageStart;
+    },
+
+    // <
+    pageStop: (page, perPage, filteredCamps) => {
+      return page * perPage;
+    },
+
+    // Total pages
+    totalPages: (perPage, filteredCamps) => {
+      if (!filteredCamps) {
+        return 1;
+      }
+
+      return Math.ceil(filteredCamps.length / perPage);
+    },
+
+    // Not sure better way to do this
+    totalPagesArray: totalPages => {
+      let pages = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
     }
   },
 
   data: () => {
     return {
       isBrowser: typeof window != 'undefined',
+      page: 1,
+      perPage: typeof window != 'undefined' ? 50 : 99999,
       addressInput: '',
       addressFound: '',
       filters: {

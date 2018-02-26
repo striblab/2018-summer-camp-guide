@@ -9,4 +9,8 @@
   .input-slider-label {
     margin-bottom: 0.5em;
   }
+
+  .noUi-connect {
+    background-color: map-get($theme, 'green-dark-alt');
+  }
 }

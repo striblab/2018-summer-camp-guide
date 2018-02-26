@@ -1,0 +1,25 @@
+/**
+ * Paging
+ */
+
+.pager {
+  margin: 0 auto 2em;
+
+  .page {
+    display: inline-block;
+    padding: 0.15em 0.5em;
+    background-color: map-get($grays, lightest);
+    cursor: pointer;
+    margin-right: 0.5em;
+    border-radius: 0.1em;
+
+    &.active-page {
+      background: map-get($theme, 'green-dark-alt');
+      color: $color-white;
+    }
+
+    &:hover {
+      background-color: map-get($grays, lighter);
+    }
+  }
+}
