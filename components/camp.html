@@ -5,27 +5,55 @@
       <div class="col col-50">
 		<h3>{{ camp.title }}</h3>
 		<p>{{ camp.description }}</p>
-		
+
         <ul>
           {{#if userLocation && camp.location}}
             <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
           {{/if}}
+
           <li>Categories: {{ camp.categories.join(', ') }}
+
           <li>
             Price:
             ${{ camp.minPrice }}
             {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice : '' }}
           </li>
-          <li>Start: {{ camp.start.toFormat('MMM dd') }}</li>
-          <li>End: {{ camp.end.toFormat('MMM dd') }}</li>
-          <li>Phone: {{ camp.phone }}</li>
-          <li>Types: {{ camp.types.map(t => t.type).join(', ') }}</li>
-          <li>
-            For:
-            {{ camp.who.type }}
-            {{ camp.who.min }}-{{ camp.who.max }}
-            {{ camp.who.entering ? '(Entering)' : ''}}
+
+          <li>Dates: {{ camp.start.toFormat('MMM d') }} - {{ camp.end.toFormat('MMM d') }}</li>
+
+          {{#if camp.phone}}
+            <li>Phone: {{ camp.phone }}</li>
+          {{/if}}
+
+          <li>Types:
+            {{ camp.types
+              .map(t => t.type)
+              .sort(sortDayTypes)
+              .map(displayDayTypes)
+              .join(', ') }}
           </li>
+
+          <li>
+            Ages:
+
+            {{#if camp.who.type === 'grade'}}
+              {{ camp.who.entering ? 'Entering' : 'Completed' }}
+              grades
+              {{ displayGrade(camp.who.min) }}
+              {{ camp.who.min !== camp.who.max ? '- ' + displayGrade(camp.who.max) : '' }}
+            {{elseif camp.who.type === 'age'}}
+              {{ camp.who.min }}
+              {{ camp.who.min !== camp.who.max ? '- ' + (camp.who.max === 99 ? 'adult' : camp.who.max) : '' }}
+            {{/if}}
+
+            {{#if camp.who.specialNeedsAdults}}
+              (as well as adults with developmental disabilities)
+            {{/if}}
+          </li>
+
+          {{#if camp.who.specifically}}
+            <li>Specifically for: {{ camp.who.specifically }}</li>
+          {{/if}}
         </ul>
       </div>
 
@@ -39,11 +67,19 @@
 </div>
 
 <script>
-import { distance } from '../app/common.js';
-//import Map from './map.html';
+import {
+  distance,
+  displayGrade,
+  displayDayTypes,
+  sortDayTypes
+} from '../app/common.js';
 
 export default {
   helpers: {
+    displayGrade,
+    displayDayTypes,
+    sortDayTypes,
+
     distance: function(location, userLocation) {
       if (location && location.lat && userLocation && userLocation.lat) {
         return distance(

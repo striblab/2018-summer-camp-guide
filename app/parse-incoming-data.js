@@ -63,22 +63,24 @@ module.exports = camps => {
 
       // Parse who can attend
       let whoMatch = c.event_who.match(
-        /(girls|boys|)[,\s]*(completed|entering|)\s*(ages?|grades?)\s*(prek|k|[0-9]+|adult)-(prek|k|[0-9]+|adult)/i
+        /(girls|boys|)[,\s]*(completed|entering|)\s*(ages?|grades?)\s*(prek|k|[0-9]+|adult)-(prek|k|[0-9]+|adult)(.*adults with developmental disabilities|)/i
       );
       if (whoMatch) {
         parsed.who = {
           type: whoMatch[3].match(/grade/i) ? 'grade' : 'age',
+          specifically: whoMatch[1].trim() ? whoMatch[1].trim() : undefined,
           entering: whoMatch[2].match(/enter/i) ? true : false,
           min: whoMatch[4].match(/^prek$/i)
             ? -1
             : whoMatch[4].match(/^k$/i)
               ? 0
               : whoMatch[4].match(/^adult$/i) ? 99 : parseInt(whoMatch[4], 0),
-          max: whoMatch[4].match(/^prek$/i)
+          max: whoMatch[5].match(/^prek$/i)
             ? -1
             : whoMatch[5].match(/^k$/i)
               ? 0
-              : whoMatch[4].match(/^adult$/i) ? 99 : parseInt(whoMatch[5], 0),
+              : whoMatch[5].match(/^adult$/i) ? 99 : parseInt(whoMatch[5], 0),
+          specialNeedsAdults: whoMatch[6].trim() ? true : false,
           minText: whoMatch[4],
           maxText: whoMatch[5]
         };
@@ -86,6 +88,13 @@ module.exports = camps => {
       else {
         console.error(`No match for: ${c.event_who}`);
         parsed.who = {};
+      }
+
+      // Standardize/convert grades all to "entering"
+      if (parsed.who.type === 'grade' && !parsed.who.entering) {
+        parsed.who.min++;
+        parsed.who.max++;
+        parsed.who.entering = true;
       }
 
       // Parse type of camps

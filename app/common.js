@@ -22,5 +22,31 @@ module.exports = {
       dist = dist * 0.8684;
     }
     return dist;
+  },
+
+  displayGrade: function(grade) {
+    return grade === -1 ? 'PreK' : grade === 0 ? 'K' : grade;
+  },
+
+  displayDayTypes: function(type) {
+    return type === 'extended'
+      ? 'Extended day'
+      : type === 'half'
+        ? 'Half day'
+        : type === 'full'
+          ? 'Full day'
+          : type === 'overnight' ? 'Overnight' : type;
+  },
+
+  sortDayTypes: function(a, b) {
+    a =
+      a === 'half'
+        ? 1
+        : a === 'full' ? 2 : a === 'extended' ? 3 : b === 'overnight' ? 4 : -1;
+    b =
+      b === 'half'
+        ? 1
+        : b === 'full' ? 2 : b === 'extended' ? 3 : b === 'overnight' ? 4 : -1;
+    return a - b;
   }
 };
