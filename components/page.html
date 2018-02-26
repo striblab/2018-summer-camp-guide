@@ -325,9 +325,7 @@ export default {
         categories = categories.concat(c.categories);
       });
 
-      return categories.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => {
-        return a - b;
-      });
+      return _.sortBy(categories.filter((v, i, a) => a.indexOf(v) === i));
     },
 
     // Calculate min price of all camps
