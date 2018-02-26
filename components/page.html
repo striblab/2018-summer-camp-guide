@@ -1,15 +1,21 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
     <div class="hero">
-      <div class="container-md">
-<!--         <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.jpg" alt="Star Tribune summer camp guide logo"> -->
-
+          
+        <div class="row"> 
+            <div class="col col-50 col-md-30">
+                <img src="http://stmedia.startribune.com/images/camp-guide-logo.jpg" alt="Star Tribune summer camp guide logo">
+            </div> 
+            
+        <div class="col col-50 col-md-70">    
         <h1>2018 Minnesota Summer Camp Guide</h1>
-
         <p class="lead">Kids can learn how to program robots, play chess,
           speak Chinese or dance hip-hop style, among other
           enrichment options.</p>
-      </div>
+        </div>
+            
+        </div>  
+
     </div>
 
     <div class="sharing-wrapper">
@@ -22,7 +28,7 @@
             
           <div class="row">
 
-            <div class="col col-33">
+            <div class="col col-100 col-md-33">
                 
             <label class="activities">Activities</label>    
                 
@@ -34,7 +40,7 @@
               </div>
             </div>
 
-            <div class="col col-33">
+            <div class="col col-100 col-md-33">
                 <div> 
                   <InputSlider
                     min="{{ minAge }}" max="{{ maxAge }}" step="1"
@@ -57,7 +63,7 @@
                 </div> 
             </div>
 
-            <div class="col col-33">
+            <div class="col col-100 col-md-33">
                 <div>
                   <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
                     bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />

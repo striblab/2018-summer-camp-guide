@@ -1,18 +1,28 @@
 .hero {
   padding-top: 0;
+  width: 960px; 
+    
+.container-md {width:960px;}  
 
   img {
-    max-width: 10em;
+    width: 100%;
+    height: auto;  
     margin-bottom: 2em;
+    padding: 0 0 0 2em;  
   }
 
   h1 {
     text-transform: uppercase;
     font-size: 4em;
+    line-height: 95%;  
+    text-align: left;  
     margin: 0 0 .25em 0;
   }
 
   .lead {
-    font-size: 1.6em;
+    font-size: 1.5em;
+    text-align: left;
+    padding-right: 1em;  
   }
 }
+
