@@ -2,7 +2,7 @@
   font-size: 15px;
   margin-bottom: 2em;
   background-color: map-get($grays, 'lightest');
-  padding: 2em 1em;
+  padding: 2em 2em;
 
   // Wheres the cf
   &:after {
@@ -20,11 +20,11 @@
   .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
-    height: 10em;
+    height: 20em;
     overflow-y: scroll;
   }
 
-  .col {
+  .col33 .col {
     margin-bottom: 1em;
   }
 
@@ -36,6 +36,21 @@
     outline: none;
     border: 1px solid map-get($grays, lighter);
   }
+    
+  p.grade-note {
+    font-family:"Benton Sans",san-serif;
+    font-size:.8em;
+    text-align: center;
+    color:#666;
+    margin: -1em 0 2.25em 0;
+    }  
+    
+  label.activities {
+      display: block;
+      font-weight: bold;
+      padding-bottom: 5px;
+    }  
+    
 }
 
 .category-filter-wrapper {
@@ -44,8 +59,23 @@
 	}
 }
 
+
+.noUi-value.noUi-value-horizontal.noUi-value-large {line-height: 1.75em;}
+
 .checkbox-set {
 	input {
 	margin: 6px 3px 6px 0;
 	}
 }
+
+.stay-type-wrapper {margin:2em 0;}
+
+.input-date-range input {width:100%;}
+
+.input-date-range label {
+    display: block;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+
