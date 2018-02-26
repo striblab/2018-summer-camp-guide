@@ -29,7 +29,11 @@ export default {
       },
       pips: {
         mode: 'range',
-        density: 4
+        density: 4,
+        format: {
+          to: this.get('formatUnit'),
+          from: t => t
+        }
       }
     });
 

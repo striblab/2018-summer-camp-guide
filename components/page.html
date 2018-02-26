@@ -39,14 +39,14 @@
                   <InputSlider
                     min="{{ minAge }}" max="{{ maxAge }}" step="1"
                     bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-                    label="Age" formatUnit="{{ (i) => i }}"/>
+                    label="Age" formatUnit="{{ (i) => i >= 19 ? 'Adult' : i }}"/>
                 </div>
 
                 <div>
                   <InputSlider
                     min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
                     bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
+                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i }}"/>
                     <p class="grade-note">Odd things about this category explained here.</p>
                 </div>
 
