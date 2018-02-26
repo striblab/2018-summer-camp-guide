@@ -19,8 +19,13 @@
     {{#if camps}}
       {{#if isBrowser}}
         <div class="filters">
+            
           <div class="row">
+
             <div class="col col-33">
+                
+            <label class="activities">Activities</label>    
+                
               <div class="category-filter-wrapper">
                 {{#each categoryList as c, i}}
                   <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
@@ -30,64 +35,65 @@
             </div>
 
             <div class="col col-33">
-              <InputSlider
-                min="{{ minPrice }}" max="{{ maxPrice }}"
-                bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+                <div> 
+                  <InputSlider
+                    min="{{ minAge }}" max="{{ maxAge }}" step="1"
+                    bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
+                    label="Age" formatUnit="{{ (i) => i }}"/>
+                </div>
+
+                <div>  
+                  <InputSlider
+                    min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
+                    bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
+                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
+                    <p class="grade-note">Odd things about this category explained here.</p>  
+                </div>
+
+                <div>
+                  <InputSlider
+                    min="{{ minPrice }}" max="{{ maxPrice }}"
+                    bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
+                </div> 
             </div>
 
             <div class="col col-33">
-              <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
-                bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
+                <div>
+                  <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
+                    bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
+                </div>
+                
+                <div class="stay-type-wrapper">
+                <label>Stay types</label>
+
+                <div class="checkbox-set">
+                    <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+                    <label for="filter-type-full">Full day</label><br>
+
+                    <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+                    <label for="filter-type-extended">Extended day</label><br>
+
+                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                    <label for="filter-type-half">Half day</label><br>
+
+                    <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+                    <label for="filter-type-overnight">Overnight</label><br>
+                </div>
+                </div>   
+
+                <div class="address-search">
+                    <label for="address-input">Sort by camps closest to you</label>
+
+                    <input id="address-input" type="text"
+                      placeholder="Your address, city, or zip"
+                      bind:value="addressInput">
+
+                    <div class="found-address">{{ addressFound }}</div>
+                </div>
             </div>
+              
           </div>
-
-          <div class="row">
-            <div class="col col-33">
-              <InputSlider
-                min="{{ minAge }}" max="{{ maxAge }}" step="1"
-                bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-                label="Age" formatUnit="{{ (i) => i }}"/>
-            </div>
-
-            <div class="col col-33">
-              <InputSlider
-                min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
-                bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-                label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i }}"/>
-            </div>
-
-            <div class="col col-33">
-              <label>Stay types</label>
-
-              <div class="checkbox-set">
-                <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
-                <label for="filter-type-full">Full day</label><br>
-
-                <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
-                <label for="filter-type-extended">Extended day</label><br>
-
-                <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
-                <label for="filter-type-half">Half day</label><br>
-
-                <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
-                <label for="filter-type-overnight">Overnight</label><br>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col col-100">
-              <div class="address-search">
-                <label for="address-input">We'll use your address, city, or zip to find camps close to you</label>
-
-                <input id="address-input" type="text"
-                  placeholder="Your address, city, or zip"
-                  bind:value="addressInput">
-
-                <div class="found-address">{{ addressFound }}</div>
-              </div>
-            </div>
-          </div>
+            
         </div>
       {{/if}}
 
