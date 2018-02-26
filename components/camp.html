@@ -58,8 +58,9 @@
       </div>
 
       <div class="col col-50">
-        {{#if mapImage }}
-          <img src="{{ mapImage }}" alt="Location map of {{ camp.title }}">
+        {{#if camp.location }}
+          <img src="{{ mapImage(camp.location.lat, camp.location.lng, mapStylesStrings, mapMarkerColor) }}"
+            alt="Location map of {{ camp.title }}">
         {{/if}}
       </div>
     </div>
@@ -67,11 +68,13 @@
 </div>
 
 <script>
+import mapStyles from '../app/map-styles.js';
 import {
   distance,
   displayGrade,
   displayDayTypes,
-  sortDayTypes
+  sortDayTypes,
+  mapStylesJSONToFlat
 } from '../app/common.js';
 
 export default {
@@ -95,22 +98,27 @@ export default {
       return (
         Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
       );
+    },
+
+    mapImage: function(lat, lng, mapStylesStrings, mapMarkerColor) {
+      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
+      return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
+        lat
+      )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
+        ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
+      )}&zoom=13&format=png&size=800x450&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
+        .map(s => 'style=' + encodeURIComponent(s))
+        .join('&')}`;
     }
   },
 
-  computed: {
-    mapImage: camp => {
-      if (!camp) {
-        return '';
-      }
+  computed: {},
 
-      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
-      return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-        camp.location.lat
-      )},${encodeURIComponent(camp.location.lng)}&markers=${encodeURIComponent(
-        ['size:normal', camp.location.lat + ',' + camp.location.lng].join('|')
-      )}&zoom=13&format=png&size=800x450&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs`;
-    }
+  data: () => {
+    return {
+      mapStylesStrings: mapStylesJSONToFlat(mapStyles),
+      mapMarkerColor: '0x00824a'
+    };
   }
 };
 </script>

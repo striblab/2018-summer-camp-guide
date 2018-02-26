@@ -48,5 +48,36 @@ module.exports = {
         ? 1
         : b === 'full' ? 2 : b === 'extended' ? 3 : b === 'overnight' ? 4 : -1;
     return a - b;
+  },
+
+  // Turn map styles into URL for static maps
+  mapStylesJSONToFlat: function(styles) {
+    var styleSets = [];
+
+    styles.forEach(v => {
+      var style = '';
+      if (v.stylers) {
+        // only if there is a styler object
+        if (v.stylers.length > 0) {
+          // Needs to have a style rule to be valid.
+          style +=
+            (v.hasOwnProperty('featureType')
+              ? 'feature:' + v.featureType
+              : 'feature:all') + '|';
+          style +=
+            (v.hasOwnProperty('elementType')
+              ? 'element:' + v.elementType
+              : 'element:all') + '|';
+          v.stylers.forEach(val => {
+            var propertyname = Object.keys(val)[0];
+            var propertyval = val[propertyname].toString().replace('#', '0x');
+            style += propertyname + ':' + propertyval + '|';
+          });
+        }
+      }
+      styleSets.push(style.replace(/\|$/, ''));
+    });
+
+    return styleSets;
   }
 };
