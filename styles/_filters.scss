@@ -2,7 +2,7 @@
   font-size: 15px;
   margin-bottom: 2em;
   background-color: map-get($grays, 'lightest');
-  padding: 2em;
+  padding: 2em 2em 0em 2em;
 
   .filters-column {
     float: left;
@@ -18,16 +18,16 @@
   input[type='date'] {
     display: block;
     padding: 0.5em;
-    margin: 0 0 1em;
+    margin: 0 0 .5em;
     width: 100%;
     outline: none;
     border: 1px solid map-get($grays, lighter);
   }
 
   .filter-input {
-    margin-bottom: 2em;
+    margin-bottom: 6em;
   }
-
+    
   .filter-note {
     @include font-styles('benton-sans');
 
@@ -68,7 +68,7 @@
   .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
-    height: 20em;
+    height: 26.5em;
     overflow-y: scroll;
   }
 
