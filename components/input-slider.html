@@ -1,9 +1,13 @@
-<div class="input-slider-wrapper cf">
+<div class="input-slider-wrapper cf {{ notes ? 'has-notes' : '' }}">
   <div class="input-slider-label">
     <span class="label">{{ label }}:</span>
     <span class="value">{{ formatUnit(minValue) }}</span> -
     <span class="value">{{ formatUnit(maxValue) }}</span>
   </div>
+
+  {{#if notes}}
+    <p class="filter-note">{{{ notes }}}</p>
+  {{/if}}
 
   <div class="input-slider" ref:slider></div>
 </div>

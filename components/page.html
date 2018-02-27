@@ -1,20 +1,20 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
     <div class="hero">
-          
-        <div class="row"> 
+
+        <div class="row">
             <div class="col col-50 col-md-30">
                 <img src="http://stmedia.startribune.com/images/camp-guide-logo.jpg" alt="Star Tribune summer camp guide logo">
-            </div> 
-            
-        <div class="col col-50 col-md-70">    
+            </div>
+
+        <div class="col col-50 col-md-70">
         <h1>2018 Minnesota Summer Camp Guide</h1>
         <p class="lead">Kids can learn how to program robots, play chess,
           speak Chinese or dance hip-hop style, among other
           enrichment options.</p>
         </div>
-            
-        </div>  
+
+        </div>
 
     </div>
 
@@ -30,9 +30,9 @@
 
 
             <div class="col col-100 col-md-33">
-                
-            <label class="activities">Activities</label>    
-                
+
+            <label class="activities">Activities</label>
+
               <div class="category-filter-wrapper">
                 {{#each categoryList as c, i}}
                   <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
@@ -43,22 +43,22 @@
 
 
             <div class="col col-100 col-md-33">
-                <div> 
+                <div class="filter-input">
                   <InputSlider
                     min="{{ minAge }}" max="{{ maxAge }}" step="1"
                     bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
                     label="Age" formatUnit="{{ (i) => i >= 19 ? 'Adult' : i }}"/>
                 </div>
 
-                <div>
+                <div class="filter-input">
                   <InputSlider
                     min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
                     bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i }}"/>
-                    <p class="grade-note">Odd things about this category explained here.</p>
+                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i }}"
+                    notes="For children <strong>entering</strong> a specific grade, unless otherwise noted." />
                 </div>
 
-                <div>
+                <div class="filter-input">
                   <InputSlider
                     min="{{ minPrice }}" max="{{ maxPrice }}"
                     bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />

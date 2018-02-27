@@ -12,3 +12,11 @@
 .page-mobile & {
   padding-top: 5em;
 }
+
+.cf {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}

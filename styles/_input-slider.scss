@@ -3,11 +3,19 @@
  */
 
 .input-slider-wrapper {
-  padding: 0 1em;
-  margin-bottom: 4em;
+  padding: 0 1rem;
+  margin-bottom: 4.25em;
 
   .input-slider-label {
-    margin-bottom: 0.5em;
+    margin: 0 -1rem 1em;
+  }
+
+  &.has-notes .input-slider-label {
+    margin-bottom: 0.25em;
+  }
+
+  .filter-note {
+    margin: 0 -1rem 1.5em;
   }
 
   .noUi-connect {
