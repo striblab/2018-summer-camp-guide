@@ -27,13 +27,14 @@ export default {
       connect: true,
       step: this.get('step'),
       behaviour: 'tap-drag',
-      range: {
+      range: this.get('range') || {
         min: this.get('min'),
         max: this.get('max')
       },
       pips: {
         mode: 'range',
-        density: 4,
+        stepped: true,
+        density: 5,
         format: {
           to: this.get('formatUnit'),
           from: t => t

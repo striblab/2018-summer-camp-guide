@@ -60,7 +60,12 @@
 
                 <div class="filter-input">
                   <InputSlider
-                    min="{{ minPrice }}" max="{{ maxPrice }}"
+                    min="{{ minPrice }}" max="{{ maxPrice }}" step="50"
+                    range="{{ {
+                      min: minPrice,
+                      '50%': [1000],
+                      max: maxPrice
+                    } }}"
                     bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
                 </div>
             </div>
@@ -377,20 +382,26 @@ export default {
 
     // Calculate min price of all camps
     minPrice: camps => {
-      return camps
+      let min = camps
         ? camps.map(c => c.minPrice).reduce((memo, p) => {
             return Math.min(memo || 999999, p);
           })
         : 0;
+
+      // Round to lowest 100
+      return Math.max(Math.floor(min / 100) * 100, 0);
     },
 
     // Calculate max price of all the camps
     maxPrice: camps => {
-      return camps
+      let max = camps
         ? camps.map(c => c.maxPrice).reduce((memo, p) => {
             return Math.max(memo || 0, p);
           })
         : 1000;
+
+      // Round to highest 100
+      return Math.ceil(max / 100) * 100;
     },
 
     // Calculate min age of all camps
