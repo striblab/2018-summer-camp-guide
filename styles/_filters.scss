@@ -10,6 +10,10 @@
     padding-right: 0.5em;
   }
 
+  label.top-label {
+    font-weight: bold;
+  }
+
   input[type='text'],
   input[type='date'] {
     display: block;
@@ -33,6 +37,34 @@
     margin-bottom: 0.5em;
   }
 
+  .action-button {
+    background-color: map-get($theme, 'green-dark-alt');
+    border: 1px solid map-get($theme, 'green-dark-alt');
+    color: $color-white;
+    outline: none;
+    padding: 0.5em;
+  }
+
+  .inline-form-group {
+    display: flex;
+    margin-bottom: 1em;
+
+    input,
+    button {
+      margin: 0;
+    }
+
+    button {
+      flex: 0;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    input {
+      flex: 1;
+    }
+  }
+
   .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
@@ -44,6 +76,10 @@
     display: block;
     font-weight: bold;
     padding-bottom: 5px;
+  }
+
+  .found-address {
+    font-size: 0.85em;
   }
 }
 

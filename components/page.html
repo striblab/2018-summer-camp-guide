@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="stay-type-wrapper">
-                <label>Stay types</label>
+                <label class="top-label">Stay types</label>
 
                 <div class="checkbox-set">
                     <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
@@ -90,13 +90,32 @@
                 </div>
 
                 <div class="address-search">
-                    <label for="address-input">Sort by camps closest to you</label>
+                    <label for="address-input" class="top-label">Sort by camps closest to you</label>
 
-                    <input id="address-input" type="text"
-                      placeholder="Your address, city, or zip"
-                      bind:value="addressInput">
+                    <p class="filter-note">Enter in an address, a city (i.e. Blaine, MN), or a zip code, and the list will sort the closest camps.  Note that some camps have multiple locations, but the list contains only the primary location.</p>
 
-                    <div class="found-address">{{ addressFound }}</div>
+                    <form class="inline-form-group" on:submit="searchAddress(event)">
+                      <input id="address-input" type="text"
+                        placeholder="Your address, city, or zip"
+                        bind:value="addressInput"
+                        on:submit="searchAddress(event)">
+
+                      <button class="action-button" on:click="searchAddress(event)"
+                        on:submit="searchAddress(event)">
+                          Search
+                          {{#if isGeocoding}}
+                            <span class="loader"></span>
+                          {{/if}}
+                        </button>
+                    </form>
+
+                    <div class="found-address">
+                      {{#if addressFound}}
+                        Found: {{ addressFound }}
+                      {{else}}
+                        &nbsp;
+                      {{/if}}
+                    </div>
                 </div>
             </div>
 
@@ -156,18 +175,6 @@ export default {
   },
 
   oncreate: function() {
-    this.throttledSearchAddress = _.throttle(
-      _.bind(this.searchAddress, this),
-      2000
-    );
-
-    // Observe changes in address search
-    this.observe('addressInput', n => {
-      if (n) {
-        this.throttledSearchAddress(null, n);
-      }
-    });
-
     // Make geocoder
     if (this.get('isBrowser') && window.google) {
       this.geocoder = new window.google.maps.Geocoder();
@@ -190,6 +197,18 @@ export default {
     searchAddress: function(e, address) {
       if (e && e.preventDefault) {
         e.preventDefault();
+      }
+
+      // If address not provided, use the input
+      address = address || this.get('addressInput');
+
+      // If no address, nevermind
+      if (!address) {
+        this.set({
+          userLocation: undefined,
+          addressFound: undefined
+        });
+        return;
       }
 
       this.set({ isGeocoding: true });
