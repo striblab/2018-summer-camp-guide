@@ -80,17 +80,20 @@
                 <label class="top-label">Stay types</label>
 
                 <div class="checkbox-set">
+                  <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                  <label for="filter-type-half">Half day</label><br>
+
                     <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
                     <label for="filter-type-full">Full day</label><br>
 
                     <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
                     <label for="filter-type-extended">Extended day</label><br>
 
-                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
-                    <label for="filter-type-half">Half day</label><br>
-
                     <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
                     <label for="filter-type-overnight">Overnight</label><br>
+
+                    <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
+                    <label for="filter-type-other">Other</label>
                 </div>
                 </div>
 
@@ -516,7 +519,8 @@ export default {
           full: true,
           half: true,
           extended: true,
-          overnight: true
+          overnight: true,
+          other: true
         },
         categories: {}
       }

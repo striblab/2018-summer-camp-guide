@@ -118,7 +118,7 @@ gulp.task('components', done => {
         return new gutil.PluginError('components', { message: error });
       }
       let parsed = JSON.parse(body);
-      data.camps = parseData(parsed.items);
+      data.camps = parseData(parsed.items ? parsed.items : parsed);
 
       // Do each file
       return gulp

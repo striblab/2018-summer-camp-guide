@@ -35,18 +35,28 @@ module.exports = {
         ? 'Half day'
         : type === 'full'
           ? 'Full day'
-          : type === 'overnight' ? 'Overnight' : type;
+          : type === 'overnight'
+            ? 'Overnight'
+            : type === 'other' ? 'Other' : type;
   },
 
   sortDayTypes: function(a, b) {
     a =
       a === 'half'
         ? 1
-        : a === 'full' ? 2 : a === 'extended' ? 3 : b === 'overnight' ? 4 : -1;
+        : a === 'full'
+          ? 2
+          : a === 'extended'
+            ? 3
+            : b === 'overnight' ? 4 : b === 'other' ? 5 : -1;
     b =
       b === 'half'
         ? 1
-        : b === 'full' ? 2 : b === 'extended' ? 3 : b === 'overnight' ? 4 : -1;
+        : b === 'full'
+          ? 2
+          : b === 'extended'
+            ? 3
+            : b === 'overnight' ? 4 : b === 'other' ? 5 : -1;
     return a - b;
   },
 

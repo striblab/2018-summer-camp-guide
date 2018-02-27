@@ -44,6 +44,8 @@
             {{elseif camp.who.type === 'age'}}
               {{ camp.who.min }}
               {{ camp.who.min !== camp.who.max ? '- ' + (camp.who.max === 99 ? 'adult' : camp.who.max) : '' }}
+            {{elseif camp.who.type === 'family'}}
+              Family
             {{/if}}
 
             {{#if camp.who.specialNeedsAdults}}
