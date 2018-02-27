@@ -29,6 +29,8 @@ const { DateTime } = require('luxon');
 // occurrence_array: [Array],
 // occurrence_date_array: [Array]
 module.exports = camps => {
+  console.error(`Original camp count: ${camps.length}`);
+
   return camps
     .map(c => {
       let parsed = {};
@@ -40,6 +42,7 @@ module.exports = camps => {
       parsed.categories = c.event_category_array;
       parsed.phone = c.info_phone_nbr;
       parsed.phoneTollFree = c.info_toll_free_phone_nbr;
+      parsed.website = c.info_website;
 
       // lat long
       let locationMatch = c.latLng.match(/([0-9.-]+),\s*([0-9.-]+)/i);
@@ -62,20 +65,21 @@ module.exports = camps => {
       parsed.maxPrice = parseInt(prices[prices.length === 1 ? 0 : 1], 10);
 
       // Parse who can attend
+      parsed.who = {};
       let whoMatch = c.event_who.match(
-        /(girls|boys|)[,\s]*(completed|entering|)\s*(ages?|grades?)\s*(prek|k|[0-9]+|adult)-(prek|k|[0-9]+|adult)(.*adults with developmental disabilities|)/i
+        /(girls|boys|)[,\s]*(completed|entering|)\s*(ages?|grades?)\s*(pre-?k|k|[0-9]+|adult)-(pre-?k|k|[0-9]+|adult)(.*adults with developmental disabilities|)/i
       );
       if (whoMatch) {
         parsed.who = {
           type: whoMatch[3].match(/grade/i) ? 'grade' : 'age',
           specifically: whoMatch[1].trim() ? whoMatch[1].trim() : undefined,
           entering: whoMatch[2].match(/enter/i) ? true : false,
-          min: whoMatch[4].match(/^prek$/i)
+          min: whoMatch[4].match(/^pre-?k$/i)
             ? -1
             : whoMatch[4].match(/^k$/i)
               ? 0
               : whoMatch[4].match(/^adult$/i) ? 19 : parseInt(whoMatch[4], 0),
-          max: whoMatch[5].match(/^prek$/i)
+          max: whoMatch[5].match(/^pre-?k$/i)
             ? -1
             : whoMatch[5].match(/^k$/i)
               ? 0
@@ -86,8 +90,15 @@ module.exports = camps => {
         };
       }
       else {
-        console.error(`No match for: ${c.event_who}`);
-        parsed.who = {};
+        // Family camps?
+        // TODO: Who parsing better
+        if (c.event_who.match(/family\s+camp/i)) {
+          parsed.who.type = 'family';
+        }
+        else {
+          console.error(`No match for: ${c.event_who}`);
+          console.error(c);
+        }
       }
 
       // Standardize/convert grades all to "entering"
@@ -100,6 +111,7 @@ module.exports = camps => {
       // Parse type of camps
       parsed.notes = c.special_information_array;
       parsed.types = parsed.notes
+        .filter(i => (i.trim ? i.trim() : i))
         .map(n => {
           let day = n.match(
             /(full\s*day|extended\s*day|half\s*day).*(([0-9]+)-([0-9]+)|([0-9]+)\+)\s*hrs/i
@@ -130,6 +142,14 @@ module.exports = camps => {
           }
         })
         .filter(n => n);
+
+      // Check types
+      if (parsed.types.length === 0) {
+        parsed.types.push({
+          type: 'other'
+        });
+        console.error('Unable to find type, setting to "other"', c);
+      }
 
       // Get venue
       parsed.venue = {

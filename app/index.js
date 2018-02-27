@@ -22,9 +22,11 @@ let mainComponent = new Page({
 
 // Get data
 window
-  .fetch('http://media2.startribune.com/json_data_store/camp_guide.js')
+  .fetch('//static.startribune.com/projects/camp-guide/camp_guide-2018.json')
   .then(response => response.json())
   .then(response => {
-    mainComponent.set({ camps: parser(response.items) });
+    mainComponent.set({
+      camps: parser(response.items ? response.items : response)
+    });
   })
   .catch(console.error);

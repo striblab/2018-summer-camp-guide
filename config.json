@@ -22,7 +22,8 @@
     ]
   },
   "data": {
-    "camps": "http://media2.startribune.com/json_data_store/camp_guide.js"
+    "camps":
+      "http://static.startribune.com/projects/camp-guide/camp_guide-2018.json"
   },
   "content": {},
   "publish": {
