@@ -11,6 +11,12 @@
             <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
           {{/if}}
 
+          {{#if camp.website}}
+            <li>
+              Website: <a href="{{ websiteURL }}" rel="noopener" target="_blank">{{ websiteText }}</a>
+            </li>
+          {{/if}}
+
           <li>Categories: {{ camp.categories.join(', ') }}
 
           <li>
@@ -119,7 +125,24 @@ export default {
         .join('&')}`;
     }
   },
-  computed: {},
+  computed: {
+    websiteText: camp => {
+      return camp && camp.website
+        ? camp.website
+            .replace(/^https?:\/\//i, '')
+            .replace(/www\./i, '')
+            .replace(/\/$/, '')
+        : '';
+    },
+
+    websiteURL: camp => {
+      return camp && camp.website
+        ? !camp.website.match(/^http/i)
+          ? `http://${camp.website}`
+          : camp.website
+        : '';
+    }
+  },
 
   data: () => {
     return {
