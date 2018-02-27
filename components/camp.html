@@ -108,7 +108,9 @@ export default {
         lat
       )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
         ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
-      )}&zoom=13&format=png&size=800x450&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
+      )}&zoom=12&format=png&size=500x${Math.floor(
+        500 * (9 / 16)
+      )}&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
         .map(s => 'style=' + encodeURIComponent(s))
         .join('&')}`;
     }
