@@ -285,7 +285,7 @@ gulp.task('server', ['build'], () => {
       port: 3000,
       server: './build/',
       files: './build/**/*',
-      rewriteRules: rewriteRules
+      rewriteRules: argv.rewrite === false ? [] : rewriteRules
     });
   }
 
