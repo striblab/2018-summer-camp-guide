@@ -2,44 +2,36 @@
  * Styles for camps
  */
 
-
 .camp {
+  color: #444444;
 
-color: #444;
-
-h3 {
+  h3 {
     font-size: 1.75em;
-	padding: 0 0 0 0;
-	margin: -.2em 0 .2em 0;
-	}
+  }
 
-p {
-	font-family: "Benton Sans",sans-serif;
-	margin-bottom: 1em;
-	padding-right: .5em;
-	}
+  p {
+    @include font-styles('benton-sans');
 
-ul li {
-	font-size: .9em;
-	margin-bottom: .2em
-	}
+    margin-bottom: 1em;
+    padding-right: 0.5em;
+  }
 
-.col-100 {margin-bottom: 2em;}
-    
-.col-md-50 {margin-bottom: 3em;}
-    
-    
-.hide-maps-mobile {
-    
+  ul li {
+    font-size: 0.9em;
+    margin-bottom: 0.2em;
+  }
+
+  .col-100 {
+    margin-bottom: 2em;
+  }
+
+  .col-md-50 {
+    margin-bottom: 3em;
+  }
+
+  .hide-maps-mobile {
     @media only screen and (min-width: 320px) and (max-width: 700px) {
-    display:none;
-      
+      display: none;
     }
-    
-    }    
-    
-    
-    
+  }
 }
-
-

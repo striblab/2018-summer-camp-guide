@@ -18,7 +18,7 @@
   input[type='date'] {
     display: block;
     padding: 0.5em;
-    margin: 0 0 .5em;
+    margin: 0 0 0.5em;
     width: 100%;
     outline: none;
     border: 1px solid map-get($grays, lighter);
@@ -27,14 +27,14 @@
   .filter-input {
     margin-bottom: 6em;
   }
-    
+
   .filter-note {
     @include font-styles('benton-sans');
 
     text-align: left;
     font-size: 0.8em;
     color: map-get($grays, 'medium');
-    margin-top: .25em;  
+    margin-top: 0.25em;
     margin-bottom: 0.5em;
   }
 
