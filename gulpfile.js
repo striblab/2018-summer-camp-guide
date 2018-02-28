@@ -305,7 +305,7 @@ gulp.task('server', ['build'], () => {
       }
     ],
     files: './build/**/*',
-    rewriteRules: rewriteRules,
+    rewriteRules: argv.rewrite === false ? [] : rewriteRules,
     logLevel: argv.debug ? 'debug' : 'info'
   });
 });
