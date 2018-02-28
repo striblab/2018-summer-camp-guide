@@ -20,3 +20,15 @@
     clear: both;
   }
 }
+
+.project-footer {
+  font-size: 0.85em;
+  color: map-get($grays, medium);
+  border-top: 1px solid #959595;
+  padding-top: 1em;
+  margin-top: 3em;
+
+  p {
+    margin-bottom: 1em;
+  }
+}
