@@ -34,6 +34,7 @@
     text-align: left;
     font-size: 0.8em;
     color: map-get($grays, 'medium');
+    margin-top: .25em;  
     margin-bottom: 0.5em;
   }
 
@@ -68,7 +69,7 @@
   .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
-    height: 26.5em;
+    height: 28.25em;
     overflow-y: scroll;
   }
 
