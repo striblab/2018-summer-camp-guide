@@ -15,13 +15,17 @@ $selector-wrapper: '.strib.strib-styles.strib-styles-specifically';
 
 // Project specific styles.  Split styles into files per component
 .strib.strib-styles.strib-styles-specifically {
+  // General
   @import 'loader';
   @import 'grid';
   @import 'breakpoint-display';
+  @import 'input-slider';
+  @import 'input-date-range';
+
+  // Project
   @import 'project';
   @import 'hero';
   @import 'filters';
-  @import 'input-slider';
   @import 'camps';
   @import 'maps';
   @import 'pager';

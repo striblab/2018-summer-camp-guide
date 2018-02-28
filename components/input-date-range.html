@@ -1,14 +1,16 @@
 <div class="input-date-range">
   <label for="input-date-range-{{ id }}-fields">{{ label }}</label>
 
-  <div id="input-date-range-{{ id }}-fields">
+  <div id="input-date-range-{{ id }}-fields" class="input-date-range-fields">
     <label for="input-date-range-{{ id }}-min" class="sr-only">Minimum date</label>
     <input id="input-date-range-{{ id }}-min" type="date"
       min="{{ min && min.toISODate ? min.toISODate() : min }}"
       max="{{ max && max.toISODate ? max.toISODate() : max }}"
       bind:value="minValue">
 
-      <label for="input-date-range-{{ id }}-min" class="sr-only">Maximum date</label>
+    <span class="input-date-range-spacer">to</span>
+
+    <label for="input-date-range-{{ id }}-min" class="sr-only">Maximum date</label>
     <input id="input-date-range-{{ id }}-max" type="date"
       min="{{ min && min.toISODate ? min.toISODate() : min }}"
       max="{{ max && max.toISODate ? max.toISODate() : max }}"

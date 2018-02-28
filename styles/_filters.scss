@@ -38,6 +38,10 @@
     margin-bottom: 0.5em;
   }
 
+  .input-slider-wrapper .filter-note {
+    margin-bottom: 1em;
+  }
+
   .action-button {
     background-color: map-get($theme, 'green-dark-alt');
     border: 1px solid map-get($theme, 'green-dark-alt');
@@ -82,34 +86,28 @@
   .found-address {
     font-size: 0.85em;
   }
-}
 
-.category-filter-wrapper {
-  input {
-    margin: 6px 3px 6px 0;
+  .category-filter-wrapper {
+    input {
+      margin: 6px 3px 6px 0;
+    }
   }
-}
 
-.noUi-value.noUi-value-horizontal.noUi-value-large {
-  line-height: 1.75em;
-}
-
-.checkbox-set {
-  input {
-    margin: 6px 3px 6px 0;
+  .noUi-value {
+    font-size: 0.85em;
   }
-}
 
-.stay-type-wrapper {
-  margin: 2em 0;
-}
+  .noUi-value.noUi-value-horizontal.noUi-value-large {
+    line-height: 2em;
+  }
 
-.input-date-range input {
-  width: 100%;
-}
+  .checkbox-set {
+    input {
+      margin: 6px 3px 6px 0;
+    }
+  }
 
-.input-date-range label {
-  display: block;
-  font-weight: bold;
-  padding-bottom: 5px;
+  .stay-type-wrapper {
+    margin: 2em 0;
+  }
 }
