@@ -16,9 +16,14 @@
     padding-right: 0.5em;
   }
 
+  ul {
+    padding-left: 1em;
+  }
+
   ul li {
     font-size: 0.9em;
     margin-bottom: 0.2em;
+    list-style-type: disc;
   }
 
   figure a {
@@ -32,11 +37,5 @@
 
   .col-md-50 {
     margin-bottom: 3em;
-  }
-
-  .hide-maps-mobile {
-    @media only screen and (min-width: 320px) and (max-width: 700px) {
-      display: none;
-    }
   }
 }
