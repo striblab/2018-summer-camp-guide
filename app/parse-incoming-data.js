@@ -155,7 +155,8 @@ module.exports = camps => {
       parsed.venue = {
         id: c.venue_id,
         name: c.venue_name,
-        city: c.venue_city
+        city: c.venue_city,
+        various: !!c.venue_name.match(/various/i)
       };
 
       // Clean up categories

@@ -1,0 +1,45 @@
+/**
+ * Show hide classes for breakpoints.
+ */
+
+@each $name, $size in $breakpoints {
+  @each $display in (block, inline, inline-block) {
+    // Show before breakpoint
+    .before-#{$name}-display-#{$display} {
+      display: $display !important;
+    }
+
+    .before-#{$name}-hide-#{$display} {
+      display: none !important;
+    }
+
+    @media only screen and (min-width: #{$size}) {
+      .before-#{$name}-display-#{$display} {
+        display: none !important;
+      }
+
+      .before-#{$name}-hide-#{$display} {
+        display: $display !important;
+      }
+    }
+
+    // Show after breakpoint
+    .after-#{$name}-display-#{$display} {
+      display: none !important;
+    }
+
+    .after-#{$name}-hide-#{$display} {
+      display: $display !important;
+    }
+
+    @media only screen and (min-width: #{$size}) {
+      .after-#{$name}-display-#{$display} {
+        display: $display !important;
+      }
+
+      .after-#{$name}-hide-#{$display} {
+        display: none !important;
+      }
+    }
+  }
+}
