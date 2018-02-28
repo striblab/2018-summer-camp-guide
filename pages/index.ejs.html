@@ -7,6 +7,16 @@
   <body class="">
     <div class="article-lcd-body-content"></div><!-- end article-lcd-body-content -->
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114906116-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114906116-1');
+    </script>
+
     <!-- Global/external scripts -->
     <% if (config.js && config.js.globals) { config.js.globals.forEach(function(s) { %>
       <script src="<%= s %>"></script>

@@ -6,18 +6,27 @@
     <input id="input-date-range-{{ id }}-min" type="date"
       min="{{ min && min.toISODate ? min.toISODate() : min }}"
       max="{{ max && max.toISODate ? max.toISODate() : max }}"
-      bind:value="minValue">
+      bind:value="minValue" on:input="track()">
 
       <label for="input-date-range-{{ id }}-min" class="sr-only">Maximum date</label>
     <input id="input-date-range-{{ id }}-max" type="date"
       min="{{ min && min.toISODate ? min.toISODate() : min }}"
       max="{{ max && max.toISODate ? max.toISODate() : max }}"
-      bind:value="maxValue">
+      bind:value="maxValue" on:input="track()">
   </div>
 </div>
 
 <script>
 export default {
+  methods: {
+    track() {
+      // Track with GA
+      gtag('event', 'date_filter', {
+        'event_label': this.get('minValue') + ' -> ' + this.get('maxValue'),
+      });
+    }
+  },
+
   oncreate: function() {
     // Set default values.  Note that (in chrome) if you X out date
     // then seting value again doesn't matter
@@ -40,6 +49,6 @@ export default {
       id: Math.floor(Math.random() * 1000000),
       label: 'Date range'
     };
-  }
+  },
 };
 </script>

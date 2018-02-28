@@ -53,6 +53,16 @@ export default {
         maxValue: parseInt(v[1], 10)
       });
     });
+
+    // Track on mouseup
+    this.slider.on('end', () => {
+      let event_id = 'slider: ' + this.slider.target.innerText;
+
+      // Track with GA
+      gtag('event', 'slider_filter', {
+        'event_label': event_id,
+      });
+    });
   },
 
   data: () => {

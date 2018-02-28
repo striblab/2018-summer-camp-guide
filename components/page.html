@@ -3,10 +3,10 @@
     <div class="hero">
         <div class="row">
             <div class="col col-100 col-md-25">
-            <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">     
+            <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">
             </div>
 
-            <div class="col col-100 col-md-75">    
+            <div class="col col-100 col-md-75">
             <h1>2018 Minnesota Summer Camp Guide</h1>
             <p class="lead">Kids can learn how to program robots, play chess,
               speak Chinese or dance hip-hop style, among other
@@ -193,6 +193,11 @@ export default {
 
       let current = this.getDeep(`filters.categories.${category}`);
       this.setDeep(`filters.categories.${category}`, !current);
+
+      // Track with GA
+      gtag('event', 'activity_filter', {
+        'event_label': `filters.categories.${category}`,
+      });
     },
 
     searchAddress: function(e, address) {
@@ -225,6 +230,12 @@ export default {
           addressFound: results[0].formatted_address,
           isGeocoding: false
         });
+
+        // Track with GA
+        gtag('event', 'location_search', {
+          'event_label': 'searched',
+        });
+
       });
     }
   },
