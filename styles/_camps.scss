@@ -20,9 +20,12 @@ p {
 	padding-right: .5em;
 	}
 
+ul {padding-left: 1em;}    
+    
 ul li {
 	font-size: .9em;
-	margin-bottom: .2em
+	margin-bottom: .2em;
+    list-style-type: disc !important;
 	}
 
 .col-100 {margin-bottom: 2em;}
