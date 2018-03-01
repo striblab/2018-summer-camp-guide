@@ -66,34 +66,29 @@
     }
   }
 
-.category-filter-wrapper {
+  .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
     height: 28.25em;
     overflow-y: scroll;
-  
-    label {
-    display: inline !important;   
-    } 
+  }
 
-    label.activities {
-    display: inline !important;     
+  label.activities {
     display: block;
     font-weight: bold;
     padding-bottom: 5px;
-    } 
-    
-    input {
-    margin: 6px 3px 6px 0;
-    } 
-
-}
+  }
 
   .found-address {
     font-size: 0.85em;
   }
 }
 
+.category-filter-wrapper {
+  input {
+    margin: 6px 3px 6px 0;
+  }
+}
 
 .noUi-value.noUi-value-horizontal.noUi-value-large {
   line-height: 1.75em;
@@ -103,11 +98,6 @@
   input {
     margin: 6px 3px 6px 0;
   }
-    
-  label {
-      display: inline !important;   
-  }  
-
 }
 
 .stay-type-wrapper {
