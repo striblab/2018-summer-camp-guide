@@ -70,6 +70,15 @@
     }
   }
 
+  .checkbox-filter-option {
+    display: flex;
+    margin-bottom: 0.15em;
+
+    input {
+      margin: 0.25em 0.5em 0 0;
+    }
+  }
+
   .category-filter-wrapper {
     background-color: #FFFFFF;
     padding: 1em;
@@ -87,24 +96,12 @@
     font-size: 0.85em;
   }
 
-  .category-filter-wrapper {
-    input {
-      margin: 6px 3px 6px 0;
-    }
-  }
-
   .noUi-value {
     font-size: 0.85em;
   }
 
   .noUi-value.noUi-value-horizontal.noUi-value-large {
     line-height: 2em;
-  }
-
-  .checkbox-set {
-    input {
-      margin: 6px 3px 6px 0;
-    }
   }
 
   .stay-type-wrapper {

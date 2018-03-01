@@ -26,8 +26,10 @@
             <label class="activities">Activities</label>
               <div class="category-filter-wrapper">
                 {{#each categoryList as c, i}}
-                  <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
-                  <label for="filter-category-{{ i }}">{{ c }}</label><br>
+                  <div class="checkbox-filter-option cf">
+                    <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
+                    <label for="filter-category-{{ i }}">{{ c }}</label>
+                  </div>
                 {{/each}}
               </div>
             </div>
@@ -67,24 +69,32 @@
                 </div>
 
                 <div class="stay-type-wrapper">
-                <label class="top-label">Stay types</label>
+                  <label class="top-label">Stay types</label>
 
-                <div class="checkbox-set">
+                  <div class="checkbox-filter-option cf">
                     <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
-                    <label for="filter-type-half">Half day</label><br>
+                    <label for="filter-type-half">Half day</label>
+                  </div>
 
+                  <div class="checkbox-filter-option cf">
                     <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
-                    <label for="filter-type-full">Full day</label><br>
+                    <label for="filter-type-full">Full day</label>
+                  </div>
 
+                  <div class="checkbox-filter-option cf">
                     <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
-                    <label for="filter-type-extended">Extended day</label><br>
+                    <label for="filter-type-extended">Extended day</label>
+                  </div>
 
+                  <div class="checkbox-filter-option cf">
                     <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
-                    <label for="filter-type-overnight">Overnight</label><br>
+                    <label for="filter-type-overnight">Overnight</label>
+                  </div>
 
+                  <div class="checkbox-filter-option cf">
                     <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
                     <label for="filter-type-other">Other</label>
-                </div>
+                  </div>
                 </div>
 
                 <div class="address-search">
