@@ -4,6 +4,8 @@
 
 .pager {
   margin: 0 auto 2em;
+    
+   span.page-num {display: block;white-space: nowrap;margin-top:.5em;}  
 
   .page {
     display: inline-block;
@@ -21,5 +23,7 @@
     &:hover {
       background-color: map-get($grays, lighter);
     }
+      
+ 
   }
 }
