@@ -25,12 +25,9 @@
         <div class="filters">
 
           <div class="row">
-
-
+              
             <div class="col col-100 col-md-33">
-
             <label class="activities">Activities</label>
-
               <div class="category-filter-wrapper">
                 {{#each categoryList as c, i}}
                   <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
@@ -38,7 +35,6 @@
                 {{/each}}
               </div>
             </div>
-
 
             <div class="col col-100 col-md-33">
                 <div class="filter-input">
@@ -78,8 +74,8 @@
                 <label class="top-label">Stay types</label>
 
                 <div class="checkbox-set">
-                  <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
-                  <label for="filter-type-half">Half day</label><br>
+                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                    <label for="filter-type-half">Half day</label><br>
 
                     <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
                     <label for="filter-type-full">Full day</label><br>
