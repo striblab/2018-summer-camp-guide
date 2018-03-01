@@ -3,10 +3,10 @@
     <div class="hero">
         <div class="row">
             <div class="col col-100 col-md-25">
-            <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">     
+            <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">
             </div>
 
-            <div class="col col-100 col-md-75">    
+            <div class="col col-100 col-md-75">
             <h1>2018 Minnesota Summer Camp Guide</h1>
             <p class="lead">Kids can learn how to program robots, play chess,
               speak Chinese or dance hip-hop style, among other
@@ -24,7 +24,7 @@
         <div class="filters">
 
           <div class="row">
-              
+
             <div class="col col-100 col-md-33">
             <label class="activities">Activities</label>
               <div class="category-filter-wrapper">
@@ -73,19 +73,19 @@
                 <label class="top-label">Stay types</label>
 
                 <div class="checkbox-set">
-                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half" on:click="track('type_filter', 'half_day')">
                     <label for="filter-type-half">Half day</label><br>
 
-                    <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+                    <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full" on:click="track('type_filter', 'full_day')">
                     <label for="filter-type-full">Full day</label><br>
 
-                    <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+                    <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended" on:click="track('type_filter', 'extended_day')">
                     <label for="filter-type-extended">Extended day</label><br>
 
-                    <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+                    <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight" on:click="track('type_filter', 'overnight')">
                     <label for="filter-type-overnight">Overnight</label><br>
 
-                    <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
+                    <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other" on:click="track('type_filter', 'other')">
                     <label for="filter-type-other">Other</label>
                 </div>
                 </div>
@@ -186,6 +186,14 @@ export default {
     setDeep,
     getDeep,
 
+    // Track with GA
+    track: function(event_name, event_label) {
+      gtag('event', event_name, {
+        'event_category': 'camp_guide_2018',
+        'event_label': event_label,
+      });
+    },
+
     categoryCheck: function(e, category) {
       if (e && e.preventDefault) {
         e.preventDefault();
@@ -193,6 +201,8 @@ export default {
 
       let current = this.getDeep(`filters.categories.${category}`);
       this.setDeep(`filters.categories.${category}`, !current);
+
+      this.track('activity_filter', `filters.categories.${category}`)
     },
 
     searchAddress: function(e, address) {
@@ -225,6 +235,10 @@ export default {
           addressFound: results[0].formatted_address,
           isGeocoding: false
         });
+
+        // Deliberately not tracking what people are searching for because that
+        // seems kinda weird and unnecessary.
+        this.track('location_filter', 'searched')
       });
     }
   },
