@@ -4,14 +4,10 @@
   background-color: map-get($grays, 'lightest');
   padding: 2em 2em 0;
 
-  .filters-column {
-    float: left;
-    width: 33.33332%;
-    padding-right: 0.5em;
-  }
-
   label.top-label {
+    display: block;
     font-weight: bold;
+    margin-bottom: 0.5em;
   }
 
   input[type='text'],
@@ -24,10 +20,6 @@
     border: 1px solid map-get($grays, lighter);
   }
 
-  .filter-input {
-    margin-bottom: 6em;
-  }
-
   .filter-note {
     @include font-styles('benton-sans');
 
@@ -36,10 +28,6 @@
     color: map-get($grays, 'medium');
     margin-top: 0.25em;
     margin-bottom: 0.5em;
-  }
-
-  .input-slider-wrapper .filter-note {
-    margin-bottom: 1em;
   }
 
   .action-button {
@@ -79,21 +67,89 @@
     }
   }
 
-  .category-filter-wrapper {
-    background-color: #FFFFFF;
+  // Filter wrapper and toggle
+  .filter-buttons {
+    margin-bottom: 1em;
+
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      display: none;
+    }
+  }
+
+  .toggle-filter {
+    background-color: $color-white;
+    border: 1px solid map-get($grays, 'dark');
+    outline: none;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+    border-radius: 0.15em;
+    margin: 0 0.5em 0.5em 0;
+
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      font-size: 1.25em;
+    }
+
+    &:hover {
+      background-color: map-get($grays, 'lightest');
+    }
+
+    .filter-button-status {
+      display: block;
+      font-size: 0.75em;
+      color: map-get($grays, 'medium');
+    }
+  }
+
+  .filter-input {
+    margin-bottom: 2em;
+    margin-right: -1em;
+    margin-left: -1em;
+    display: none;
+    background-color: $color-white;
     padding: 1em;
-    height: 28.25em;
+
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      display: block;
+      padding: 0;
+      margin: 0 0 2em;
+      background-color: transparent;
+    }
+
+    &.active-filter {
+      display: block;
+    }
+
+    &.address-search {
+      display: block;
+      background-color: inherit;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  // Category filter
+  .filter-categories {
+    background-color: #FFFFFF;
+    //height: 28.25em;
+    height: 15em;
     overflow-y: scroll;
+    max-height: 80vh;
+
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      padding: 0.5em;
+      height: 28.5em;
+    }
   }
 
-  label.activities {
-    display: block;
-    font-weight: bold;
-    padding-bottom: 5px;
+  // Sliders
+  .filter-input-slider {
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      margin-bottom: 5.5em;
+    }
   }
 
-  .found-address {
-    font-size: 0.85em;
+  .input-slider-wrapper .filter-note {
+    margin-bottom: 1em;
   }
 
   .noUi-value {
@@ -104,7 +160,8 @@
     line-height: 2em;
   }
 
-  .stay-type-wrapper {
-    margin: 2em 0;
+  // Address search
+  .found-address {
+    font-size: 0.85em;
   }
 }

@@ -19,7 +19,6 @@ import parser from './parse-incoming-data.js';
 let share = '';
 if (window.$ && window.$('.article-share').length) {
   share = window.$('.article-share').get(0).outerHTML;
-  console.log(share);
 }
 
 // Initialize components
