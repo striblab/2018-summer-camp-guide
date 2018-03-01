@@ -1,0 +1,19 @@
+/**
+ * Input date range styles.
+ */
+
+.input-date-range {
+  .input-date-range-fields {
+    input[type='date'] {
+      display: inline-block;
+      width: auto;
+      min-width: 10em;
+    }
+
+    .input-date-range-spacer {
+      display: inline-block;
+      text-align: center;
+      padding: 0.5em 1em;
+    }
+  }
+}

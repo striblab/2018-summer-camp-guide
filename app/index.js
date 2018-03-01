@@ -14,10 +14,20 @@ import parser from './parse-incoming-data.js';
 // Setup utils function
 //utilsFn({});
 
+// The share output is inside the component, but it is rendered
+// by news-platform
+let share = '';
+if (window.$ && window.$('.article-share').length) {
+  share = window.$('.article-share').get(0).outerHTML;
+}
+
 // Initialize components
 let mainComponent = new Page({
   target: document.querySelector('.article-lcd-body-content'),
-  hydrate: true
+  hydrate: true,
+  data: {
+    share: share
+  }
 });
 
 // Get data

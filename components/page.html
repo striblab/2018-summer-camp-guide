@@ -1,127 +1,194 @@
 <div class="strib strib-styles strib-styles-specifically">
   <div class="container-lg">
-    <div class="hero">
-        <div class="row">
-            <div class="col col-100 col-md-25">
-            <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">     
-            </div>
+    <div class="hero cf">
+      <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">
 
-            <div class="col col-100 col-md-75">    
-            <h1>2018 Minnesota Summer Camp Guide</h1>
-            <p class="lead">Kids can learn how to program robots, play chess,
-              speak Chinese or dance hip-hop style, among other
-              enrichment options.</p>
-            </div>
-        </div>
+      <div class="hero-title">
+        <h1>2018 Minnesota Summer Camp&nbsp;Guide</h1>
+        <p class="lead">Kids can learn how to program robots, play chess,
+          speak Chinese or dance hip-hop style, among other
+          enrichment options.</p>
+      </div>
     </div>
 
     <div class="sharing-wrapper">
-      <!-- sharing -->
+      <!-- share -->
+      {{{ share ? share : '' }}}
     </div>
 
     {{#if camps}}
       {{#if isBrowser}}
         <div class="filters">
+          <div class="filter-buttons">
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'categories')">
+              <span>Activites</span>
+              <span class="filter-button-status">
+                {{#if categoryFilterCount}}
+                  {{ categoryFilterCount }} selected
+                {{else}}
+                  All
+                {{/if}}
+              </span>
+            </button>
+
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'age')">
+              <span>Ages</span>
+              <span class="filter-button-status">
+                {{#if filters.minAge !== undefined && filters.maxAge !== undefined}}
+                  {{ formatAge(filters.minAge) }} - {{ formatAge(filters.maxAge) }}
+                {{/if}}
+              </span>
+            </button>
+
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'grade')">
+              <span>Grades</span>
+              <span class="filter-button-status">
+                {{#if filters.minGrade !== undefined && filters.maxGrade !== undefined}}
+                  {{ formatGrade(filters.minGrade) }} - {{ formatGrade(filters.maxGrade) }}
+                {{/if}}
+              </span>
+            </button>
+
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'price')">
+              <span>Prices</span>
+              <span class="filter-button-status">
+                {{#if filters.minPrice !== undefined && filters.maxPrice !== undefined}}
+                  {{ formatPrice(filters.minPrice) }} - {{ formatPrice(filters.maxPrice) }}
+                {{/if}}
+              </span>
+            </button>
+
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'date')">
+              <span>Dates</span>
+              <span class="filter-button-status">
+                {{#if filters.minDate !== undefined && filters.maxDate !== undefined}}
+                  {{ filters.minDate }} - {{ filters.maxDate }}
+                {{/if}}
+              </span>
+            </button>
+
+            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'stay-type')">
+              <span>Stay type</span>
+              <span class="filter-button-status">
+                {{#if stayTypeFilterCount !== undefined}}
+                  {{ stayTypeFilterCount }} selected
+                {{/if}}
+              </span>
+            </button>
+          </div>
 
           <div class="row">
-              
             <div class="col col-100 col-md-33">
-            <label class="activities">Activities</label>
-              <div class="category-filter-wrapper">
-                {{#each categoryList as c, i}}
-                  <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
-                  <label for="filter-category-{{ i }}">{{ c }}</label><br>
-                {{/each}}
+              <div class="filter-input {{ showFilter === 'categories' ? 'active-filter' : '' }}">
+                <label class="top-label">Activities</label>
+
+                <div class="filter-categories">
+                  {{#each categoryList as c, i}}
+                    <div class="checkbox-filter-option cf">
+                      <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
+                      <label for="filter-category-{{ i }}">{{ c }}</label>
+                    </div>
+                  {{/each}}
+                </div>
               </div>
             </div>
 
             <div class="col col-100 col-md-33">
-                <div class="filter-input">
-                  <InputSlider
-                    min="{{ minAge }}" max="{{ maxAge }}" step="1"
-                    bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-                    label="Age" formatUnit="{{ (i) => i >= 19 ? 'Adult' : i }}"/>
-                </div>
+              <div class="filter-input filter-input-slider {{ showFilter === 'age' ? 'active-filter' : '' }}">
+                <InputSlider
+                  min="{{ minAge }}" max="{{ maxAge }}" step="1"
+                  bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
+                  label="Age" formatUnit="{{ formatAge }}"/>
+              </div>
 
-                <div class="filter-input">
-                  <InputSlider
-                    min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
-                    bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-                    label="Grade" formatUnit="{{ (i) => i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i }}"
-                    notes="For children <strong>entering</strong> a specific grade, unless otherwise noted." />
-                </div>
+              <div class="filter-input filter-input-slider {{ showFilter === 'grade' ? 'active-filter' : '' }}">
+                <InputSlider
+                  min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
+                  bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
+                  label="Grade" formatUnit="{{ formatGrade }}"
+                  notes="For children <strong>entering</strong> a specific grade, unless otherwise noted." />
+              </div>
 
-                <div class="filter-input">
-                  <InputSlider
-                    min="{{ minPrice }}" max="{{ maxPrice }}" step="50"
-                    range="{{ {
-                      min: minPrice,
-                      '50%': [1000],
-                      max: maxPrice
-                    } }}"
-                    bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice" />
-                </div>
+              <div class="filter-input filter-input-slider {{ showFilter === 'price' ? 'active-filter' : '' }}">
+                <InputSlider
+                  min="{{ minPrice }}" max="{{ maxPrice }}" step="50"
+                  range="{{ {
+                    min: minPrice,
+                    '50%': [1000],
+                    max: maxPrice
+                  } }}"
+                  bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice"
+                  formatUnit="{{ formatPrice }}" />
+              </div>
             </div>
 
             <div class="col col-100 col-md-33">
+              <div class="filter-input {{ showFilter === 'date' ? 'active-filter' : '' }}">
                 <div>
                   <InputDateRange min="{{ minDate }}" max="{{ maxDate }}"
                     bind:minValue="filters.minDate" bind:maxValue="filters.maxDate" />
                 </div>
+              </div>
 
-                <div class="stay-type-wrapper">
+              <div class="filter-input filter-stay-type {{ showFilter === 'stay-type' ? 'active-filter' : '' }}">
                 <label class="top-label">Stay types</label>
 
-                <div class="checkbox-set">
-                    <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
-                    <label for="filter-type-half">Half day</label><br>
-
-                    <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
-                    <label for="filter-type-full">Full day</label><br>
-
-                    <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
-                    <label for="filter-type-extended">Extended day</label><br>
-
-                    <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
-                    <label for="filter-type-overnight">Overnight</label><br>
-
-                    <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
-                    <label for="filter-type-other">Other</label>
-                </div>
+                <div class="checkbox-filter-option cf">
+                  <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                  <label for="filter-type-half">Half day</label>
                 </div>
 
-                <div class="address-search">
-                    <label for="address-input" class="top-label">Sort by camps closest to you</label>
+                <div class="checkbox-filter-option cf">
+                  <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+                  <label for="filter-type-full">Full day</label>
+                </div>
 
-                    <p class="filter-note">Enter in an address, a city (i.e. Blaine, MN), or a zip code, and the list will sort the closest camps.  Note that some camps have multiple locations, but the list contains only the primary location.</p>
+                <div class="checkbox-filter-option cf">
+                  <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+                  <label for="filter-type-extended">Extended day</label>
+                </div>
 
-                    <form class="inline-form-group" on:submit="searchAddress(event)">
-                      <input id="address-input" type="text"
-                        placeholder="Your address, city, or zip"
-                        bind:value="addressInput"
-                        on:submit="searchAddress(event)">
+                <div class="checkbox-filter-option cf">
+                  <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+                  <label for="filter-type-overnight">Overnight</label>
+                </div>
 
-                      <button class="action-button" on:click="searchAddress(event)"
-                        on:submit="searchAddress(event)">
-                          Search
-                          {{#if isGeocoding}}
-                            <span class="loader"></span>
-                          {{/if}}
-                        </button>
-                    </form>
+                <div class="checkbox-filter-option cf">
+                  <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
+                  <label for="filter-type-other">Other</label>
+                </div>
+              </div>
 
-                    <div class="found-address">
-                      {{#if addressFound}}
-                        Found: {{ addressFound }}
-                      {{else}}
-                        &nbsp;
+              <div class="address-search filter-input">
+                <label for="address-input" class="top-label">Sort by camps closest to you</label>
+
+                <p class="filter-note">Enter in an address, a city (i.e. Blaine, MN), or a zip code, and the list will sort the closest camps.  Note that some camps have multiple locations, but the list contains only the primary location.</p>
+
+                <form class="inline-form-group" on:submit="searchAddress(event)">
+                  <input id="address-input" type="text"
+                    placeholder="Your address, city, or zip"
+                    bind:value="addressInput"
+                    on:submit="searchAddress(event)">
+
+                  <button class="action-button" on:click="searchAddress(event)"
+                    on:submit="searchAddress(event)">
+                      Search
+                      {{#if isGeocoding}}
+                        <span class="loader"></span>
                       {{/if}}
-                    </div>
+                    </button>
+                </form>
+
+                <div class="found-address">
+                  {{#if addressFound}}
+                    Found: {{ addressFound }}
+                  {{else}}
+                    &nbsp;
+                  {{/if}}
                 </div>
+              </div>
             </div>
-
           </div>
-
         </div>
       {{/if}}
 
@@ -157,6 +224,12 @@
         </div>
       {{/if}}
     {{/if}}
+
+    <div class="project-footer">
+      <p>Camp details submitted by the individual camps and aggregated and slightly edited by the Star Tribune.</p>
+
+      <p>Data about camps managed and edited by Paul Joopa.  Development by Alan Palazzolo and Billy Steve Clayton.  Design by Jamie Hutt.</p>
+    </div>
   </div>
 </div>
 
@@ -186,6 +259,22 @@ export default {
   methods: {
     setDeep,
     getDeep,
+
+    // Toggle property
+    toggle: function(e, prop, on) {
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      let v = this.get(prop);
+      if (v === on) {
+        v = null;
+      } else {
+        v = on;
+      }
+
+      this.setDeep(prop, v);
+    },
 
     categoryCheck: function(e, category) {
       if (e && e.preventDefault) {
@@ -377,6 +466,31 @@ export default {
       return _.sortBy(categories.filter((v, i, a) => a.indexOf(v) === i));
     },
 
+    // Category filter list
+    categoryFilterCount: filters => {
+      if (filters.categories) {
+        let categoryFilters = [];
+        for (const c in filters.categories) {
+          if (filters.categories[c]) {
+            categoryFilters.push(c);
+          }
+        }
+
+        return categoryFilters.length;
+      }
+
+      return 0;
+    },
+
+    // Stay type filter count
+    stayTypeFilterCount: filters => {
+      if (filters.type) {
+        return _.filter(filters.type).length;
+      }
+
+      return 0;
+    },
+
     // Calculate min price of all camps
     minPrice: camps => {
       let min = camps
@@ -502,6 +616,7 @@ export default {
       perPage: typeof window != 'undefined' ? 50 : 99999,
       addressInput: '',
       addressFound: '',
+      showFilter: null,
       filters: {
         minPrice: 0,
         maxPrice: 99999,
@@ -517,6 +632,14 @@ export default {
           other: true
         },
         categories: {}
+      },
+      formatAge: i => (i >= 19 ? 'Adult' : i),
+      formatGrade: i =>
+        i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i,
+      formatPrice: input => {
+        return input && input.toLocaleString
+          ? '$' + input.toLocaleString({ style: 'currency', currency: 'USD' })
+          : input;
       }
     };
   }

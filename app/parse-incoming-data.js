@@ -155,7 +155,8 @@ module.exports = camps => {
       parsed.venue = {
         id: c.venue_id,
         name: c.venue_name,
-        city: c.venue_city
+        city: c.venue_city,
+        various: !!c.venue_name.match(/various/i)
       };
 
       // Clean up categories
@@ -163,6 +164,20 @@ module.exports = camps => {
         parsed.categories && parsed.categories.length
           ? parsed.categories.filter(c => {
             return !c.match(/^camps$/i);
+          })
+          : parsed.categories;
+
+      // TODO: Categories are actually in a heirarchy
+      // Day camps = day camps metro metro
+      // Metro camps = Metro camps resident
+      // Outstate = resident outstate
+      parsed.categories =
+        parsed.categories && parsed.categories.length
+          ? parsed.categories.map(c => {
+            return c
+              .replace(/day\scamps/i, 'Metro area day camps')
+              .replace(/metro\sarea/i, 'Resident metro area camps')
+              .replace(/out\sstate/i, 'Resident out state camps');
           })
           : parsed.categories;
 
