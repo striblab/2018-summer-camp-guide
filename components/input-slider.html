@@ -16,6 +16,18 @@
 import slider from 'nouislider';
 
 export default {
+  methods: {
+
+    // Looks like this needs to be set up separately from the method in page.html,
+    // which handles the tracking of everything else.
+    track: function(event_name, event_label) {
+      gtag('event', event_name, {
+        'event_category': 'camp_guide_2018',
+        'event_label': event_label,
+      });
+    },
+  },
+
   oncreate: function() {
     // Initial slider
     this.slider = slider.create(this.refs.slider, {
@@ -56,12 +68,8 @@ export default {
 
     // Track on mouseup
     this.slider.on('end', () => {
-      let event_id = 'slider: ' + this.slider.target.innerText;
-
-      // Track with GA
-      gtag('event', 'slider_filter', {
-        'event_label': event_id,
-      });
+      let event_id = this.slider.target.innerText;
+      this.track('slider_filter', event_id)
     });
   },
 

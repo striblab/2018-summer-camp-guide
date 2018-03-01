@@ -19,9 +19,10 @@
 <script>
 export default {
   methods: {
+    // Track with GA (probably the right-er way in Svelte)
     track() {
-      // Track with GA
       gtag('event', 'date_filter', {
+        'event_category': 'camp_guide_2018',
         'event_label': this.get('minValue') + ' -> ' + this.get('maxValue'),
       });
     }
