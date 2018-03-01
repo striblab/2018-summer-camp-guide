@@ -130,13 +130,14 @@
           Found {{ filteredCamps.length || 0 }}
           camp{{ filteredCamps.length === 1 ? '' : 's' }}.
         </strong>
-
-        {{#if totalPages > 1}}
-          Pages:
-          {{#each totalPagesArray as p}}
-            <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
-          {{/each}}
-        {{/if}}
+        <span class="page-num">
+          {{#if totalPages > 1}}
+            Pages:
+            {{#each totalPagesArray as p}}
+              <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
+            {{/each}}
+          {{/if}}
+        </span>
       </div>
 
       <div class="camps">
