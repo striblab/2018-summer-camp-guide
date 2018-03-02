@@ -79,7 +79,7 @@
   // Filter wrapper and toggle
   .filter-buttons {
     margin-bottom: 1em;
-    margin-right: -4%;  
+    margin-right: -4%;
 
     @media only screen and (min-width: map-get($breakpoints, 'md')) {
       display: none;
@@ -90,16 +90,16 @@
     background-color: $color-white;
     border: 1px solid map-get($grays, 'light');
     outline: none;
-    padding: 0.5em 0.5em;
+    padding: 0.5em;
     cursor: pointer;
     border-radius: 0.15em;
     margin: 0 0.5em 0.5em 0;
     width: 46.5%;
 
-    @media only screen and (min-width: 320px) and (max-width: 360px) { 
-    width: 96%;    
+    @media only screen and (min-width: 320px) and (max-width: 360px) {
+      width: 96%;
     }
-      
+
     @media only screen and (min-width: map-get($breakpoints, 'md')) {
       font-size: 1.25em;
     }
@@ -135,10 +135,13 @@
     border-radius: 50%;
     background-color: map-get($grays, 'light');
     text-align: center;
+    padding: 0;
     width: 1.5em;
     height: 1.5em;
-    vertical-align: middle;
     cursor: pointer;
+    border: none;
+    outline: none;
+    font-weight: bold;
 
     &.active-filter {
       display: block;
@@ -217,9 +220,8 @@
   // Address search
   .found-address {
     font-size: 0.8em;
-    line-height: 1.4em;  
+    line-height: 1.4em;
     color: map-get($grays, 'medium');
-    padding-bottom: 1em;   
+    padding-bottom: 1em;
   }
-    
 }
