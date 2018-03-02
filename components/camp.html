@@ -8,7 +8,11 @@
 
         <ul>
           {{#if userLocation && camp.location}}
-            <li>Distance: {{ round(distance(camp.location, userLocation)) }}&nbsp;mi</li>
+            <li class="camp-distance">
+              Distance:
+              <a href="{{ directionsURL }}" target="_blank" rel="noopener">
+                {{ round(distance(camp.location, userLocation)) }}&nbsp;mi
+              </li>
           {{/if}}
 
           {{#if camp.website}}
@@ -164,7 +168,15 @@ export default {
 
     mapURL: camp => {
       return camp && camp.location
-        ? `http://maps.google.com/?q=${encodeURIComponent(
+        ? `https://maps.google.com/?q=${encodeURIComponent(
+            camp.location.lat
+          )},${encodeURIComponent(camp.location.lng)}`
+        : '';
+    },
+
+    directionsURL: camp => {
+      return camp && camp.location
+        ? `https://google.com/maps/dir/?api=1&destination=${encodeURIComponent(
             camp.location.lat
           )},${encodeURIComponent(camp.location.lng)}`
         : '';
