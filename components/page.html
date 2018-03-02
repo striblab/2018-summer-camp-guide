@@ -20,7 +20,8 @@
       {{#if isBrowser}}
         <div class="filters">
           <div class="filter-buttons">
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'categories')">
+            <button class="toggle-filter {{ showFilter === 'categories' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'categories')">
               <span>Activites</span>
               <span class="filter-button-status">
                 {{#if categoryFilterCount}}
@@ -31,7 +32,8 @@
               </span>
             </button>
 
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'age')">
+            <button class="toggle-filter {{ showFilter === 'age' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'age')">
               <span>Ages</span>
               <span class="filter-button-status">
                 {{#if filters.minAge !== undefined && filters.maxAge !== undefined}}
@@ -40,7 +42,8 @@
               </span>
             </button>
 
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'grade')">
+            <button class="toggle-filter {{ showFilter === 'grade' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'grade')">
               <span>Grades</span>
               <span class="filter-button-status">
                 {{#if filters.minGrade !== undefined && filters.maxGrade !== undefined}}
@@ -49,7 +52,8 @@
               </span>
             </button>
 
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'price')">
+            <button class="toggle-filter {{ showFilter === 'price' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'price')">
               <span>Prices</span>
               <span class="filter-button-status">
                 {{#if filters.minPrice !== undefined && filters.maxPrice !== undefined}}
@@ -58,17 +62,19 @@
               </span>
             </button>
 
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'date')">
+            <button class="toggle-filter {{ showFilter === 'date' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'date')">
               <span>Dates</span>
               <span class="filter-button-status">
                 {{#if filters.minDate !== undefined && filters.maxDate !== undefined}}
-                  {{ filters.minDate }} - {{ filters.maxDate }}
+                  {{ formatDate(filters.minDate) }} - {{ formatDate(filters.maxDate) }}
                 {{/if}}
               </span>
             </button>
 
-            <button class="toggle-filter" on:click="toggle(event, 'showFilter', 'stay-type')">
-              <span>Stay type</span>
+            <button class="toggle-filter {{ showFilter === 'stay-type' ? 'active-filter' : '' }}"
+              on:click="toggle(event, 'showFilter', 'stay-type')">
+              <span>Stay types</span>
               <span class="filter-button-status">
                 {{#if stayTypeFilterCount !== undefined}}
                   {{ stayTypeFilterCount }} selected
@@ -78,6 +84,11 @@
           </div>
 
           <div class="row">
+            <button class="filter-toggle-close {{ showFilter ? 'active-filter' : '' }}"
+              on:click="set({ showFilter: '' })">
+              <span class="sr-only">Close the filter</span>x
+            </button>
+
             <div class="col col-100 col-md-33">
               <div class="filter-input {{ showFilter === 'categories' ? 'active-filter' : '' }}">
                 <label class="top-label">Activities</label>
@@ -640,7 +651,8 @@ export default {
         return input && input.toLocaleString
           ? '$' + input.toLocaleString({ style: 'currency', currency: 'USD' })
           : input;
-      }
+      },
+      formatDate: i => (i ? DateTime.fromISO(i).toFormat('LLL dd') : '')
     };
   }
 };

@@ -1,8 +1,17 @@
 .filters {
   font-size: 15px;
-  margin-bottom: 4em;
+  margin-bottom: 3em;
   background-color: map-get($grays, 'lightest');
-  padding: 2em 2em 0;
+  padding: 1em;
+
+  @media only screen and (min-width: map-get($breakpoints, 'md')) {
+    padding: 2em;
+    margin-bottom: 4em;
+  }
+
+  .row {
+    position: relative;
+  }
 
   label.top-label {
     display: block;
@@ -90,6 +99,7 @@
     }
 
     &:hover {
+      color: $color-text;
       background-color: map-get($grays, 'lightest');
     }
 
@@ -98,12 +108,50 @@
       font-size: 0.75em;
       color: map-get($grays, 'medium');
     }
+
+    &.active-filter {
+      color: $color-white;
+      background-color: map-get($theme, 'green-dark-alt');
+      font-weight: bold;
+
+      .filter-button-status {
+        color: $color-white;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .filter-toggle-close {
+    display: none;
+    position: absolute;
+    right: 2.15em;
+    top: 0.5em;
+    border-radius: 50%;
+    background-color: map-get($grays, 'light');
+    text-align: center;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &.active-filter {
+      display: block;
+    }
+
+    &:hover {
+      background-color: map-get($grays, 'lighter');
+    }
+
+    @media only screen and (min-width: map-get($breakpoints, 'md')) {
+      &,
+      &.active-filter {
+        display: none;
+      }
+    }
   }
 
   .filter-input {
     margin-bottom: 2em;
-    margin-right: -1em;
-    margin-left: -1em;
     display: none;
     background-color: $color-white;
     padding: 1em;
