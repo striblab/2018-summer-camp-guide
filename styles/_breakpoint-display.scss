@@ -3,7 +3,7 @@
  */
 
 @each $name, $size in $breakpoints {
-  @each $display in (block, inline, inline-block) {
+  @each $display in (block, inline, inline-block, list-item) {
     // Show before breakpoint
     .before-#{$name}-display-#{$display} {
       display: $display !important;
