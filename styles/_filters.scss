@@ -216,6 +216,10 @@
 
   // Address search
   .found-address {
-    font-size: 0.85em;
+    font-size: 0.8em;
+    line-height: 1.4em;  
+    color: map-get($grays, 'medium');
+    padding-bottom: 1em;   
   }
+    
 }
