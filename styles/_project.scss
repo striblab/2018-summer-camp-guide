@@ -3,14 +3,14 @@
  */
 
 & {
-  padding-top: 3em;
+  padding-top: 1.5em;
   margin-bottom: 3em;
   min-height: 15em;
 }
 
 // Mobile page container doesn't account for fixed header
 .page-mobile & {
-  padding-top: 5em;
+  padding-top: 2em;
 }
 
 .cf {
