@@ -233,6 +233,11 @@
           {{#if i >= pageStart && i < pageStop}}
             <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
           {{/if}}
+        {{else}}
+          <p class="no-camps">
+            There were no camps found that matched your criteria.  Try
+            updating the filters to find some camps.
+          </p>
         {{/each}}
       </div>
 

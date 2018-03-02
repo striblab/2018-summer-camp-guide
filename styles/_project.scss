@@ -21,6 +21,12 @@
   }
 }
 
+.no-camps {
+  max-width: 40em;
+  margin: 3em auto 4em;
+  font-style: italic;
+}
+
 .project-footer {
   font-size: 0.85em;
   color: map-get($grays, medium);
