@@ -3,6 +3,8 @@
  */
 'use strict';
 
+import categories from './categories.js';
+
 module.exports = {
   distance: function(lat1, lng1, lat2, lng2, unit = 'miles') {
     let radlat1 = Math.PI * lat1 / 180;
@@ -91,6 +93,43 @@ module.exports = {
     });
 
     return styleSets;
+  },
+
+  // Display category
+  displayCategory: function(id) {
+    let name;
+
+    categories.forEach(c => {
+      if (c.id === id) {
+        name = c.name;
+      }
+      else if (c.sub) {
+        c.sub.forEach(s => {
+          if (s.id === id) {
+            name = s.name;
+          }
+        });
+      }
+    });
+
+    return name;
+  },
+
+  // Is sub categort
+  isSubCategory: function(id) {
+    let sub = false;
+
+    categories.forEach(c => {
+      if (c.sub) {
+        c.sub.forEach(s => {
+          if (s.id === id) {
+            sub = true;
+          }
+        });
+      }
+    });
+
+    return sub;
   },
 
   // Track with GA

@@ -316,7 +316,7 @@ gulp.task('watch', () => {
   gulp.watch(['components/**/*.html'], ['components']);
   gulp.watch(
     ['pages/**/*', 'config.*json', 'package.json', 'content.json'],
-    ['html:lint']
+    ['html']
   );
   gulp.watch(['app/**/*', 'components/**/*.html', 'config.json'], ['js']);
   gulp.watch(['assets/**/*'], ['assets']);
@@ -338,7 +338,7 @@ gulp.task('publish:open', gulpPublish.openURL(gulp));
 gulp.task('build', [
   'publish:build',
   'assets',
-  'html:lint',
+  'html',
   'components',
   'styles',
   'js'

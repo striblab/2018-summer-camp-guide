@@ -5,6 +5,8 @@
 
 // Dependencies
 const { DateTime } = require('luxon');
+const categories = require('./categories.js');
+console.log(categories);
 
 // event_id: '127489',
 // type: 'Camp',
@@ -39,7 +41,7 @@ module.exports = camps => {
       parsed.title = c.label;
       parsed.description = c.event_desc;
       parsed.url = c.event_url;
-      parsed.categories = c.event_category_array;
+      parsed.rawCategories = c.event_category_array;
       parsed.phone = c.info_phone_nbr;
       parsed.phoneTollFree = c.info_toll_free_phone_nbr;
       parsed.website = c.info_website;
@@ -159,27 +161,63 @@ module.exports = camps => {
         various: !!c.venue_name.match(/various/i)
       };
 
-      // Clean up categories
-      parsed.categories =
-        parsed.categories && parsed.categories.length
-          ? parsed.categories.filter(c => {
-            return !c.match(/^camps$/i);
-          })
-          : parsed.categories;
+      // Clean up categories.  The categories come in as an array, but there
+      // is a heirarchy to them.  And what's worse is that there are
+      // sub categories that are repeated, so we try to look for a set of
+      // categories that work.  And what's even worse, is that there
+      // are sub categories, but there are not parent categories attached.
+      let allCategoryIDs = parsed.rawCategories.map(c =>
+        c.toLowerCase().replace(/\W/g, '')
+      );
+      parsed.categories = [];
+      parsed.rawCategories.forEach(c => {
+        let id = c.toLowerCase().replace(/\W/g, '');
+        let found;
 
-      // TODO: Categories are actually in a heirarchy
-      // Day camps = day camps metro metro
-      // Metro camps = Metro camps resident
-      // Outstate = resident outstate
-      parsed.categories =
-        parsed.categories && parsed.categories.length
-          ? parsed.categories.map(c => {
-            return c
-              .replace(/^day\scamps$/i, 'Metro area day camps')
-              .replace(/^metro\sarea$/i, 'Resident metro area camps')
-              .replace(/^out\sstate$/i, 'Resident out state camps');
-          })
-          : parsed.categories;
+        // Look through categories
+        categories.forEach(i => {
+          if (i.id === id) {
+            found = i.id;
+          }
+          else if (i.sub) {
+            // For sub categories, which may have the same name as other
+            // sub categories, we look for other categories and combine them
+            i.sub.forEach(s => {
+              allCategoryIDs.forEach(topID => {
+                if (topID + '-' + id === s.id) {
+                  found = s.id;
+                }
+              });
+            });
+          }
+        });
+
+        // If we haven't found one yet, it might be that its a
+        // sub category without a parent
+        if (!found) {
+          categories.forEach(i => {
+            if (i.sub) {
+              i.sub.forEach(s => {
+                if (s.id.indexOf('-' + id) > 0) {
+                  found = s.id;
+
+                  // And add parent
+                  parsed.categories.push(i.id);
+                }
+              });
+            }
+          });
+        }
+
+        parsed.categories.push(found);
+      });
+
+      parsed.categories = parsed.categories
+        .filter(i => i)
+        // Unique
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
 
       //console.log(parsed);
       return parsed;

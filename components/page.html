@@ -95,9 +95,9 @@
 
                 <div class="filter-categories">
                   {{#each categoryList as c, i}}
-                    <div class="checkbox-filter-option cf">
+                    <div class="checkbox-filter-option cf {{ isSubCategory(c) ? 'sub-category' : '' }}">
                       <input type="checkbox" id="filter-category-{{ i }}" on:change="categoryCheck(event, c)">
-                      <label for="filter-category-{{ i }}">{{ c }}</label>
+                      <label for="filter-category-{{ i }}">{{ displayCategory(c) }}</label>
                     </div>
                   {{/each}}
                 </div>
@@ -283,7 +283,12 @@ import InputDateRange from './input-date-range.html';
 import { DateTime } from 'luxon';
 import { setDeep, getDeep } from 'svelte-extras';
 import _ from 'lodash';
-import { distance, track } from '../app/common.js';
+import {
+  distance,
+  track,
+  displayCategory,
+  isSubCategory
+} from '../app/common.js';
 
 export default {
   components: {
@@ -383,6 +388,11 @@ export default {
 
       this.track('location_filter', 'searched');
     }
+  },
+
+  helpers: {
+    displayCategory,
+    isSubCategory
   },
 
   computed: {
