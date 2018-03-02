@@ -79,6 +79,7 @@
   // Filter wrapper and toggle
   .filter-buttons {
     margin-bottom: 1em;
+    margin-right: -4%;  
 
     @media only screen and (min-width: map-get($breakpoints, 'md')) {
       display: none;
@@ -87,13 +88,18 @@
 
   .toggle-filter {
     background-color: $color-white;
-    border: 1px solid map-get($grays, 'dark');
+    border: 1px solid map-get($grays, 'light');
     outline: none;
-    padding: 0.25em 0.5em;
+    padding: 0.5em 0.5em;
     cursor: pointer;
     border-radius: 0.15em;
     margin: 0 0.5em 0.5em 0;
+    width: 46.5%;
 
+    @media only screen and (min-width: 320px) and (max-width: 360px) { 
+    width: 96%;    
+    }
+      
     @media only screen and (min-width: map-get($breakpoints, 'md')) {
       font-size: 1.25em;
     }
