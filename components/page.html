@@ -145,27 +145,32 @@
                 <label class="top-label">Stay types</label>
 
                 <div class="checkbox-filter-option cf">
-                  <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half">
+                  <input type="checkbox" id="filter-type-half" bind:checked="filters.type.half"
+                    on:click="track('type_filter', 'half')">
                   <label for="filter-type-half">Half day</label>
                 </div>
 
                 <div class="checkbox-filter-option cf">
-                  <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full">
+                  <input type="checkbox" id="filter-type-full" bind:checked="filters.type.full"
+                    on:click="track('type_filter', 'full')">
                   <label for="filter-type-full">Full day</label>
                 </div>
 
                 <div class="checkbox-filter-option cf">
-                  <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended">
+                  <input type="checkbox" id="filter-type-extended" bind:checked="filters.type.extended"
+                    on:click="track('type_filter', 'extended')">
                   <label for="filter-type-extended">Extended day</label>
                 </div>
 
                 <div class="checkbox-filter-option cf">
-                  <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight">
+                  <input type="checkbox" id="filter-type-overnight" bind:checked="filters.type.overnight"
+                    on:click="track('type_filter', 'overnight')">
                   <label for="filter-type-overnight">Overnight</label>
                 </div>
 
                 <div class="checkbox-filter-option cf">
-                  <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other">
+                  <input type="checkbox" id="filter-type-other" bind:checked="filters.type.other"
+                    on:click="track('type_filter', 'other')">
                   <label for="filter-type-other">Other</label>
                 </div>
               </div>
@@ -256,22 +261,26 @@
       </p>
     </div>
   </div>
+
+  <GA />
 </div>
 
 <script>
 import Camp from './camp.html';
+import GA from './ga.html';
 import InputSlider from './input-slider.html';
 import InputDateRange from './input-date-range.html';
 import { DateTime } from 'luxon';
 import { setDeep, getDeep } from 'svelte-extras';
 import _ from 'lodash';
-import { distance } from '../app/common.js';
+import { distance, track } from '../app/common.js';
 
 export default {
   components: {
     Camp,
     InputSlider,
-    InputDateRange
+    InputDateRange,
+    GA
   },
 
   oncreate: function() {
@@ -279,11 +288,23 @@ export default {
     if (this.get('isBrowser') && window.google) {
       this.geocoder = new window.google.maps.Geocoder();
     }
+
+    // Track some variable changes
+    this.observe(
+      'page',
+      n => {
+        if (n) {
+          this.track('page_change', n);
+        }
+      },
+      { init: false }
+    );
   },
 
   methods: {
     setDeep,
     getDeep,
+    track,
 
     // Toggle property
     toggle: function(e, prop, on) {
@@ -308,6 +329,8 @@ export default {
 
       let current = this.getDeep(`filters.categories.${category}`);
       this.setDeep(`filters.categories.${category}`, !current);
+
+      this.track('activity_filter', `${category}`);
     },
 
     searchAddress: function(e, address) {
@@ -341,6 +364,8 @@ export default {
           isGeocoding: false
         });
       });
+
+      this.track('location_filter', 'searched');
     }
   },
 

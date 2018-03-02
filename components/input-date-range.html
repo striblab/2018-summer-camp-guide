@@ -19,6 +19,8 @@
 </div>
 
 <script>
+import { track } from '../app/common.js';
+
 export default {
   oncreate: function() {
     // Set default values.  Note that (in chrome) if you X out date
@@ -27,14 +29,23 @@ export default {
       let m = this.get('min');
       if (!n && m) {
         this.set({ minValue: m.toISODate ? m.toISODate() : m });
+      } else if (n) {
+        this.track('date_filter_min', n);
       }
     });
+
     this.observe('maxValue', n => {
       let m = this.get('max');
       if (!n && m) {
         this.set({ maxValue: m.toISODate ? m.toISODate() : m });
+      } else if (n) {
+        this.track('date_filter_max', n);
       }
     });
+  },
+
+  methods: {
+    track
   },
 
   data: () => {

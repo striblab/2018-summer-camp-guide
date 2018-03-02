@@ -14,6 +14,7 @@
 
 <script>
 import slider from 'nouislider';
+import { track } from '../app/common.js';
 
 export default {
   oncreate: function() {
@@ -52,7 +53,19 @@ export default {
         minValue: parseInt(v[0], 10),
         maxValue: parseInt(v[1], 10)
       });
+
+      this.track(`slider_filter ${this.get('label')}`, `${v[0]}-${v[1]}`);
     });
+
+    // Track
+    this.slider.on('end', () => {
+      let v = this.slider.get();
+      this.track(`slider_filter ${this.get('label')}`, `${v[0]}-${v[1]}`);
+    });
+  },
+
+  methods: {
+    track
   },
 
   data: () => {

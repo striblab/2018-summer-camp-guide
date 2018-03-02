@@ -89,5 +89,15 @@ module.exports = {
     });
 
     return styleSets;
+  },
+
+  // Track with GA
+  track: function(name, label) {
+    if (window.gtag) {
+      window.gtag('event', name, {
+        event_category: 'camp_guide_2018',
+        event_label: label
+      });
+    }
   }
 };

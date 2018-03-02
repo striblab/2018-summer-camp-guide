@@ -1,0 +1,19 @@
+<div class="ga-include">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114906116-1"></script>
+</div>
+
+<script>
+export default {
+  oncreate: function() {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag =
+      window.gtag ||
+      function() {
+        window.dataLayer.push(arguments);
+      };
+
+    gtag('js', new Date());
+    gtag('config', 'UA-114906116-1');
+  }
+};
+</script>
