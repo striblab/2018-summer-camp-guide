@@ -233,18 +233,27 @@
 
       {{#if totalPages > 1}}
         <div class="pager">
-          Pages:
-          {{#each totalPagesArray as p}}
-            <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
-          {{/each}}
+          <span class="page-numbers">
+            Pages:
+            {{#each totalPagesArray as p}}
+              <span class="page {{ page === p ? 'active-page' : '' }}" on:click="set({ page: p })">{{ p }}</span>
+            {{/each}}
+          </span>
         </div>
       {{/if}}
     {{/if}}
 
     <div class="project-footer">
-      <p>Camp details submitted by the individual camps and aggregated and slightly edited by the Star Tribune.</p>
+      <p>
+        Camp details submitted by the individual camps themselves and then
+        aggregated and slightly edited for typographical issues by
+        the Star Tribune.
+      </p>
 
-      <p>Data about camps managed and edited by Paul Joopa.  Development by Alan Palazzolo and Billy Steve Clayton.  Design by Jamie Hutt.</p>
+      <p>
+        Data about camps managed and edited by Paul Joopa.  Development by
+        Alan Palazzolo and Billy Steve Clayton.  Design by Jamie Hutt.
+      </p>
     </div>
   </div>
 </div>
@@ -629,7 +638,7 @@ export default {
     return {
       isBrowser: typeof window != 'undefined',
       page: 1,
-      perPage: typeof window != 'undefined' ? 50 : 99999,
+      perPage: typeof window != 'undefined' ? 25 : 99999,
       addressInput: '',
       addressFound: '',
       showFilter: null,
