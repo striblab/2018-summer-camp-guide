@@ -175,9 +175,9 @@ module.exports = camps => {
         parsed.categories && parsed.categories.length
           ? parsed.categories.map(c => {
             return c
-              .replace(/day\scamps/i, 'Metro area day camps')
-              .replace(/metro\sarea/i, 'Resident metro area camps')
-              .replace(/out\sstate/i, 'Resident out state camps');
+              .replace(/^day\scamps$/i, 'Metro area day camps')
+              .replace(/^metro\sarea$/i, 'Resident metro area camps')
+              .replace(/^out\sstate$/i, 'Resident out state camps');
           })
           : parsed.categories;
 

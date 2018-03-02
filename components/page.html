@@ -384,11 +384,11 @@ export default {
 
       if (camps && camps.length && filters) {
         // Price, min or max price within range
+        // camp:   100 - 500
+        // filter: 400 - 800, 200 - 300, 0 - 200
         filtered = filtered.filter(c => {
           return (
-            (c.minPrice >= filters.minPrice &&
-              c.minPrice <= filters.maxPrice) ||
-            (c.maxPrice >= filters.minPrice && c.maxPrice <= filters.maxPrice)
+            filters.minPrice <= c.maxPrice && filters.maxPrice >= c.minPrice
           );
         });
 
@@ -428,36 +428,26 @@ export default {
         }
 
         // Age.  Only filter ones that are of type age.
-        if (filters.minAge) {
+        if (_.isInteger(filters.minAge) && _.isInteger(filters.maxAge)) {
           filtered = filtered.filter(c => {
-            return c.who && c.who.type === 'age' && c.who.min < filters.minAge
-              ? false
-              : true;
-          });
-        }
-        if (filters.maxAge) {
-          filtered = filtered.filter(c => {
-            return c.who && c.who.type === 'age' && c.who.max > filters.maxAge
+            // Check if camp range is outside filter range
+            return c.who &&
+              c.who.type === 'age' &&
+              ((c.who.min < filters.minAge && c.who.max < filters.minAge) ||
+                (c.who.min > filters.maxAge && c.who.max > filters.maxAge))
               ? false
               : true;
           });
         }
 
         // Grade.  Only filter ones that are of type grade.
-        if (filters.minGrade) {
+        if (_.isInteger(filters.minGrade) && _.isInteger(filters.maxGrade)) {
+          // Check if camp range is outside filter range
           filtered = filtered.filter(c => {
             return c.who &&
               c.who.type === 'grade' &&
-              c.who.min < filters.minGrade
-              ? false
-              : true;
-          });
-        }
-        if (filters.maxGrade) {
-          filtered = filtered.filter(c => {
-            return c.who &&
-              c.who.type === 'grade' &&
-              c.who.max > filters.maxGrade
+              ((c.who.min < filters.minGrade && c.who.max < filters.minGrade) ||
+                (c.who.min > filters.maxGrade && c.who.max > filters.maxGrade))
               ? false
               : true;
           });
