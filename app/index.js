@@ -15,10 +15,14 @@ import parser from './parse-incoming-data.js';
 //utilsFn({});
 
 // The share output is inside the component, but it is rendered
-// by news-platform
+// by news-platform.  And, of course, its different on desktop
+// and mobile
 let share = '';
 if (window.$ && window.$('.article-share').length) {
   share = window.$('.article-share').get(0).outerHTML;
+}
+if (!share && window.$ && window.$('.story-share.body-sharing-top').length) {
+  share = window.$('.story-share.body-sharing-top').get(0).outerHTML;
 }
 
 // Initialize components
