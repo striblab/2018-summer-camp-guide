@@ -109,19 +109,21 @@
                 <InputSlider
                   min="{{ minAge }}" max="{{ maxAge }}" step="1"
                   bind:minValue="filters.minAge" bind:maxValue="filters.maxAge"
-                  label="Age" formatUnit="{{ formatAge }}"/>
+                  label="Ages" formatUnit="{{ formatAge }}"
+                  notes="Note that this filter will not affect filtering by grade, and vice versa." />
               </div>
 
               <div class="filter-input filter-input-slider {{ showFilter === 'grade' ? 'active-filter' : '' }}">
                 <InputSlider
                   min="{{ minGrade }}" max="{{ maxGrade }}" step="1"
                   bind:minValue="filters.minGrade" bind:maxValue="filters.maxGrade"
-                  label="Grade" formatUnit="{{ formatGrade }}"
+                  label="Grades" formatUnit="{{ formatGrade }}"
                   notes="For children <strong>entering</strong> a specific grade, unless otherwise noted." />
               </div>
 
               <div class="filter-input filter-input-slider {{ showFilter === 'price' ? 'active-filter' : '' }}">
                 <InputSlider
+                  label="Prices"
                   min="{{ minPrice }}" max="{{ maxPrice }}" step="50"
                   range="{{ {
                     min: minPrice,
@@ -129,7 +131,8 @@
                     max: maxPrice
                   } }}"
                   bind:minValue="filters.minPrice" bind:maxValue="filters.maxPrice"
-                  formatUnit="{{ formatPrice }}" />
+                  formatUnit="{{ formatPrice }}"
+                  notes="Camps can have multiple programs at different prices." />
               </div>
             </div>
 

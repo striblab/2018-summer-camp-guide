@@ -25,7 +25,9 @@ module.exports = {
   },
 
   displayGrade: function(grade) {
-    return grade === -1 ? 'PreK' : grade === 0 ? 'K' : grade;
+    return grade === -1
+      ? 'PreK'
+      : grade === 0 ? 'K' : grade === 13 ? 'completed 12' : grade;
   },
 
   displayDayTypes: function(type) {
