@@ -78,12 +78,12 @@ module.exports = camps => {
             ? -1
             : whoMatch[4].match(/^k$/i)
               ? 0
-              : whoMatch[4].match(/^adult$/i) ? 19 : parseInt(whoMatch[4], 0),
+              : whoMatch[4].match(/^adult$/i) ? 22 : parseInt(whoMatch[4], 0),
           max: whoMatch[5].match(/^pre-?k$/i)
             ? -1
             : whoMatch[5].match(/^k$/i)
               ? 0
-              : whoMatch[5].match(/^adult$/i) ? 19 : parseInt(whoMatch[5], 0),
+              : whoMatch[5].match(/^adult$/i) ? 22 : parseInt(whoMatch[5], 0),
           specialNeedsAdults: whoMatch[6].trim() ? true : false,
           minText: whoMatch[4],
           maxText: whoMatch[5]
