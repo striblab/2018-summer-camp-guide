@@ -229,4 +229,9 @@
     color: map-get($grays, 'medium');
     padding-bottom: 1em;
   }
+
+  .geocoding-error {
+    font-style: italic;
+    color: map-get($theme, 'red-dark');
+  }
 }

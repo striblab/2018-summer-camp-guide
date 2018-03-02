@@ -203,7 +203,9 @@
                 </form>
 
                 <div class="found-address">
-                  {{#if addressFound}}
+                  {{#if geocodingError}}
+                    <span class="geocoding-error">{{ geocodingError }}</span>
+                  {{elseif addressFound}}
                     Found: {{ addressFound }}
                   {{else}}
                     &nbsp;
@@ -358,11 +360,17 @@ export default {
         return;
       }
 
-      this.set({ isGeocoding: true });
+      this.set({ isGeocoding: true, geocodingError: false });
       this.geocoder.geocode({ address }, (results, status) => {
         if (status !== 'OK' || !results || !results.length) {
           console.error(`Bad response from geocoder: ${status}`);
-          // TODO handle error
+          this.set({
+            isGeocoding: false,
+            userLocation: null,
+            addressFound: false,
+            geocodingError:
+              'There was an error looking up that address.  Please try again or try to be more specific.'
+          });
           return;
         }
 
