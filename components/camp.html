@@ -83,7 +83,7 @@
         {{#if camp.location }}
           <figure>
             <a href="{{ mapURL }}" target="_blank" rel="noopener">
-              <img src="{{ mapImage(camp.location.lat, camp.location.lng, mapStylesStrings, mapMarkerColor) }}&zoom=17"
+              <img src="{{ mapImage(camp.location.lat, camp.location.lng, mapStylesStrings, mapMarkerColor) }}"
                 alt="Location map of {{ camp.title }}">
             </a>
 
@@ -148,7 +148,7 @@ https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pi
         lng
       )},${encodeURIComponent(
         lat
-      )},12/454x${Math.floor(
+      )},11/454x${Math.floor(
         454 * (9 / 16)
       )}?access_token=pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA`;
 
