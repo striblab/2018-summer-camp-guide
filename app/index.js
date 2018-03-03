@@ -10,6 +10,7 @@
 //import utilsFn from './utils.js';
 import Page from '../components/page.html';
 import parser from './parse-incoming-data.js';
+import LazyLoad from 'vanilla-lazyload';
 
 // Setup utils function
 //utilsFn({});
@@ -25,12 +26,16 @@ if (!share && window.$ && window.$('.story-share.body-sharing-top').length) {
   share = window.$('.story-share.body-sharing-top').get(0).outerHTML;
 }
 
+// Lazy load images
+let lazyloader = new LazyLoad();
+
 // Initialize components
 let mainComponent = new Page({
   target: document.querySelector('.article-lcd-body-content'),
   hydrate: true,
   data: {
-    share: share
+    share: share,
+    lazyloader: lazyloader
   }
 });
 
