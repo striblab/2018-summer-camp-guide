@@ -137,16 +137,31 @@ export default {
     },
 
     mapImage: function(lat, lng, mapStylesStrings, mapMarkerColor) {
-      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
-      return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
+      return `
+https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pin-m+${encodeURIComponent(
+        mapMarkerColor.replace(/^0x/, '')
+      )}(${encodeURIComponent(
+        lng
+      )},${encodeURIComponent(
         lat
-      )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
-        ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
-      )}&zoom=12&format=png&size=454x${Math.floor(
+      )})/${encodeURIComponent(
+        lng
+      )},${encodeURIComponent(
+        lat
+      )},12/454x${Math.floor(
         454 * (9 / 16)
-      )}&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
-        .map(s => 'style=' + encodeURIComponent(s))
-        .join('&')}`;
+      )}?access_token=pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA`;
+
+      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
+      // return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
+      //   lat
+      // )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
+      //   ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
+      // )}&zoom=12&format=png&size=454x${Math.floor(
+      //   454 * (9 / 16)
+      // )}&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
+      //   .map(s => 'style=' + encodeURIComponent(s))
+      //   .join('&')}`;
     }
   },
 
