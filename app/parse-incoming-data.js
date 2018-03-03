@@ -6,7 +6,6 @@
 // Dependencies
 const { DateTime } = require('luxon');
 const categories = require('./categories.js');
-console.log(categories);
 
 // event_id: '127489',
 // type: 'Camp',

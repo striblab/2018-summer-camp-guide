@@ -3,7 +3,7 @@
  */
 'use strict';
 
-import categories from './categories.js';
+const categories = require('./categories.js');
 
 module.exports = {
   distance: function(lat1, lng1, lat2, lng2, unit = 'miles') {

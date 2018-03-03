@@ -8,6 +8,9 @@
  */
 'use strict';
 
+// Catch things
+process.on('unhandledRejection', console.error);
+
 // Dependencies
 const fs = require('fs');
 const path = require('path');
