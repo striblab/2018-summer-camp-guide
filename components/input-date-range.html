@@ -3,18 +3,30 @@
 
   <div id="input-date-range-{{ id }}-fields" class="input-date-range-fields">
     <label for="input-date-range-{{ id }}-min" class="sr-only">Minimum date</label>
-    <input id="input-date-range-{{ id }}-min" type="date"
-      min="{{ min && min.toISODate ? min.toISODate() : min }}"
-      max="{{ max && max.toISODate ? max.toISODate() : max }}"
-      bind:value="minValue">
+
+    {{#if !isIE }}
+      <input id="input-date-range-{{ id }}-min" type="date"
+        min="{{ min && min.toISODate ? min.toISODate() : min }}"
+        max="{{ max && max.toISODate ? max.toISODate() : max }}"
+        bind:value="minValue">
+    {{else}}
+      <input ref:dateMin id="input-date-range-{{ id }}-min" type="text"
+        bind:value="minValue">
+    {{/if}}
 
     <span class="input-date-range-spacer">to</span>
 
     <label for="input-date-range-{{ id }}-min" class="sr-only">Maximum date</label>
-    <input id="input-date-range-{{ id }}-max" type="date"
-      min="{{ min && min.toISODate ? min.toISODate() : min }}"
-      max="{{ max && max.toISODate ? max.toISODate() : max }}"
-      bind:value="maxValue">
+
+    {{#if !isIE }}
+      <input id="input-date-range-{{ id }}-max" type="date"
+        min="{{ min && min.toISODate ? min.toISODate() : min }}"
+        max="{{ max && max.toISODate ? max.toISODate() : max }}"
+        bind:value="maxValue">
+    {{else}}
+      <input ref:dateMax id="input-date-range-{{ id }}-max" type="text"
+        bind:value="maxValue">
+    {{/if}}
   </div>
 </div>
 
@@ -23,6 +35,13 @@ import { track } from '../app/common.js';
 
 export default {
   oncreate: function() {
+    // The way svelte creates the input type date that IE doesn't like,
+    // throws an error, but this is ok.  :/
+    if (this.get('isIE')) {
+      this.refs.dateMin.setAttribute('type', 'date');
+      this.refs.dateMax.setAttribute('type', 'date');
+    }
+
     // Set default values.  Note that (in chrome) if you X out date
     // then seting value again doesn't matter
     this.observe('minValue', n => {
@@ -51,7 +70,8 @@ export default {
   data: () => {
     return {
       id: Math.floor(Math.random() * 1000000),
-      label: 'Date range'
+      label: 'Date range',
+      isIE: typeof window !== 'undefined' && typeof document !== 'undefined' && document.documentMode
     };
   }
 };

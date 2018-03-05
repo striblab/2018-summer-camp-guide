@@ -17,7 +17,7 @@
   },
   "js": {
     "globals": [
-      "//cdn.polyfill.io/v2/polyfill.min.js?features=fetch,default",
+      "//cdn.polyfill.io/v2/polyfill.js?features=fetch,Array.prototype.find,default",
       "//static.startribune.com/assets/libs/nodep-date-input-polyfill/5.2.0/nodep-date-input-polyfill.dist.js"
     ]
   },
