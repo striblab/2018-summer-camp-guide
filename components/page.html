@@ -236,7 +236,7 @@
       <div class="camps">
         {{#each filteredCamps as c, i @id}}
           {{#if i >= pageStart && i < pageStop}}
-            <Camp camp="{{ c }}" userLocation="{{ userLocation }}" />
+            <Camp camp="{{ c }}" userLocation="{{ userLocation }}" lazyloader="{{ lazyloader }}" />
           {{/if}}
         {{else}}
           <p class="no-camps">
@@ -314,6 +314,10 @@ export default {
       },
       { init: false }
     );
+
+    if (this.get('lazyloader')) {
+      this.get('lazyloader').update();
+    }
   },
 
   methods: {
