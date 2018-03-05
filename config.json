@@ -1,14 +1,11 @@
 {
-  "about this file": "This document defines configuration for this project that is not content or copy.",
+  "about this file":
+    "This document defines configuration for this project that is not content or copy.",
   "projectIdentifier": "2018-summer-camp-guide",
   "cms": {
     "id": "474068733",
-    "pages": [
-      "474068733"
-    ],
-    "lcds": [
-      "474062273"
-    ],
+    "pages": ["474068733"],
+    "lcds": ["474062273"],
     "componentMapping": {
       "article-lcd-body-content": "component-page.html"
     }
@@ -20,19 +17,21 @@
   },
   "js": {
     "globals": [
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs",
+      "//cdn.polyfill.io/v2/polyfill.min.js?features=fetch,default",
       "//static.startribune.com/assets/libs/nodep-date-input-polyfill/5.2.0/nodep-date-input-polyfill.dist.js"
     ]
   },
   "data": {
-    "camps": "http://static.startribune.com/projects/camp-guide/camp_guide-2018.json"
+    "camps":
+      "http://static.startribune.com/projects/camp-guide/camp_guide-2018.json"
   },
   "content": {},
   "publish": {
     "production": {
       "bucket": "static.startribune.com",
       "path": "news/projects/all/2018-summer-camp-guide",
-      "url": "http://static.startribune.com/news/projects/all/2018-summer-camp-guide/",
+      "url":
+        "http://static.startribune.com/news/projects/all/2018-summer-camp-guide/",
       "cacheSeconds": 600
     }
   },
