@@ -28,13 +28,14 @@
 }
 
 .project-footer {
-  font-size: 0.85em;
+  font-size: 0.8em;
   color: map-get($grays, medium);
   border-top: 1px solid #959595;
   padding-top: 1em;
   margin-top: 3em;
 
   p {
+    @include font-styles('benton-sans');
     margin-bottom: 1em;
   }
 }
