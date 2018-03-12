@@ -3,15 +3,31 @@
  */
 
 .camp {
-  color: #444444;
+    float: left;
+    color: #444444;
+    padding: 2em;
+    border: 1px solid #ccc;
+    width: 49%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    min-height: 480px;
+    
+@media only screen and (min-device-width: 320px) and (max-device-width: 660px) {
+    width: 100%;
+    margin-right: 0%;
+    margin-bottom: 2%;
+    min-height: auto;
+	}
+
 
   h3 {
     font-size: 1.75em;
+    padding-top: 0em;
+    margin: -.5em auto 0 auto;  
   }
 
   p {
     @include font-styles('benton-sans');
-
     margin-bottom: 1em;
     padding-right: 0.5em;
   }
@@ -32,10 +48,12 @@
   }
 
   .col-100 {
-    margin-bottom: 2em;
+    margin-bottom: 0em;
   }
 
   .col-md-50 {
-    margin-bottom: 2em;
+    margin-bottom: 0em;
   }
 }
+
+div.camp:nth-child(even) {margin-right: 0%;}
