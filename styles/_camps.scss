@@ -12,10 +12,10 @@
     margin-bottom: 2%;
     min-height: 480px;
     
-@media only screen and (min-device-width: 320px) and (max-device-width: 660px) {
+    @media only screen and (min-device-width: 320px) and (max-device-width: 660px) {
     width: 100%;
     margin-right: 0%;
-    margin-bottom: 2%;
+    margin-bottom: 1em;
     min-height: auto;
 	}
 
@@ -23,7 +23,7 @@
   h3 {
     font-size: 1.75em;
     padding-top: 0em;
-    margin: -.5em auto 0 auto;  
+    margin: -.35em auto 0 auto;  
   }
 
   p {
@@ -34,6 +34,11 @@
 
   ul {
     padding-left: 1em;
+      
+        @media only screen and (min-device-width: 320px) and (max-device-width: 660px) {  
+        margin-bottom: 0; 
+        }
+      
   }
 
   ul li {
