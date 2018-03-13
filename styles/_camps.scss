@@ -10,7 +10,7 @@
     width: 49%;
     margin-right: 2%;
     margin-bottom: 2%;
-    min-height: 480px;
+    min-height: 500px;
     
     @media only screen and (min-device-width: 320px) and (max-device-width: 660px) {
     width: 100%;
@@ -34,8 +34,6 @@
 
   ul {
     padding-left: 1em;
-      
-        @media only screen and (min-device-width: 320px) and (max-device-width: 660px) {  
         margin-bottom: 0; 
         }
       
