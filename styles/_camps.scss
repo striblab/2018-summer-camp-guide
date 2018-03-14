@@ -58,3 +58,11 @@
 }
 
 div.camp:nth-child(even) {margin-right: 0%;}
+
+
+.camps:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
