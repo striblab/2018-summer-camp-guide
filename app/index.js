@@ -12,6 +12,9 @@ import Page from '../components/page.html';
 import parser from './parse-incoming-data.js';
 import LazyLoad from 'vanilla-lazyload';
 
+// TOGGLE MAPS
+const noMaps = true;
+
 // Setup utils function
 //utilsFn({});
 
@@ -47,6 +50,7 @@ else {
         data: {
           share: share,
           lazyloader: lazyloader,
+          noMaps: noMaps,
           camps: parser(response.items ? response.items : response)
         }
       });

@@ -1,5 +1,5 @@
 <div class="strib strib-styles strib-styles-specifically">
-  <div class="container-lg">
+  <div class="container-lg {{ noMaps ? 'no-maps' : '' }}">
     <div class="hero cf">
       <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">
 
@@ -236,7 +236,8 @@
       <div class="camps">
         {{#each filteredCamps as c, i @id}}
           {{#if i >= pageStart && i < pageStop}}
-            <Camp camp="{{ c }}" userLocation="{{ userLocation }}" lazyloader="{{ lazyloader }}" />
+            <Camp camp="{{ c }}" userLocation="{{ userLocation }}"
+              lazyloader="{{ lazyloader }}" noMaps="{{ noMaps }}" />
           {{/if}}
         {{else}}
           <p class="no-camps">
@@ -683,7 +684,7 @@ export default {
     return {
       isBrowser: typeof window != 'undefined',
       page: 1,
-      perPage: typeof window != 'undefined' ? 25 : 99999,
+      perPage: typeof window != 'undefined' ? 30 : 99999,
       addressInput: '',
       addressFound: '',
       showFilter: null,

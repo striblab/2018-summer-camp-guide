@@ -2,11 +2,27 @@
  * Styles for camps
  */
 
+.no-maps .camp {
+  margin-bottom: 3em;
+
+  @media only screen and (min-width: map-get($breakpoints, 'md')) {
+    width: 49%;
+    border: 1px solid #CCCCCC;
+    margin-bottom: 2%;
+    padding: 2em;
+
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .camp {
   color: #444444;
 
   h3 {
     font-size: 1.75em;
+    padding-top: 0;
   }
 
   p {

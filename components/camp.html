@@ -2,8 +2,8 @@
   {{#if camp}}
     <h3>{{ camp.title }}</h3>
 
-    <div class="row">
-      <div class="col col-100 col-md-50">
+    <div class="{{ !noMaps ? 'row' : '' }}">
+      <div class="{{ !noMaps ? 'col col-100 col-md-50' : '' }}">
         <p>{{ camp.description }}</p>
 
         <ul>
@@ -68,7 +68,7 @@
           {{/if}}
 
           {{#if camp.venue}}
-            <li class="before-md-display-list-item">Venue:
+            <li class="{{ !noMaps ? 'before-md-display-list-item' : '' }}">Venue:
               {{#if camp.venue.various}}
                 <em>This camp has various venues.</em>
               {{else}}
@@ -79,7 +79,7 @@
         </ul>
       </div>
 
-      {{#if isBrowser}}
+      {{#if isBrowser && !noMaps}}
         <div class="col col-100 col-md-50 after-md-display-inline">
           {{#if camp.location }}
             <figure>
@@ -118,7 +118,6 @@ import {
 } from '../app/common.js';
 
 export default {
-
   oncreate: function() {
     if (this.get('lazyloader')) {
       this.get('lazyloader').update();
@@ -152,13 +151,9 @@ export default {
       return `
 https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pin-m+${encodeURIComponent(
         mapMarkerColor.replace(/^0x/, '')
-      )}(${encodeURIComponent(
-        lng
-      )},${encodeURIComponent(
+      )}(${encodeURIComponent(lng)},${encodeURIComponent(
         lat
-      )})/${encodeURIComponent(
-        lng
-      )},${encodeURIComponent(
+      )})/${encodeURIComponent(lng)},${encodeURIComponent(
         lat
       )},11/454x${Math.floor(
         454 * (9 / 16)

@@ -36,6 +36,7 @@
 
   p {
     @include font-styles('benton-sans');
+
     margin-bottom: 1em;
   }
 }
@@ -43,4 +44,13 @@
 .article-share {
   margin-top: 0;
   margin-bottom: 2em;
+}
+
+.no-maps .camps {
+  @media only screen and (min-width: map-get($breakpoints, 'md')) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 2em;
+  }
 }
