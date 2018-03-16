@@ -68,11 +68,15 @@
           {{/if}}
 
           {{#if camp.venue}}
-            <li class="{{ !noMaps ? 'before-md-display-list-item' : '' }}">Venue:
+            <li class="{{ !noMaps ? 'before-md-display-list-item' : '' }}">Location:
               {{#if camp.venue.various}}
-                <em>This camp has various venues.</em>
+                <em>This camp has various locations.</em>
               {{else}}
-                {{ camp.venue.name }}, {{ camp.venue.city }}
+                {{#if mapURL}}
+                  <a href="{{ mapURL }}" target="_blank" rel="noopener">{{ camp.venue.name }}, {{ camp.venue.city }}</a>
+                {{else}}
+                  {{ camp.venue.name }}, {{ camp.venue.city }}
+                {{/if}}
               {{/if}}
             </li>
           {{/if}}
@@ -191,10 +195,10 @@ https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pi
     },
 
     mapURL: camp => {
-      return camp && camp.location
+      return camp && camp.venue
         ? `https://maps.google.com/?q=${encodeURIComponent(
-            camp.location.lat
-          )},${encodeURIComponent(camp.location.lng)}`
+            camp.venue.name + ', ' + camp.venue.city
+          )}`
         : '';
     },
 
