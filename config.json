@@ -17,6 +17,7 @@
   },
   "js": {
     "globals": [
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs",
       "//cdn.polyfill.io/v2/polyfill.js?features=fetch,Array.prototype.find,default",
       "//static.startribune.com/assets/libs/nodep-date-input-polyfill/5.2.0/nodep-date-input-polyfill.dist.js"
     ]
