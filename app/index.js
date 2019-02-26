@@ -10,7 +10,7 @@
 //import utilsFn from './utils.js';
 import Page from '../components/page.html';
 import parser from './parse-incoming-data.js';
-import LazyLoad from 'vanilla-lazyload';
+import LazyLoad from 'vanilla-lazyload/dist/lazyload';
 
 // TOGGLE MAPS
 const noMaps = true;
@@ -39,7 +39,7 @@ else {
 
   // Get data
   window
-    .fetch('//static.startribune.com/projects/camp-guide/camp_guide-2018.json')
+    .fetch('//static.startribune.com/projects/camp-guide/camp_guide-2019.json')
     .then(response => response.json())
     .then(response => {
       // Initialize components, after data is loaded so that the non-js

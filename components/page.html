@@ -4,7 +4,7 @@
       <img src="http://static.startribune.com/news/projects/all/2018-summer-camp-guide/assets/images/camp-guide-logo.svg" alt="Star Tribune summer camp guide logo">
 
       <div class="hero-title">
-        <h1>2018 Minnesota Summer Camp&nbsp;Guide</h1>
+        <h1>2019 Minnesota Summer Camp&nbsp;Guide</h1>
         <p class="lead">Kids can learn how to program robots, play chess,
           speak Chinese or dance hip-hop style, among other
           enrichment options.</p>
@@ -277,206 +277,268 @@
 </div>
 
 <script>
-import Camp from './camp.html';
-import GA from './ga.html';
-import InputSlider from './input-slider.html';
-import InputDateRange from './input-date-range.html';
-import { DateTime } from 'luxon';
-import { setDeep, getDeep } from 'svelte-extras';
-import _ from 'lodash';
-import {
-  distance,
-  track,
-  displayCategory,
-  isSubCategory
-} from '../app/common.js';
-
-export default {
-  components: {
-    Camp,
-    InputSlider,
-    InputDateRange,
-    GA
-  },
-
-  oncreate: function() {
-    // Make geocoder
-    if (this.get('isBrowser') && window.google) {
-      this.geocoder = new window.google.maps.Geocoder();
-    }
-
-    // Track some variable changes
-    this.observe(
-      'page',
-      n => {
-        if (n) {
-          this.track('page_change', n);
-        }
-      },
-      { init: false }
-    );
-
-    if (this.get('lazyloader')) {
-      this.get('lazyloader').update();
-    }
-  },
-
-  methods: {
-    setDeep,
-    getDeep,
+  import Camp from "./camp.html";
+  import GA from "./ga.html";
+  import InputSlider from "./input-slider.html";
+  import InputDateRange from "./input-date-range.html";
+  import { DateTime } from "luxon";
+  import { setDeep, getDeep } from "svelte-extras";
+  import _ from "lodash";
+  import {
+    distance,
     track,
+    displayCategory,
+    isSubCategory
+  } from "../app/common.js";
 
-    // Toggle property
-    toggle: function(e, prop, on) {
-      if (e && e.preventDefault) {
-        e.preventDefault();
-      }
-
-      let v = this.get(prop);
-      if (v === on) {
-        v = null;
-      } else {
-        v = on;
-      }
-
-      this.setDeep(prop, v);
+  export default {
+    components: {
+      Camp,
+      InputSlider,
+      InputDateRange,
+      GA
     },
 
-    categoryCheck: function(e, category) {
-      if (e && e.preventDefault) {
-        e.preventDefault();
+    oncreate: function() {
+      // Make geocoder
+      if (this.get("isBrowser") && window.google) {
+        this.geocoder = new window.google.maps.Geocoder();
       }
 
-      let current = this.getDeep(`filters.categories.${category}`);
-      this.setDeep(`filters.categories.${category}`, !current);
+      // Track some variable changes
+      this.observe(
+        "page",
+        n => {
+          if (n) {
+            this.track("page_change", n);
+          }
+        },
+        { init: false }
+      );
 
-      this.track('activity_filter', `${category}`);
+      if (this.get("lazyloader")) {
+        this.get("lazyloader").update();
+      }
     },
 
-    searchAddress: function(e, address) {
-      if (e && e.preventDefault) {
-        e.preventDefault();
-      }
+    methods: {
+      setDeep,
+      getDeep,
+      track,
 
-      // If address not provided, use the input
-      address = address || this.get('addressInput');
+      // Toggle property
+      toggle: function(e, prop, on) {
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        }
 
-      // If no address, nevermind
-      if (!address) {
-        this.set({
-          userLocation: undefined,
-          addressFound: undefined
-        });
-        return;
-      }
+        let v = this.get(prop);
+        if (v === on) {
+          v = null;
+        } else {
+          v = on;
+        }
 
-      this.set({ isGeocoding: true, geocodingError: false });
-      this.geocoder.geocode({ address }, (results, status) => {
-        if (status !== 'OK' || !results || !results.length) {
-          console.error(`Bad response from geocoder: ${status}`);
+        this.setDeep(prop, v);
+      },
+
+      categoryCheck: function(e, category) {
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        }
+
+        let current = this.getDeep(`filters.categories.${category}`);
+        this.setDeep(`filters.categories.${category}`, !current);
+
+        this.track("activity_filter", `${category}`);
+      },
+
+      searchAddress: function(e, address) {
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        }
+
+        // If address not provided, use the input
+        address = address || this.get("addressInput");
+
+        // If no address, nevermind
+        if (!address) {
           this.set({
-            isGeocoding: false,
-            userLocation: null,
-            addressFound: false,
-            geocodingError:
-              'There was an error looking up that address.  Please try again or try to be more specific.'
+            userLocation: undefined,
+            addressFound: undefined
           });
           return;
         }
 
-        this.set({
-          userLocation: results[0].geometry.location.toJSON(),
-          addressFound: results[0].formatted_address,
-          isGeocoding: false
-        });
-      });
-
-      this.track('location_filter', 'searched');
-    }
-  },
-
-  helpers: {
-    displayCategory,
-    isSubCategory
-  },
-
-  computed: {
-    // Create filtered and sorted camps
-    filteredCamps: (camps, filters, userLocation) => {
-      let filtered = camps;
-
-      if (camps && camps.length && filters) {
-        // Price, min or max price within range
-        // camp:   100 - 500
-        // filter: 400 - 800, 200 - 300, 0 - 200
-        filtered = filtered.filter(c => {
-          return (
-            filters.minPrice <= c.maxPrice && filters.maxPrice >= c.minPrice
-          );
-        });
-
-        // Date filtering
-        if (filters.minDate) {
-          let m = DateTime.fromISO(filters.minDate);
-          filtered = filtered.filter(c => {
-            return c.start.ts >= m.ts || c.end.ts >= m.ts;
-          });
-        }
-        if (filters.maxDate) {
-          let m = DateTime.fromISO(filters.maxDate);
-          filtered = filtered.filter(c => {
-            return c.start.ts <= m.ts || c.end.ts <= m.ts;
-          });
-        }
-
-        // Types.  Exclude any that are explicitly excluded
-        if (filters.type) {
-          const typeIn = (types, type) => {
-            return !!types.find(t => {
-              return t && t.type === type;
+        this.set({ isGeocoding: true, geocodingError: false });
+        this.geocoder.geocode({ address }, (results, status) => {
+          if (status !== "OK" || !results || !results.length) {
+            console.error(`Bad response from geocoder: ${status}`);
+            this.set({
+              isGeocoding: false,
+              userLocation: null,
+              addressFound: false,
+              geocodingError:
+                "There was an error looking up that address.  Please try again or try to be more specific."
             });
-          };
+            return;
+          }
 
+          this.set({
+            userLocation: results[0].geometry.location.toJSON(),
+            addressFound: results[0].formatted_address,
+            isGeocoding: false
+          });
+        });
+
+        this.track("location_filter", "searched");
+      }
+    },
+
+    helpers: {
+      displayCategory,
+      isSubCategory
+    },
+
+    computed: {
+      // Create filtered and sorted camps
+      filteredCamps: (camps, filters, userLocation) => {
+        let filtered = camps;
+
+        if (camps && camps.length && filters) {
+          // Price, min or max price within range
+          // camp:   100 - 500
+          // filter: 400 - 800, 200 - 300, 0 - 200
           filtered = filtered.filter(c => {
-            let included = false;
+            return (
+              filters.minPrice <= c.maxPrice && filters.maxPrice >= c.minPrice
+            );
+          });
 
-            for (const t in filters.type) {
-              included = included
-                ? included
-                : filters.type[t] && typeIn(c.types, t);
+          // Date filtering
+          if (filters.minDate) {
+            let m = DateTime.fromISO(filters.minDate);
+            filtered = filtered.filter(c => {
+              return c.start.ts >= m.ts || c.end.ts >= m.ts;
+            });
+          }
+          if (filters.maxDate) {
+            let m = DateTime.fromISO(filters.maxDate);
+            filtered = filtered.filter(c => {
+              return c.start.ts <= m.ts || c.end.ts <= m.ts;
+            });
+          }
+
+          // Types.  Exclude any that are explicitly excluded
+          if (filters.type) {
+            const typeIn = (types, type) => {
+              return !!types.find(t => {
+                return t && t.type === type;
+              });
+            };
+
+            filtered = filtered.filter(c => {
+              let included = false;
+
+              for (const t in filters.type) {
+                included = included
+                  ? included
+                  : filters.type[t] && typeIn(c.types, t);
+              }
+
+              return included;
+            });
+          }
+
+          // Age.  Only filter ones that are of type age.
+          if (_.isInteger(filters.minAge) && _.isInteger(filters.maxAge)) {
+            filtered = filtered.filter(c => {
+              // Check if camp range is outside filter range
+              return c.who &&
+                c.who.type === "age" &&
+                ((c.who.min < filters.minAge && c.who.max < filters.minAge) ||
+                  (c.who.min > filters.maxAge && c.who.max > filters.maxAge))
+                ? false
+                : true;
+            });
+          }
+
+          // Grade.  Only filter ones that are of type grade.
+          if (_.isInteger(filters.minGrade) && _.isInteger(filters.maxGrade)) {
+            // Check if camp range is outside filter range
+            filtered = filtered.filter(c => {
+              return c.who &&
+                c.who.type === "grade" &&
+                ((c.who.min < filters.minGrade && c.who.max < filters.minGrade) ||
+                  (c.who.min > filters.maxGrade && c.who.max > filters.maxGrade))
+                ? false
+                : true;
+            });
+          }
+
+          // Categories
+          if (filters.categories) {
+            let categoryFilters = [];
+            for (const c in filters.categories) {
+              if (filters.categories[c]) {
+                categoryFilters.push(c);
+              }
             }
 
-            return included;
+            if (categoryFilters.length) {
+              filtered = filtered.filter(c => {
+                return c.categories.find(a => {
+                  return ~categoryFilters.indexOf(a);
+                });
+              });
+            }
+          }
+        }
+
+        // Sort by distance
+        if (userLocation && userLocation.lat) {
+          filtered = filtered.sort((a, b) => {
+            if (!a.location || !b.location) {
+              return -9999999;
+            }
+
+            return (
+              distance(
+                a.location.lat,
+                a.location.lng,
+                userLocation.lat,
+                userLocation.lng
+              ) -
+              distance(
+                b.location.lat,
+                b.location.lng,
+                userLocation.lat,
+                userLocation.lng
+              )
+            );
           });
         }
 
-        // Age.  Only filter ones that are of type age.
-        if (_.isInteger(filters.minAge) && _.isInteger(filters.maxAge)) {
-          filtered = filtered.filter(c => {
-            // Check if camp range is outside filter range
-            return c.who &&
-              c.who.type === 'age' &&
-              ((c.who.min < filters.minAge && c.who.max < filters.minAge) ||
-                (c.who.min > filters.maxAge && c.who.max > filters.maxAge))
-              ? false
-              : true;
-          });
+        return filtered;
+      },
+
+      // Category list
+      categoryList: camps => {
+        let categories = [];
+
+        if (!camps) {
+          return [];
         }
 
-        // Grade.  Only filter ones that are of type grade.
-        if (_.isInteger(filters.minGrade) && _.isInteger(filters.maxGrade)) {
-          // Check if camp range is outside filter range
-          filtered = filtered.filter(c => {
-            return c.who &&
-              c.who.type === 'grade' &&
-              ((c.who.min < filters.minGrade && c.who.max < filters.minGrade) ||
-                (c.who.min > filters.maxGrade && c.who.max > filters.maxGrade))
-              ? false
-              : true;
-          });
-        }
+        camps.forEach(c => {
+          categories = categories.concat(c.categories);
+        });
 
-        // Categories
+        return _.sortBy(categories.filter((v, i, a) => a.indexOf(v) === i));
+      },
+
+      // Category filter list
+      categoryFilterCount: filters => {
         if (filters.categories) {
           let categoryFilters = [];
           for (const c in filters.categories) {
@@ -485,235 +547,177 @@ export default {
             }
           }
 
-          if (categoryFilters.length) {
-            filtered = filtered.filter(c => {
-              return c.categories.find(a => {
-                return ~categoryFilters.indexOf(a);
-              });
-            });
-          }
-        }
-      }
-
-      // Sort by distance
-      if (userLocation && userLocation.lat) {
-        filtered = filtered.sort((a, b) => {
-          if (!a.location || !b.location) {
-            return -9999999;
-          }
-
-          return (
-            distance(
-              a.location.lat,
-              a.location.lng,
-              userLocation.lat,
-              userLocation.lng
-            ) -
-            distance(
-              b.location.lat,
-              b.location.lng,
-              userLocation.lat,
-              userLocation.lng
-            )
-          );
-        });
-      }
-
-      return filtered;
-    },
-
-    // Category list
-    categoryList: camps => {
-      let categories = [];
-
-      if (!camps) {
-        return [];
-      }
-
-      camps.forEach(c => {
-        categories = categories.concat(c.categories);
-      });
-
-      return _.sortBy(categories.filter((v, i, a) => a.indexOf(v) === i));
-    },
-
-    // Category filter list
-    categoryFilterCount: filters => {
-      if (filters.categories) {
-        let categoryFilters = [];
-        for (const c in filters.categories) {
-          if (filters.categories[c]) {
-            categoryFilters.push(c);
-          }
+          return categoryFilters.length;
         }
 
-        return categoryFilters.length;
-      }
+        return 0;
+      },
 
-      return 0;
-    },
+      // Stay type filter count
+      stayTypeFilterCount: filters => {
+        if (filters.type) {
+          return _.filter(filters.type).length;
+        }
 
-    // Stay type filter count
-    stayTypeFilterCount: filters => {
-      if (filters.type) {
-        return _.filter(filters.type).length;
-      }
+        return 0;
+      },
 
-      return 0;
-    },
+      // Calculate min price of all camps
+      minPrice: camps => {
+        let min = camps
+          ? camps
+              .map(c => c.minPrice)
+              .reduce((memo, p) => {
+                return Math.min(memo || 999999, p);
+              })
+          : 0;
 
-    // Calculate min price of all camps
-    minPrice: camps => {
-      let min = camps
-        ? camps.map(c => c.minPrice).reduce((memo, p) => {
-            return Math.min(memo || 999999, p);
-          })
-        : 0;
+        // Round to lowest 100
+        return Math.max(Math.floor(min / 100) * 100, 0);
+      },
 
-      // Round to lowest 100
-      return Math.max(Math.floor(min / 100) * 100, 0);
-    },
+      // Calculate max price of all the camps
+      maxPrice: camps => {
+        let max = camps
+          ? camps
+              .map(c => c.maxPrice)
+              .reduce((memo, p) => {
+                return Math.max(memo || 0, p);
+              })
+          : 1000;
 
-    // Calculate max price of all the camps
-    maxPrice: camps => {
-      let max = camps
-        ? camps.map(c => c.maxPrice).reduce((memo, p) => {
-            return Math.max(memo || 0, p);
-          })
-        : 1000;
+        // Round to highest 100
+        return Math.ceil(max / 100) * 100;
+      },
 
-      // Round to highest 100
-      return Math.ceil(max / 100) * 100;
-    },
+      // Calculate min age of all camps
+      minAge: camps => {
+        return camps
+          ? camps
+              .map(c => (c.who && c.who.type === "age" ? c.who.min : 999999))
+              .reduce((memo, p) => {
+                return Math.min(memo || 999999, p);
+              })
+          : 0;
+      },
 
-    // Calculate min age of all camps
-    minAge: camps => {
-      return camps
-        ? camps
-            .map(c => (c.who && c.who.type === 'age' ? c.who.min : 999999))
-            .reduce((memo, p) => {
-              return Math.min(memo || 999999, p);
+      // Calculate max age of all the camps
+      maxAge: camps => {
+        return camps
+          ? camps
+              .map(c => (c.who && c.who.type === "age" ? c.who.max : 0))
+              .reduce((memo, p) => {
+                return Math.max(memo || 0, p);
+              })
+          : 1000;
+      },
+
+      // Calculate min grade of all camps
+      minGrade: camps => {
+        return camps
+          ? camps
+              .map(c => (c.who && c.who.type === "grade" ? c.who.min : 999999))
+              .reduce((memo, p) => {
+                return Math.min(memo || 999999, p);
+              })
+          : 0;
+      },
+
+      // Calculate max grade of all the camps
+      maxGrade: camps => {
+        return camps
+          ? camps
+              .map(c => (c.who && c.who.type === "grade" ? c.who.max : 0))
+              .reduce((memo, p) => {
+                return Math.max(memo || 0, p);
+              })
+          : 1000;
+      },
+
+      // Calculate min date of all camps
+      minDate: camps => {
+        return camps
+          ? camps.reduce((memo, p) => {
+              return memo && memo.ts && p.start && memo.ts < p.start.ts
+                ? memo
+                : p.start;
             })
-        : 0;
-    },
+          : "1900-01-01";
+      },
 
-    // Calculate max age of all the camps
-    maxAge: camps => {
-      return camps
-        ? camps
-            .map(c => (c.who && c.who.type === 'age' ? c.who.max : 0))
-            .reduce((memo, p) => {
-              return Math.max(memo || 0, p);
+      // Calculate max date of all the camps
+      maxDate: camps => {
+        return camps
+          ? camps.reduce((memo, p) => {
+              return memo && memo.ts && memo.ts > p.end.ts ? memo : p.end;
             })
-        : 1000;
-    },
+          : "3000-01-01";
+      },
 
-    // Calculate min grade of all camps
-    minGrade: camps => {
-      return camps
-        ? camps
-            .map(c => (c.who && c.who.type === 'grade' ? c.who.min : 999999))
-            .reduce((memo, p) => {
-              return Math.min(memo || 999999, p);
-            })
-        : 0;
-    },
+      // >=
+      pageStart: (page, perPage, filteredCamps) => {
+        let pageStart = (page - 1) * perPage;
+        return filteredCamps && pageStart >= filteredCamps.length ? 0 : pageStart;
+      },
 
-    // Calculate max grade of all the camps
-    maxGrade: camps => {
-      return camps
-        ? camps
-            .map(c => (c.who && c.who.type === 'grade' ? c.who.max : 0))
-            .reduce((memo, p) => {
-              return Math.max(memo || 0, p);
-            })
-        : 1000;
-    },
+      // <
+      pageStop: (page, perPage, filteredCamps) => {
+        return page * perPage;
+      },
 
-    // Calculate min date of all camps
-    minDate: camps => {
-      return camps
-        ? camps.reduce((memo, p) => {
-            return memo && memo.ts && p.start && memo.ts < p.start.ts
-              ? memo
-              : p.start;
-          })
-        : '1900-01-01';
-    },
+      // Total pages
+      totalPages: (perPage, filteredCamps) => {
+        if (!filteredCamps) {
+          return 1;
+        }
 
-    // Calculate max date of all the camps
-    maxDate: camps => {
-      return camps
-        ? camps.reduce((memo, p) => {
-            return memo && memo.ts && memo.ts > p.end.ts ? memo : p.end;
-          })
-        : '3000-01-01';
-    },
+        return Math.ceil(filteredCamps.length / perPage);
+      },
 
-    // >=
-    pageStart: (page, perPage, filteredCamps) => {
-      let pageStart = (page - 1) * perPage;
-      return filteredCamps && pageStart >= filteredCamps.length ? 0 : pageStart;
-    },
-
-    // <
-    pageStop: (page, perPage, filteredCamps) => {
-      return page * perPage;
-    },
-
-    // Total pages
-    totalPages: (perPage, filteredCamps) => {
-      if (!filteredCamps) {
-        return 1;
+      // Not sure better way to do this
+      totalPagesArray: totalPages => {
+        let pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+        return pages;
       }
-
-      return Math.ceil(filteredCamps.length / perPage);
     },
 
-    // Not sure better way to do this
-    totalPagesArray: totalPages => {
-      let pages = [];
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-      return pages;
-    }
-  },
-
-  data: () => {
-    return {
-      isBrowser: typeof window != 'undefined',
-      page: 1,
-      perPage: typeof window != 'undefined' ? 30 : 99999,
-      addressInput: '',
-      addressFound: '',
-      showFilter: null,
-      filters: {
-        minPrice: 0,
-        maxPrice: 99999,
-        minAge: 0,
-        maxAge: 999,
-        minGrade: -10,
-        maxGrade: 999,
-        type: {
-          full: true,
-          half: true,
-          extended: true,
-          overnight: true,
-          other: true
+    data: () => {
+      return {
+        isBrowser: typeof window != "undefined",
+        page: 1,
+        perPage: typeof window != "undefined" ? 30 : 99999,
+        addressInput: "",
+        addressFound: "",
+        showFilter: null,
+        filters: {
+          minPrice: 0,
+          maxPrice: 99999,
+          minAge: 0,
+          maxAge: 999,
+          minGrade: -10,
+          maxGrade: 999,
+          type: {
+            full: true,
+            half: true,
+            extended: true,
+            overnight: true,
+            other: true
+          },
+          categories: {}
         },
-        categories: {}
-      },
-      formatAge: i => (i >= 22 ? 'Adult' : i),
-      formatGrade: i =>
-        i === -1 ? 'PreK' : i === 0 ? 'K' : i === 13 ? 'Completed 12' : i,
-      formatPrice: input => {
-        return input && input.toLocaleString
-          ? '$' + input.toLocaleString({ style: 'currency', currency: 'USD' })
-          : input;
-      },
-      formatDate: i => (i ? DateTime.fromISO(i).toFormat('LLL dd') : '')
-    };
-  }
-};
+        formatAge: i => (i >= 22 ? "Adult" : i),
+        formatGrade: i =>
+          i === -1 ? "PreK" : i === 0 ? "K" : i === 13 ? "Completed 12" : i,
+        formatPrice: input => {
+          return input && input.toLocaleString
+            ? "$" + input.toLocaleString({ style: "currency", currency: "USD" })
+            : input;
+        },
+        formatDate: i => (i ? DateTime.fromISO(i).toFormat("LLL dd") : "")
+      };
+    }
+  };
 </script>

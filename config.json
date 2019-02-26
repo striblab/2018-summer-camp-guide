@@ -1,6 +1,5 @@
 {
-  "about this file":
-    "This document defines configuration for this project that is not content or copy.",
+  "about this file": "This document defines configuration for this project that is not content or copy.",
   "projectIdentifier": "2018-summer-camp-guide",
   "cms": {
     "id": "474068733",
@@ -23,16 +22,14 @@
     ]
   },
   "data": {
-    "camps":
-      "http://static.startribune.com/projects/camp-guide/camp_guide-2018.json"
+    "camps": "http://static.startribune.com/projects/camp-guide/camp_guide-2019.json"
   },
   "content": {},
   "publish": {
     "production": {
       "bucket": "static.startribune.com",
       "path": "news/projects/all/2018-summer-camp-guide",
-      "url":
-        "http://static.startribune.com/news/projects/all/2018-summer-camp-guide/",
+      "url": "http://static.startribune.com/news/projects/all/2018-summer-camp-guide/",
       "cacheSeconds": 600
     }
   },
