@@ -290,6 +290,7 @@
     displayCategory,
     isSubCategory
   } from "../app/common.js";
+  import geocoder from "../app/geocoder.js";
 
   export default {
     components: {
@@ -301,8 +302,8 @@
 
     oncreate: function() {
       // Make geocoder
-      if (this.get("isBrowser") && window.google) {
-        this.geocoder = new window.google.maps.Geocoder();
+      if (this.get("isBrowser")) {
+        this.geocoder = geocoder;
       }
 
       // Track some variable changes
@@ -370,9 +371,23 @@
           return;
         }
 
+        // Reset
         this.set({ isGeocoding: true, geocodingError: false });
-        this.geocoder.geocode({ address }, (results, status) => {
-          if (status !== "OK" || !results || !results.length) {
+
+        // Make sure geocoder is there
+        if (!this.geocoder) {
+          this.set({
+            isGeocoding: false,
+            userLocation: null,
+            addressFound: false,
+            geocodingError:
+              "There was an error looking up that address.  Please try again or contact customer service."
+          });
+        }
+
+        // Geocode
+        this.geocoder(address, (error, response) => {
+          if (error || !response.features || !response.features.length) {
             console.error(`Bad response from geocoder: ${status}`);
             this.set({
               isGeocoding: false,
@@ -385,8 +400,13 @@
           }
 
           this.set({
-            userLocation: results[0].geometry.location.toJSON(),
-            addressFound: results[0].formatted_address,
+            userLocation: {
+              lat: response.features[0].center[1],
+              lng: response.features[0].center[0]
+            },
+            addressFound:
+              response.features[0].place_name_en ||
+              response.features[0].place_name,
             isGeocoding: false
           });
         });
