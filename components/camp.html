@@ -25,8 +25,8 @@
 
           <li>
             Price:
-            ${{ camp.minPrice }}
-            {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice : '' }}
+            ${{ camp.minPrice.toLocaleString() }}
+            {{ camp.maxPrice && camp.maxPrice !== camp.minPrice ? ' - $' + camp.maxPrice.toLocaleString() : '' }}
           </li>
 
           <li>Dates: {{ camp.start.toFormat('MMM d') }} - {{ camp.end.toFormat('MMM d') }}</li>
@@ -111,112 +111,112 @@
 </div>
 
 <script>
-import mapStyles from '../app/map-styles.js';
-import {
-  distance,
-  displayGrade,
-  displayDayTypes,
-  sortDayTypes,
-  mapStylesJSONToFlat,
-  displayCategory
-} from '../app/common.js';
-
-export default {
-  oncreate: function() {
-    if (this.get('lazyloader')) {
-      this.get('lazyloader').update();
-    }
-  },
-
-  helpers: {
+  import mapStyles from "../app/map-styles.js";
+  import {
+    distance,
     displayGrade,
     displayDayTypes,
     sortDayTypes,
-    displayCategory,
+    mapStylesJSONToFlat,
+    displayCategory
+  } from "../app/common.js";
 
-    distance: function(location, userLocation) {
-      if (location && location.lat && userLocation && userLocation.lat) {
-        return distance(
-          location.lat,
-          location.lng,
-          userLocation.lat,
-          userLocation.lng
-        );
+  export default {
+    oncreate: function() {
+      if (this.get("lazyloader")) {
+        this.get("lazyloader").update();
       }
     },
 
-    round: function(input, decimals = 1) {
-      return (
-        Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
-      );
+    helpers: {
+      displayGrade,
+      displayDayTypes,
+      sortDayTypes,
+      displayCategory,
+
+      distance: function(location, userLocation) {
+        if (location && location.lat && userLocation && userLocation.lat) {
+          return distance(
+            location.lat,
+            location.lng,
+            userLocation.lat,
+            userLocation.lng
+          );
+        }
+      },
+
+      round: function(input, decimals = 1) {
+        return (
+          Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
+        );
+      },
+
+      mapImage: function(lat, lng, mapStylesStrings, mapMarkerColor) {
+        return `
+  https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pin-m+${encodeURIComponent(
+          mapMarkerColor.replace(/^0x/, "")
+        )}(${encodeURIComponent(lng)},${encodeURIComponent(
+          lat
+        )})/${encodeURIComponent(lng)},${encodeURIComponent(
+          lat
+        )},11/454x${Math.floor(
+          454 * (9 / 16)
+        )}?access_token=pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA`;
+
+        // https://developers.google.com/maps/documentation/static-maps/intro#Markers
+        // return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
+        //   lat
+        // )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
+        //   ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
+        // )}&zoom=12&format=png&size=454x${Math.floor(
+        //   454 * (9 / 16)
+        // )}&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
+        //   .map(s => 'style=' + encodeURIComponent(s))
+        //   .join('&')}`;
+      }
     },
 
-    mapImage: function(lat, lng, mapStylesStrings, mapMarkerColor) {
-      return `
-https://api.mapbox.com/styles/v1/shadowflare/cirw5gwmi001kgvnpebigwdg6/static/pin-m+${encodeURIComponent(
-        mapMarkerColor.replace(/^0x/, '')
-      )}(${encodeURIComponent(lng)},${encodeURIComponent(
-        lat
-      )})/${encodeURIComponent(lng)},${encodeURIComponent(
-        lat
-      )},11/454x${Math.floor(
-        454 * (9 / 16)
-      )}?access_token=pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA`;
+    computed: {
+      websiteText: camp => {
+        return camp && camp.website
+          ? camp.website
+              .replace(/^https?:\/\//i, "")
+              .replace(/www\./i, "")
+              .replace(/\/$/, "")
+          : "";
+      },
 
-      // https://developers.google.com/maps/documentation/static-maps/intro#Markers
-      // return `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-      //   lat
-      // )},${encodeURIComponent(lng)}&markers=${encodeURIComponent(
-      //   ['color:' + mapMarkerColor, 'size:normal', lat + ',' + lng].join('|')
-      // )}&zoom=12&format=png&size=454x${Math.floor(
-      //   454 * (9 / 16)
-      // )}&key=AIzaSyD0Gx05asYIOKYx-dDSJWdNukZ9vXkFYBs&${mapStylesStrings
-      //   .map(s => 'style=' + encodeURIComponent(s))
-      //   .join('&')}`;
+      websiteURL: camp => {
+        return camp && camp.website
+          ? !camp.website.match(/^http/i)
+            ? `http://${camp.website}`
+            : camp.website
+          : "";
+      },
+
+      mapURL: camp => {
+        return camp && camp.venue
+          ? `https://maps.google.com/?q=${encodeURIComponent(
+              camp.venue.name + ", " + camp.venue.city
+            )}`
+          : "";
+      },
+
+      directionsURL: camp => {
+        return camp && camp.location
+          ? `https://google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+              camp.location.lat
+            )},${encodeURIComponent(camp.location.lng)}`
+          : "";
+      }
+    },
+
+    data: () => {
+      return {
+        isBrowser: typeof window != "undefined",
+        mapStylesStrings: mapStylesJSONToFlat(mapStyles),
+        mapMarkerColor: "0x00824a"
+      };
     }
-  },
-
-  computed: {
-    websiteText: camp => {
-      return camp && camp.website
-        ? camp.website
-            .replace(/^https?:\/\//i, '')
-            .replace(/www\./i, '')
-            .replace(/\/$/, '')
-        : '';
-    },
-
-    websiteURL: camp => {
-      return camp && camp.website
-        ? !camp.website.match(/^http/i)
-          ? `http://${camp.website}`
-          : camp.website
-        : '';
-    },
-
-    mapURL: camp => {
-      return camp && camp.venue
-        ? `https://maps.google.com/?q=${encodeURIComponent(
-            camp.venue.name + ', ' + camp.venue.city
-          )}`
-        : '';
-    },
-
-    directionsURL: camp => {
-      return camp && camp.location
-        ? `https://google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-            camp.location.lat
-          )},${encodeURIComponent(camp.location.lng)}`
-        : '';
-    }
-  },
-
-  data: () => {
-    return {
-      isBrowser: typeof window != 'undefined',
-      mapStylesStrings: mapStylesJSONToFlat(mapStyles),
-      mapMarkerColor: '0x00824a'
-    };
-  }
-};
+  };
 </script>

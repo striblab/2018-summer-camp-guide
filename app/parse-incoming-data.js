@@ -79,12 +79,16 @@ module.exports = camps => {
             ? -1
             : whoMatch[4].match(/^k$/i)
               ? 0
-              : whoMatch[4].match(/^adult$/i) ? 22 : parseInt(whoMatch[4], 0),
+              : whoMatch[4].match(/^adult$/i)
+                ? 22
+                : parseInt(whoMatch[4], 0),
           max: whoMatch[5].match(/^pre-?k$/i)
             ? -1
             : whoMatch[5].match(/^k$/i)
               ? 0
-              : whoMatch[5].match(/^adult$/i) ? 22 : parseInt(whoMatch[5], 0),
+              : whoMatch[5].match(/^adult$/i)
+                ? 22
+                : parseInt(whoMatch[5], 0),
           specialNeedsAdults: whoMatch[6].trim() ? true : false,
           minText: whoMatch[4],
           maxText: whoMatch[5]
@@ -126,7 +130,9 @@ module.exports = camps => {
                 ? 'full'
                 : day[1].match(/extended/i)
                   ? 'extended'
-                  : day[1].match(/half/i) ? 'half' : undefined,
+                  : day[1].match(/half/i)
+                    ? 'half'
+                    : undefined,
               minHours: day[5] ? parseInt(day[5], 10) : parseInt(day[3], 10),
               maxHours: day[5] ? Infinity : parseInt(day[4], 10)
             };
@@ -217,6 +223,12 @@ module.exports = camps => {
         .filter((value, index, self) => {
           return self.indexOf(value) === index;
         });
+
+      // Manual changes
+      // Input limits cost to $9999, but one is higher
+      if (parsed.id === '145665' && parsed.start.year === 2019) {
+        parsed.maxPrice = 10100;
+      }
 
       //console.log(parsed);
       return parsed;
