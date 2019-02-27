@@ -1,6 +1,8 @@
-# 2018 Summer Camp Guide
+# 2018 and 2019 Summer Camp Guide
 
-Find summer camps in the metro area
+Find summer camps in the metro area.
+
+_Note, this repo was re-used for the 2019 Summer Camp guide due to time constraints._
 
 ## CMS
 
@@ -34,7 +36,7 @@ The following are global prerequisites and may already be installed.
 
 1. (on Mac) Install [homebrew](http://brew.sh/).
 1. Install [Node.js](https://nodejs.org/en/).
-   * (on Mac) `brew install node`
+   - (on Mac) `brew install node`
 1. Install [Gulp](http://gulpjs.com/): `npm install gulp -g`
 
 The following should be performed for initial and each code update:
@@ -49,59 +51,59 @@ For the mobile version of the site, use `gulp develop --mobile`. If your project
 
 ### Directories and files
 
-* `config.json`: Non-content config for application.
-  * Use this to add non-local JS or CSS assets, such as from a CDN.
-  * This can be overridden with a `config.custom.json` if there is a need to add configuration that should not be put into revision history.
-* `content.json`: See _Content and copy_. This file is used to hold content values. If the project is hooked up to a Google Spreadsheet, you should not manually edit this file.
-* `pages/`: Holds HTML-like templates. Any files in here will get run through [EJS](http://www.embeddedjs.com/) templating and passed values from `config.json`, `content.json`, and `package.json`.
-  * `pages/index.ejs.html`: The default page for the application.
-  * `pages/_*.ejs.html`: Includes for other templates.
-  * `pages/*.ejs.html`: Any templates without a `_` prefix will be rendered into an full HTML page.
-* `styles/`: Styles in [SASS](http://sass-lang.com/) syntax.
-  * `styles/index.scss`: Main point of entry for styles.
-  * `styles/_*.scss`: Any includes should be prefixed with an underscore.
-* `app/`: Where JS logic goes. This supports ES6+ JS syntax with [Babel](https://babeljs.io/) and gets compiled with [Webpack](https://webpack.js.org/).
-  * `app/index.js`: Main entry point of application.
-* `assets/`: Various media files. This gets copied directly to build.
-* `sources/`: Directory is for all non-data source material, such as wireframes or original images. Note that if there are materials that should not be made public, consider using Dropbox and make a note in this file about how to access.
-* `lib/`: Modules used in building or other non-data tasks.
-* `tests/`: Tests for app; see Testing section below.
-* The rest of the files are for building or meta-information about the project.
+- `config.json`: Non-content config for application.
+  - Use this to add non-local JS or CSS assets, such as from a CDN.
+  - This can be overridden with a `config.custom.json` if there is a need to add configuration that should not be put into revision history.
+- `content.json`: See _Content and copy_. This file is used to hold content values. If the project is hooked up to a Google Spreadsheet, you should not manually edit this file.
+- `pages/`: Holds HTML-like templates. Any files in here will get run through [EJS](http://www.embeddedjs.com/) templating and passed values from `config.json`, `content.json`, and `package.json`.
+  - `pages/index.ejs.html`: The default page for the application.
+  - `pages/_*.ejs.html`: Includes for other templates.
+  - `pages/*.ejs.html`: Any templates without a `_` prefix will be rendered into an full HTML page.
+- `styles/`: Styles in [SASS](http://sass-lang.com/) syntax.
+  - `styles/index.scss`: Main point of entry for styles.
+  - `styles/_*.scss`: Any includes should be prefixed with an underscore.
+- `app/`: Where JS logic goes. This supports ES6+ JS syntax with [Babel](https://babeljs.io/) and gets compiled with [Webpack](https://webpack.js.org/).
+  - `app/index.js`: Main entry point of application.
+- `assets/`: Various media files. This gets copied directly to build.
+- `sources/`: Directory is for all non-data source material, such as wireframes or original images. Note that if there are materials that should not be made public, consider using Dropbox and make a note in this file about how to access.
+- `lib/`: Modules used in building or other non-data tasks.
+- `tests/`: Tests for app; see Testing section below.
+- The rest of the files are for building or meta-information about the project.
 
 ### Dependencies and modules
 
 Depending on what libraries or dependencies you need to include there are a few different ways to get those into the project.
 
-* **JS**
-  * Include it with `npm`.
-    * For instance: `npm install --save awesome-lib`
-    * This can then be included in the application, with something like:
+- **JS**
+  - Include it with `npm`.
+    - For instance: `npm install --save awesome-lib`
+    - This can then be included in the application, with something like:
       ```js
-      import awesome from 'awesome-lib';
+      import awesome from "awesome-lib";
       awesome.radical();
       ```
-  * In the template, you can include libraries from a CDN. Consider using the [StribLab static libs CDN](https://github.com/striblab/static-libs).
-    * In your application, make sure to add a comment like the following so that linters will know that the dependency is already loaded.
+  - In the template, you can include libraries from a CDN. Consider using the [StribLab static libs CDN](https://github.com/striblab/static-libs).
+    - In your application, make sure to add a comment like the following so that linters will know that the dependency is already loaded.
       ```js
       /* global Pym */
       ```
-    * **IMPORTANT** Make sure to always use a specific version from a CDN; do not use _latest_ or something similar.
-    * For testing, these need to be available and should be added to `tests/global.js`
-  * For local modules that you have written yourself, you can use the ES6 module syntax.
-    * For instance, say you have created a `utils.js` module file, just use a relative path to include it:
+    - **IMPORTANT** Make sure to always use a specific version from a CDN; do not use _latest_ or something similar.
+    - For testing, these need to be available and should be added to `tests/global.js`
+  - For local modules that you have written yourself, you can use the ES6 module syntax.
+    - For instance, say you have created a `utils.js` module file, just use a relative path to include it:
       ```js
-      import utilsFn from './utils.js';
+      import utilsFn from "./utils.js";
       let utils = utilsFn({});
       ```
-* **CSS**
-  * Include it with `npm`.
-    * For instance: `npm install --save normalize-scss`
-    * This can then be included in the application, with something like:
+- **CSS**
+  - Include it with `npm`.
+    - For instance: `npm install --save normalize-scss`
+    - This can then be included in the application, with something like:
       ```css
-      @import 'normalize-scss/sass/_normalize.scss';
+      @import "normalize-scss/sass/_normalize.scss";
       ```
-  * In the template, you can include libraries from a CDN. Consider using the [StribLab static libs CDN](https://github.com/striblab/static-libs).
-    * **IMPORTANT** Make sure to always use a specific version from a CDN; do not use _latest_ or something similar.
+  - In the template, you can include libraries from a CDN. Consider using the [StribLab static libs CDN](https://github.com/striblab/static-libs).
+    - **IMPORTANT** Make sure to always use a specific version from a CDN; do not use _latest_ or something similar.
 
 ### Testing
 
@@ -129,10 +131,10 @@ All parts are compiled into the `build/` folder. The default complete build can 
 
 Deployment is setup for AWS S3. Set the following environment variables; they can be set in a [.env](https://www.npmjs.com/package/dotenv) file as well. For further reading on setting up access, see [Configureing the JS-SDK](http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/configuring-the-jssdk.html).
 
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-* OR `AWS_DEFAULT_PROFILE`
-* OR `AWS_CONFIG_FILE`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- OR `AWS_DEFAULT_PROFILE`
+- OR `AWS_CONFIG_FILE`
 
 To deploy, run `gulp deploy`. This will build and publish to the location configured as `default` (see _Configuration_ below).
 
@@ -173,23 +175,23 @@ If you see an error message that states that the tokens do not match, make sure 
 
 Having a consistent style for code and similar aspects makes collaboration easier. Though there is nothing that enforces these things, intentionally so, spending some time to adhere to these styles will be beneficial in the long run.
 
-* **JS**: Javascript is linted with [ESLint](http://eslint.org/) and defined in `.eslintrc`.
-  * The defined style extends from [eslint:recommended](https://github.com/eslint/eslint/blob/master/conf/eslint.json) but is more focal about single quotes for strings and using semicolons.
-  * Install the following ESLint plugins for [Atom](https://atom.io/packages/linter-eslint), [Sublime Text](https://github.com/roadhump/SublimeLinter-eslint), or [others](http://eslint.org/docs/user-guide/integrations).
-* **Styles**: SASS (and CSS) is linted with [stylelint](https://stylelint.io/) and defined in `.styleintrc`.
-  * The defined style extends from [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard) with a couple additions to how colors are defined.
-  * Install the following stylelint plugins for [Atom](https://atom.io/packages/linter-stylelint), [Sublime Text](https://github.com/kungfusheep/SublimeLinter-contrib-stylelint), or [others](https://stylelint.io/user-guide/complementary-tools/).
+- **JS**: Javascript is linted with [ESLint](http://eslint.org/) and defined in `.eslintrc`.
+  - The defined style extends from [eslint:recommended](https://github.com/eslint/eslint/blob/master/conf/eslint.json) but is more focal about single quotes for strings and using semicolons.
+  - Install the following ESLint plugins for [Atom](https://atom.io/packages/linter-eslint), [Sublime Text](https://github.com/roadhump/SublimeLinter-eslint), or [others](http://eslint.org/docs/user-guide/integrations).
+- **Styles**: SASS (and CSS) is linted with [stylelint](https://stylelint.io/) and defined in `.styleintrc`.
+  - The defined style extends from [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard) with a couple additions to how colors are defined.
+  - Install the following stylelint plugins for [Atom](https://atom.io/packages/linter-stylelint), [Sublime Text](https://github.com/kungfusheep/SublimeLinter-contrib-stylelint), or [others](https://stylelint.io/user-guide/complementary-tools/).
 
 Other good practices that are not encompassed with linters.
 
-* **General**
-  * Comment as much as possible without being overly redundant.
-* **JS**
-  * Use small modules as much as possible.
-* **Styles**
-  * Use `class`es instead of `id`s for HTML elements, specifically for styling and JS.
-  * Use relative units such as `rem`, `em`, `vh`, `vw`, or `%`, instead of absolute values such as `px`. This helps accessibility as well as designing for different screen sizes.
-    * Overall, use `rem` for "component" level styling, such as a form, and then use `em` for styling inside components.
+- **General**
+  - Comment as much as possible without being overly redundant.
+- **JS**
+  - Use small modules as much as possible.
+- **Styles**
+  - Use `class`es instead of `id`s for HTML elements, specifically for styling and JS.
+  - Use relative units such as `rem`, `em`, `vh`, `vw`, or `%`, instead of absolute values such as `px`. This helps accessibility as well as designing for different screen sizes.
+    - Overall, use `rem` for "component" level styling, such as a form, and then use `em` for styling inside components.
 
 ## License
 
