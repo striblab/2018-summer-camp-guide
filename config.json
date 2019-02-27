@@ -30,6 +30,12 @@
       "path": "news/projects/all/2018-summer-camp-guide",
       "url": "http://static.startribune.com/news/projects/all/2018-summer-camp-guide/",
       "cacheSeconds": 600
+    },
+    "staging": {
+      "bucket": "static.startribune.com",
+      "path": "news/projects-staging/all/2018-summer-camp-guide",
+      "url": "http://static.startribune.com/news/projects-staging/all/2018-summer-camp-guide/",
+      "cacheSeconds": 30
     }
   },
   "publishToken": "f348dedea7df1e538505ba542b7c2f41"
