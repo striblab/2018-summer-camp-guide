@@ -142,6 +142,22 @@ To deploy to the `production` location, for instance, simply use that flag like:
 
 A handy command is to use `gulp publish:open` to open the URL to that project.
 
+### CMS content
+
+The HTML content needs to be manually put into the CMS. This lives in an LCD (see id in `config.json`). There is a `content` field. The contents of the `build/page-components.html` should be copied in there with a minor update; replace this:
+
+```html
+<div class="sharing-wrapper"></div>
+```
+
+With:
+
+```html
+<div class="sharing-wrapper">
+  <!-- share -->
+</div>
+```
+
 ### Configuration
 
 Publishing is configured in the `config.json` file. The `publish` property can have the following keys: `default`, `testing`, `staging`, and `production`. It is suggested to use default in place of the `staging` as the default gets used when no flag is specified (see below). Each key should correspond to an object with `bucket`, `path`, and `url`. **IMPORTANT**: The `url` should be a fully qualified URL that ends with a `/`. This URL will get inserted into some meta tags on the page by default. For example:
@@ -171,7 +187,7 @@ The publishing function, uses a token that helps ensure a name collision with an
 
 If you see an error message that states that the tokens do not match, make sure that the location you are publishing to doesn't have a different project at it, or converse with teammates or administrators about the issue.
 
-### Styles and practices
+## Styles and practices
 
 Having a consistent style for code and similar aspects makes collaboration easier. Though there is nothing that enforces these things, intentionally so, spending some time to adhere to these styles will be beneficial in the long run.
 

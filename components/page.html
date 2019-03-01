@@ -306,6 +306,11 @@
         this.geocoder = geocoder;
       }
 
+      // Hack back in share
+      if (this.get("attachShare")) {
+        this.get("attachShare")();
+      }
+
       // Track some variable changes
       this.observe(
         "page",
