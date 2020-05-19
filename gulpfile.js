@@ -296,7 +296,7 @@ gulp.task('server', ['build'], () => {
   return browserSync.init({
     port: 3000,
     proxy:
-      'http://' +
+      'https://' +
       (argv.mobile ? 'vm-m' : 'vm-www') +
       '.startribune.com/x/' +
       (argv['cms-id'] ? argv['cms-id'] : config.cms.id) +
