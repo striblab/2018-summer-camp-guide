@@ -42,7 +42,7 @@ else {
     // Get data
     window
       .fetch(
-        '//static.startribune.com/projects/camp-guide/camp_guide-2020.json'
+        '//static.startribune.com/news/projects/all/2022-summer-camp-guide/camp_guide-2022.json'
       )
       .then(response => response.json())
       .then(response => {
