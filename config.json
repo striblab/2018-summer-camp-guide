@@ -2,8 +2,8 @@
   "about this file": "This document defines configuration for this project that is not content or copy.",
   "projectIdentifier": "2020-summer-camp-guide",
   "cms": {
-    "id": "600156356",
-    "pages": ["600156356"],
+    "id": "474068733",
+    "pages": ["474068733"],
     "lcds": ["474062273"],
     "componentMapping": {
       "article-lcd-body-content": "component-page.html"
