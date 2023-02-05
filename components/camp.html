@@ -63,6 +63,10 @@
             {{/if}}
           </li>
 
+          {{#if camp.special}}
+            <li>{{ camp.special }}</li>
+          {{/if}}
+
           {{#if camp.who.specifically}}
             <li>Specifically for: {{ camp.who.specifically }}</li>
           {{/if}}
@@ -73,9 +77,9 @@
                 <em>This camp has various locations.</em>
               {{else}}
                 {{#if mapURL}}
-                  <a href="{{ mapURL }}" target="_blank" rel="noopener">{{ camp.venue.name }}, {{ camp.venue.city }}</a>
+                  <a href="{{ mapURL }}" target="_blank" rel="noopener">{{ camp.venue.name }}{{#if camp.venue.name !== ""}}, {{/if}}{{ camp.venue.city }}</a>
                 {{else}}
-                  {{ camp.venue.name }}, {{ camp.venue.city }}
+                  {{ camp.venue.name }}{{#if camp.venue.name !== ""}}, {{/if}}{{ camp.venue.city }}
                 {{/if}}
               {{/if}}
             </li>
@@ -200,7 +204,7 @@
       mapURL: camp => {
         return camp && camp.venue
           ? `https://maps.google.com/?q=${encodeURIComponent(
-              camp.venue.name + ", " + camp.venue.city
+              camp.mapLink
             )}`
           : "";
       },

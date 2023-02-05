@@ -42,14 +42,14 @@ else {
     // Get data
     window
       .fetch(
-        '//static.startribune.com/news/projects/all/2022-summer-camp-guide/camp_guide-2022.json'
+        '//static.startribune.com/news/projects/all/2023-summer-camp-guide/camp_guide-2023.json'
       )
       .then(response => response.json())
       .then(response => {
         // Initialize components, after data is loaded so that the non-js
         // version keeeps showing
         let mainComponent = new Page({
-          target: document.querySelector('.article-lcd-body-content'),
+          target: document.querySelector('.article-body.article-body-content'),
           hydrate: true,
           data: {
             attachShare,

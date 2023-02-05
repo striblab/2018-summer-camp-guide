@@ -45,6 +45,8 @@ module.exports = camps => {
       parsed.phoneTollFree = c.info_toll_free_phone_nbr;
       parsed.website = c.info_website;
       parsed.covid = c.covid_info;
+      parsed.special = c.event_special;
+      parsed.mapLink = c.latLng;
 
       // lat long
       let locationMatch = c.latLng.match(/([0-9.-]+),\s*([0-9.-]+)/i);

@@ -2,8 +2,8 @@
   "about this file": "This document defines configuration for this project that is not content or copy.",
   "projectIdentifier": "2020-summer-camp-guide",
   "cms": {
-    "id": "474068733",
-    "pages": ["474068733"],
+    "id": "600156356",
+    "pages": ["600156356"],
     "lcds": ["474062273"],
     "componentMapping": {
       "article-lcd-body-content": "component-page.html"
@@ -21,20 +21,20 @@
     ]
   },
   "data": {
-    "camps": "https://static.startribune.com/news/projects/all/2022-summer-camp-guide/camp_guide-2022.json"
+    "camps": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/camp_guide-2023.json"
   },
   "content": {},
   "publish": {
     "production": {
       "bucket": "static.startribune.com",
-      "path": "news/projects/all/2022-summer-camp-guide",
-      "url": "http://static.startribune.com/news/projects/all/2022-summer-camp-guide/",
+      "path": "news/projects/all/2023-summer-camp-guide",
+      "url": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/",
       "cacheSeconds": 600
     },
     "staging": {
       "bucket": "static.startribune.com",
-      "path": "news/projects-staging/all/2022-summer-camp-guide",
-      "url": "http://static.startribune.com/news/projects-staging/all/2022-summer-camp-guide/",
+      "path": "news/projects-staging/all/2023-summer-camp-guide",
+      "url": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/",
       "cacheSeconds": 30
     }
   },

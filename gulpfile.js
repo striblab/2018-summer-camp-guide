@@ -263,7 +263,7 @@ gulp.task('server', ['build'], () => {
         // Make sure its only for the CMS pages and we have something
         // to replace it with
         if (
-          request.originalUrl.indexOf('preview=1&cache=trash') &&
+          request.originalUrl.indexOf('show=1&cache=trash') &&
           exists(`build/${component}`)
         ) {
           let inject = fs.readFileSync(`build/${component}`, 'utf-8');
@@ -300,7 +300,7 @@ gulp.task('server', ['build'], () => {
       (argv.mobile ? 'vm-m' : 'vm-www') +
       '.startribune.com/x/' +
       (argv['cms-id'] ? argv['cms-id'] : config.cms.id) +
-      '?preview=1&cache=trash',
+      '?show=1&cache=trash',
     serveStatic: [
       {
         route: '/' + config.publish.production.path,
