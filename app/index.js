@@ -18,36 +18,31 @@ const noMaps = true;
 // Setup utils function
 //utilsFn({});
 
-// TODO: Ployfill fetch
+// TODO: Polyfill fetch
 if (!window.fetch) {
   console.error('No fetch.');
 }
 else {
   // The share output is inside the component, but it is rendered
-  // by news-platform.  And, of course, its different on desktop
+  // by news-platform. And, of course, it's different on desktop
   // and mobile
-  $(document).ready(() => {
+  document.addEventListener('DOMContentLoaded', () => {
     // Hack to get share back
-    let $share = $('.sharing-wrapper').size()
-      ? $('.sharing-wrapper')
-        .children()
-        .detach()
-      : undefined;
-    let attachShare = !$share
-      ? undefined
-      : () => {
-        $('.sharing-wrapper').append($share);
-      };
+    let shareElements = document.querySelectorAll('.sharing-wrapper');
+    let share = shareElements.length > 0 ? shareElements[0].children : undefined;
+    let attachShare = !share ? undefined : () => {
+      shareElements[0].append(...share);
+    };
 
     // Get data
     window
       .fetch(
-        '//static.startribune.com/news/projects/all/2023-summer-camp-guide/camp_guide-2023.json'
+        '//static.startribune.com/news/projects/all/2024-summer-camp-guide/camp_guide-2024.json'
       )
       .then(response => response.json())
       .then(response => {
         // Initialize components, after data is loaded so that the non-js
-        // version keeeps showing
+        // version keeps showing
         let mainComponent = new Page({
           target: document.querySelector('.article-body.article-body-content'),
           hydrate: true,

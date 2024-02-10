@@ -21,20 +21,20 @@
     ]
   },
   "data": {
-    "camps": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/camp_guide-2023.json"
+    "camps": "https://static.startribune.com/news/projects/all/2024-summer-camp-guide/camp_guide-2024.json"
   },
   "content": {},
   "publish": {
     "production": {
       "bucket": "static.startribune.com",
       "path": "news/projects/all/2023-summer-camp-guide",
-      "url": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/",
+      "url": "https://static.startribune.com/news/projects/all/2024-summer-camp-guide/",
       "cacheSeconds": 600
     },
     "staging": {
       "bucket": "static.startribune.com",
       "path": "news/projects-staging/all/2023-summer-camp-guide",
-      "url": "https://static.startribune.com/news/projects/all/2023-summer-camp-guide/",
+      "url": "https://static.startribune.com/news/projects/all/2024-summer-camp-guide/",
       "cacheSeconds": 30
     }
   },
