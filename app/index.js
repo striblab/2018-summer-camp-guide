@@ -4,12 +4,12 @@
 
 // Define globals that are added through the config.json file, here like this:
 // /* global _ */
-'use strict';
+"use strict";
 
 // Dependencies
 //import utilsFn from './utils.js';
-import Page from '../components/page.html';
-import parser from './parse-incoming-data.js';
+import Page from "../components/page.html";
+import parser from "./parse-incoming-data.js";
 //import LazyLoad from 'vanilla-lazyload/dist/lazyload';
 
 // TOGGLE MAPS
@@ -20,37 +20,39 @@ const noMaps = true;
 
 // TODO: Polyfill fetch
 if (!window.fetch) {
-  console.error('No fetch.');
-}
-else {
+  console.error("No fetch.");
+} else {
   // The share output is inside the component, but it is rendered
   // by news-platform. And, of course, it's different on desktop
   // and mobile
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     // Hack to get share back
-    let shareElements = document.querySelectorAll('.sharing-wrapper');
-    let share = shareElements.length > 0 ? shareElements[0].children : undefined;
-    let attachShare = !share ? undefined : () => {
-      shareElements[0].append(...share);
-    };
+    let shareElements = document.querySelectorAll(".sharing-wrapper");
+    let share =
+      shareElements.length > 0 ? shareElements[0].children : undefined;
+    let attachShare = !share
+      ? undefined
+      : () => {
+          shareElements[0].append(...share);
+        };
 
     // Get data
     window
       .fetch(
-        'https://www.huttstuff.com/campguide/camp_guide-2025.json'
+        "https://static.startribune.com/news/projects/all/2025-summer-camp-guide/camp_guide-2025.json"
       )
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         // Initialize components, after data is loaded so that the non-js
         // version keeps showing
         let mainComponent = new Page({
-          target: document.querySelector('.article-body.article-body-content'),
+          target: document.querySelector(".article-body.article-body-content"),
           hydrate: true,
           data: {
             attachShare,
             noMaps: noMaps,
-            camps: parser(response.items ? response.items : response)
-          }
+            camps: parser(response.items ? response.items : response),
+          },
         });
       })
       .catch(console.error);
