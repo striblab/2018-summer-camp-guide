@@ -37,7 +37,7 @@ else {
     // Get data
     window
       .fetch(
-        '//static.startribune.com/news/projects/all/2024-summer-camp-guide/camp_guide-2024.json'
+        'https://www.huttstuff.com/campguide/camp_guide-2025.json'
       )
       .then(response => response.json())
       .then(response => {
