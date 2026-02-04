@@ -21,7 +21,7 @@
     ]
   },
   "data": {
-    "camps": "https://static.startribune.com/news/projects/all/2025-summer-camp-guide/2025-camp-data-final-decache-2.json"
+    "camps": "http://localhost:5173/camp-data-2026-v1.json"
   },
   "content": {},
   "publish": {
